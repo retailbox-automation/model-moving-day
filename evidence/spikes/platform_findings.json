@@ -1,0 +1,38 @@
+[
+ {
+  "id": "PF-1",
+  "area": "Token Factory API",
+  "date": "2026-10-23",
+  "finding": "reasoning_effort \"none\" on nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B returns HTTP 200 with content \"\" and the answer in message.reasoning; chat_template_kwargs.enable_thinking=false works on all four ladder models",
+  "evidence": "evidence/spikes/raw/S1.jsonl (labels Nano|effort_none|*)"
+ },
+ {
+  "id": "PF-2",
+  "area": "Token Factory API",
+  "date": "2026-10-23",
+  "finding": "the reasoning text field differs per model: Nano uses message.reasoning and reports completion_tokens_details null; Lightning and Super fill reasoning and reasoning_content; Ultra fills only reasoning_content",
+  "evidence": "evidence/spikes/RESULTS.md section S5"
+ },
+ {
+  "id": "PF-3",
+  "area": "Token Factory rate limits",
+  "date": "2026-10-23",
+  "finding": "Super: 577 calls/min for 2 minutes against x-ratelimit-limit-requests 300; remaining-requests read 0 on 564 calls with no 429 and no x-ratelimit-over-limit header",
+  "evidence": "evidence/spikes/raw/S6.jsonl"
+ },
+ {
+  "id": "PF-4",
+  "area": "Sandboxes / contree-sdk 0.3.6",
+  "date": "2026-10-23",
+  "finding": "the SDK logs the warning 'Token expires in 0 hours' on whoami although the API key's expiration in the console is 13 Oct 2031; the key keeps working",
+  "exact_warning": "Token expires in 0 hours",
+  "evidence": "evidence/sandbox/raw.jsonl step T0 (16:03:33Z run); console key expiry read by the integrator 16:05-16:08Z"
+ },
+ {
+  "id": "PF-5",
+  "area": "Sandboxes billing",
+  "date": "2026-10-23",
+  "finding": "a beta sandbox run returns a non-zero resources.cost (0.00104435 for a python -c run); the docs say the field is for diagnostics only and the console says beta runs do not consume credits; whether billing records show it is not yet known (console usage lags ~2 h)",
+  "evidence": "evidence/sandbox/runs.jsonl"
+ }
+]

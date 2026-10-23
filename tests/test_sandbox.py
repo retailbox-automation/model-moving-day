@@ -43,18 +43,51 @@ class FakeContree:
         self.images = FakeImages(result)
 
 
-def test_run_returns_output_exit_code_and_times():
-    fake = FakeContree(FakeResult(exit_code=3, stdout="hello\n", elapsed=2.0))
-    r = sb.Sandbox(fake).run("python:3.12-slim", "echo hello", env={"A": "1"}, timeout=60)
+def box(tmp_path, result, **kw):
+    led = tf.Ledger(tmp_path / "l.jsonl", caps={"total": 1.0, "c1": 1.0})
+    return sb.Sandbox(FakeContree(result), ledger=led, log_path=tmp_path / "runs.jsonl", **kw), led
+
+
+def test_run_returns_output_exit_code_and_times(tmp_path):
+    b, _ = box(tmp_path, FakeResult(exit_code=3, stdout="hello\n", elapsed=2.0))
+    r = b.run("python:3.12-slim", "echo hello", env={"A": "1"}, timeout=60)
     assert (r.exit_code, r.stdout, r.elapsed_s) == (3, "hello\n", 2.0)
-    assert r.wall_s >= 0 and fake.images.used == ["python:3.12-slim"]
-    assert fake.images.calls[0]["shell"] == "echo hello" and fake.images.calls[0]["env"] == {"A": "1"}
+    assert r.wall_s >= 0 and b.contree.images.used == ["python:3.12-slim"]
+    call = b.contree.images.calls[0]
+    assert call["shell"] == "echo hello" and call["env"] == {"A": "1"} and call["hostname"].startswith("mmd-")
 
 
-def test_any_reported_cost_stops_the_run():
-    fake = FakeContree(FakeResult(cost=0.002))
-    with pytest.raises(sb.SandboxCostShown):
-        sb.Sandbox(fake).run("python:3.12-slim", "true")
+def test_each_run_reserves_then_settles_to_the_reported_cost_and_is_logged(tmp_path):
+    b, led = box(tmp_path, FakeResult(cost=0.002, elapsed=4.0))
+    b.run("python:3.12-slim", "pytest -q", env={"SECRET": "s3cr3t"})
+    assert led.spent()[1]["c1"] == pytest.approx(0.002)
+    rec = json.loads((tmp_path / "runs.jsonl").read_text())
+    assert rec["image"] == "python:3.12-slim" and rec["command"] == "pytest -q" and rec["cost"] == 0.002
+    assert rec["elapsed_s"] == 4.0 and "operation" in rec and "SECRET" in rec["env_keys"]
+    assert "s3cr3t" not in (tmp_path / "runs.jsonl").read_text()
+
+
+def test_failed_run_keeps_the_full_reservation(tmp_path):
+    class Boom(FakeContree):
+        def __init__(self):
+            super().__init__(None)
+            self.images.use = lambda ref: (_ for _ in ()).throw(RuntimeError("api down"))
+    led = tf.Ledger(tmp_path / "l.jsonl", caps={"total": 1.0, "c1": 1.0})
+    b = sb.Sandbox(Boom(), ledger=led, log_path=tmp_path / "runs.jsonl")
+    with pytest.raises(RuntimeError):
+        b.run("python:3.12-slim", "true")
+    assert led.spent()[1]["c1"] == pytest.approx(sb.RUN_RESERVE)
+    assert json.loads((tmp_path / "runs.jsonl").read_text())["error"].startswith("RuntimeError")
+
+
+def test_run_count_limit_is_enforced_across_instances(tmp_path):
+    b, _ = box(tmp_path, FakeResult(), max_runs=2)
+    b.run("img", "true")
+    b.run("img", "true")
+    b2, _ = box(tmp_path, FakeResult(), max_runs=2)
+    with pytest.raises(sb.SandboxRunLimit):
+        b2.run("img", "true")
+    assert len(b2.contree.images.calls) == 0
 
 
 def test_trailing_json_block_is_extracted():
