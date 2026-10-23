@@ -1,0 +1,917 @@
+{
+ "label": "control-forward",
+ "ts": 1792773237.474,
+ "exit_code": 0,
+ "elapsed_s": 5.251925,
+ "wall_s": 54.768,
+ "sandbox_cost": 0.05319853,
+ "summary": {
+  "runs": [
+   {
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_response_model_none[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_retries.py::test_validation_with_retries[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_int[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_bool[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_str[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_literal[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_union[openai]": {
+     "outcome": "skipped",
+     "message": "openai does not support union_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)"
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_enum[openai]": {
+     "outcome": "skipped",
+     "message": "openai does not support enum_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)"
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_annotated_int[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_union_streaming[openai]": {
+     "outcome": "skipped",
+     "message": "openai does not support union_streaming (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)"
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_async_validator_model_rejected_before_cache_lookup": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_banned_words_validation_old[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]": {
+     "outcome": "passed",
+     "message": ""
+    }
+   }
+  ],
+  "durations_s": [
+   52.4
+  ],
+  "exit_codes": [
+   0
+  ],
+  "freeze_before": [],
+  "freeze_after": [],
+  "pytest_tail": "...............ss....s.................................................. [ 41%]\n........................................................................ [ 83%]\n............................                                             [100%]\n------------------- generated xml file: /mmd/out/junit-0.xml -------------------\n=========================== short test summary info ============================\nSKIPPED [1] tests/llm/test_core_providers/capabilities.py:166: openai does not support union_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)\nSKIPPED [1] tests/llm/test_core_providers/capabilities.py:166: openai does not support enum_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)\nSKIPPED [1] tests/llm/test_core_providers/capabilities.py:166: openai does not support union_streaming (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)\n169 passed, 3 skipped, 1 deselected in 49.18s\n",
+  "calls": {
+   "tests": {
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_response_modes.py::test_response_model_none[openai]": [
+     "instructor/v2/core/retry.py:483"
+    ],
+    "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_retries.py::test_validation_with_retries[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_simple_types.py::test_int[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_simple_types.py::test_bool[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_simple_types.py::test_str[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_simple_types.py::test_literal[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_simple_types.py::test_annotated_int[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_openai/test_validation_context.py::test_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/validation/llm_validators.py:34"
+    ],
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]": [
+     "instructor/v2/validation/llm_validators.py:34"
+    ]
+   },
+   "sites": {
+    "instructor/v2/core/retry.py:523": {
+     "calls": 32,
+     "prompt_tokens": 13786,
+     "completion_tokens": 1944,
+     "reasoning_tokens": 657,
+     "cost": 0.0058854,
+     "seconds": 32.311,
+     "models": {
+      "nvidia/nemotron-3-super-120b-a12b": 32
+     },
+     "diagnoses": {},
+     "errors": {},
+     "max_tokens": {
+      "1000": 2
+     },
+     "changes": {
+      "model:model": 32
+     }
+    },
+    "instructor/v2/core/retry.py:483": {
+     "calls": 1,
+     "prompt_tokens": 19,
+     "completion_tokens": 170,
+     "reasoning_tokens": 162,
+     "cost": 0.0001587,
+     "seconds": 1.415,
+     "models": {
+      "nvidia/nemotron-3-super-120b-a12b": 1
+     },
+     "diagnoses": {},
+     "errors": {},
+     "max_tokens": {},
+     "changes": {
+      "model:model": 1
+     }
+    },
+    "instructor/v2/core/retry.py:224": {
+     "calls": 12,
+     "prompt_tokens": 5005,
+     "completion_tokens": 694,
+     "reasoning_tokens": 295,
+     "cost": 0.0021261,
+     "seconds": 10.353,
+     "models": {
+      "nvidia/nemotron-3-super-120b-a12b": 12
+     },
+     "diagnoses": {},
+     "errors": {},
+     "max_tokens": {
+      "1000": 2
+     },
+     "changes": {
+      "model:model": 12
+     }
+    },
+    "instructor/v2/validation/llm_validators.py:34": {
+     "calls": 2,
+     "prompt_tokens": 1194,
+     "completion_tokens": 206,
+     "reasoning_tokens": 82,
+     "cost": 0.0005436,
+     "seconds": 1.823,
+     "models": {
+      "nvidia/nemotron-3-super-120b-a12b": 2
+     },
+     "diagnoses": {},
+     "errors": {},
+     "max_tokens": {},
+     "changes": {
+      "model:model": 2
+     }
+    }
+   },
+   "cost": 0.0087138
+  },
+  "envelope_spent": 0.0087138,
+  "proxy_log_tail": "[mmd-proxy] listening on 127.0.0.1:8765\n"
+ },
+ "stdout_tail": "",
+ "stderr_tail": ""
+}
