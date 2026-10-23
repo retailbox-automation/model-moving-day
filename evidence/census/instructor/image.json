@@ -1,0 +1,16 @@
+{
+ "target": "instructor",
+ "commit": "6cd771c5254a69f6a6cf9cdf357fb2f9523f0b85",
+ "image_uuid": "a1d1862b-3dc0-45ac-a92d-4cecfedbfe8e",
+ "tag": "mmd-instructor:6cd771c5254a",
+ "exit_code": 0,
+ "elapsed_s": 3.487253,
+ "wall_s": 13.43,
+ "sandbox_cost": 0.03586429,
+ "info": {
+  "prepared": "instructor",
+  "packages": 53
+ },
+ "stdout_tail": "<<<MMD-JSON>>>{\"prepared\": \"instructor\", \"packages\": 53}\n",
+ "stderr_tail": "WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.\n"
+}

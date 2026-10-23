@@ -1,0 +1,56 @@
+{
+ "target": "instructor",
+ "ast_sites": [
+  {
+   "id": "instructor/v2/providers/openai/client.py:23",
+   "func": "map_chat_completion_to_response",
+   "sdk": "openai",
+   "api": "responses.create",
+   "kind": "responses",
+   "model_expr": null,
+   "model_literal": null
+  },
+  {
+   "id": "instructor/v2/providers/openai/client.py:29",
+   "func": "async_map_chat_completion_to_response",
+   "sdk": "openai",
+   "api": "responses.create",
+   "kind": "responses",
+   "model_expr": null,
+   "model_literal": null
+  },
+  {
+   "id": "instructor/v2/validation/llm_validators.py:34",
+   "func": "llm_validator.llm",
+   "sdk": "openai",
+   "api": "chat.completions.create",
+   "kind": "chat",
+   "model_expr": "model",
+   "model_literal": null
+  }
+ ],
+ "ast_parse_errors": [],
+ "traced_sites": [
+  {
+   "site": "unknown",
+   "tests": 1,
+   "flip_tests": [],
+   "covered": false,
+   "isolated": true,
+   "good_side": "forward",
+   "details": [
+    {
+     "test": "",
+     "forward": null,
+     "broken": null
+    }
+   ]
+  }
+ ],
+ "ast_sites_not_reached": [
+  "instructor/v2/providers/openai/client.py:23",
+  "instructor/v2/providers/openai/client.py:29",
+  "instructor/v2/validation/llm_validators.py:34"
+ ],
+ "covered_sites": []
+}

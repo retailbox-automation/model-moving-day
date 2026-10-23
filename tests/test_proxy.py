@@ -147,3 +147,24 @@ def test_tracer_tags_requests_with_the_innermost_repo_frame(tmp_path):
     seen = json.loads(out.stdout)
     assert seen["x-mmd-site"] == "pkg/llm.py:4" and seen["x-mmd-test"] == "tests/t.py::t (call)"
     assert seen["x-mmd-chain"] == "pkg/llm.py:4"  # repo frames only, innermost first; the test file is excluded
+
+
+def test_tracer_tags_requests_made_by_the_real_openai_sdk(server):
+    """openai 3.x sends through httpx2, not httpx; the tracer must see both."""
+    pytest.importorskip("openai")
+    base, up, tmp, _ = server
+    repo = tmp / "repo"
+    (repo / "pkg").mkdir(parents=True)
+    (repo / "pkg" / "__init__.py").write_text("")
+    (repo / "pkg" / "ask.py").write_text(textwrap.dedent("""
+        from openai import OpenAI
+        def ask():
+            return OpenAI().chat.completions.create(model="gpt-4.1-mini", messages=[{"role": "user", "content": "hi"}])
+    """))
+    script = "import sys; sys.path.insert(0, sys.argv[1]); from pkg.ask import ask; print(ask().choices[0].message.content)"
+    env = {"PYTHONPATH": str(proxy.TRACER_DIR), "MMD_REPO_ROOT": str(repo), "PYTEST_CURRENT_TEST": "tests/t.py::t (call)",
+           "OPENAI_BASE_URL": base + "/v1", "OPENAI_API_KEY": "dummy", "PATH": "/usr/bin:/bin"}
+    out = subprocess.run([sys.executable, "-c", script, str(repo)], env=env, capture_output=True, text=True, timeout=60)
+    assert out.returncode == 0, out.stderr[-2000:]
+    rec = calls(tmp)[-1]
+    assert rec["site"] == "pkg/ask.py:4" and rec["test"] == "tests/t.py::t"

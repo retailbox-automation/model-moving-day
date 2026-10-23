@@ -1,0 +1,820 @@
+{
+ "label": "control-broken",
+ "ts": 1792773088.621,
+ "exit_code": 0,
+ "elapsed_s": 10.332162,
+ "wall_s": 43.408,
+ "sandbox_cost": 0.10415506000000001,
+ "summary": {
+  "runs": [
+   {
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-87eb6a56', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-7096972a', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-60c1d184', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-ef4365ad', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-fc0e3823', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-27a5857c', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-75e6f144', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-357ed1c5', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_response_model_none[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-f8458940', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_retries.py::test_validation_with_retries[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-cd5ebc5f', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_int[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-00abe13c', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_bool[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-ee0c63ea', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_str[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-059db928', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_literal[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-fee68059', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_union[openai]": {
+     "outcome": "skipped",
+     "message": "openai does not support union_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)"
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_enum[openai]": {
+     "outcome": "skipped",
+     "message": "openai does not support enum_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)"
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_annotated_int[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-d340ed3d', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]": {
+     "outcome": "failed",
+     "message": "assert 0 >= 1\n +  where 0 = len([])"
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]": {
+     "outcome": "failed",
+     "message": "assert 0 == 3\n +  where 0 = len([])"
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]": {
+     "outcome": "failed",
+     "message": "assert 0 == 2\n +  where 0 = len([])"
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_union_streaming[openai]": {
+     "outcome": "skipped",
+     "message": "openai does not support union_streaming (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)"
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]": {
+     "outcome": "failed",
+     "message": "assert 0 == 2\n +  where 0 = len([])"
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-9bb757da', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-68964711', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-2d92d91b', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-14404832', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-b4bc30d6', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_basic_response_methods[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_basic_response_methods[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable_from_create[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable_from_create[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_with_completion[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_with_completion[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_partial[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_partial[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_basic_response_methods_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_basic_response_methods_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable_from_create_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable_from_create_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_with_completion_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_with_completion_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_partial_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_partial_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_async_validator_model_rejected_before_cache_lookup": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-69691a24', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-aa7d18a8', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-79aa80b2', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-0eb6df3e', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "assert 0 == 2\n +  where 0 = len([])"
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "assert 0 == 2\n +  where 0 = len([])"
+    },
+    "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-1a0054f1', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-45414d3a', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-3ea84233', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-7f5d096d', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-44c5c1f6', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_banned_words_validation_old[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-29762ef1', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-212385c9', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-6321b837', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    },
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    No tool calls or function call found in response (mode: TOOLS)\n</exception>\n<completion>\n    ChatCompletion(id='mmd-broken-4ec604b7', choices=[Choice(finish_reason='stop', index=0, logprobs=None, message=ChatCompletionMessage(content='', refusal=None, role='assistant', annotations=None, a"
+    }
+   }
+  ],
+  "durations_s": [
+   41.5
+  ],
+  "exit_codes": [
+   1
+  ],
+  "freeze_before": [],
+  "freeze_after": [],
+  "pytest_tail": "ns_details=CompletionTokensDetails(accepted_prediction_tokens=None, audio_tokens=0, reasoning_tokens=0, rejected_prediction_tokens=None, text_tokens=None), prompt_tokens_details=PromptTokensDetails(audio_tokens=0, cache_write_tokens=None, cached_tokens=0, image_tokens=None, text_tokens=None)))\nE           </completion>\nE           </generation>\nE           \nE           </failed_attempts>\nE           \nE           <last_exception>\nE               No tool calls or function call found in response (mode: TOOLS)\nE           </last_exception>\n\ninstructor/v2/core/retry.py:354: InstructorRetryException\n------------------------------ Captured log call -------------------------------\nERROR    instructor.v2.retry:retry.py:340 Max retries exceeded. Total attempts: 4, Last error: No tool calls or function call found in response (mode: TOOLS)\n------------------- generated xml file: /mmd/out/junit-0.xml -------------------\n=========================== short test summary info ============================\nSKIPPED [1] tests/llm/test_core_providers/capabilities.py:166: openai does not support union_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)\nSKIPPED [1] tests/llm/test_core_providers/capabilities.py:166: openai does not support enum_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)\nSKIPPED [1] tests/llm/test_core_providers/capabilities.py:166: openai does not support union_streaming (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)\n59 failed, 130 passed, 3 skipped, 1 deselected in 38.15s\n",
+  "calls": {
+   "tests": {
+    "": [
+     "unknown"
+    ]
+   },
+   "sites": {
+    "unknown": {
+     "calls": 188,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.0,
+     "models": {},
+     "diagnoses": {},
+     "errors": {
+      "501": 60
+     },
+     "max_tokens": {},
+     "changes": {}
+    }
+   },
+   "cost": 0.0
+  },
+  "envelope_spent": 0.0,
+  "proxy_log_tail": "3.12/http/server.py\", line 408, in handle_one_request\n    self.raw_requestline = self.rfile.readline(65537)\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/socket.py\", line 720, in readinto\n    return self._sock.recv_into(b)\n           ^^^^^^^^^^^^^^^^^^^^^^^\nConnectionResetError: [Errno 104] Connection reset by peer\n----------------------------------------\n"
+ },
+ "stdout_tail": "",
+ "stderr_tail": ""
+}

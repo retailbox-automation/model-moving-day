@@ -1,6 +1,7 @@
 """Call-site tracer, loaded by Python at start-up when this directory is on PYTHONPATH.
 
-Patches httpx (used by the OpenAI SDK, litellm and most LLM clients) so every request carries two headers:
+Patches httpx and httpx2 (openai 3.x, litellm and most LLM clients send through one of them) so every request
+carries three headers:
 x-mmd-site = "<path relative to MMD_REPO_ROOT>:<line>" of the innermost stack frame that belongs to the target
 repo's own source (not its tests, not site-packages), x-mmd-chain = all such frames (innermost first, up to 8),
 and x-mmd-test = $PYTEST_CURRENT_TEST. The recording proxy
@@ -37,24 +38,27 @@ def _tag(request):
 
 
 def _install():
-    try:
-        import httpx
-    except ImportError:
-        return
-    if getattr(httpx.Client.send, "_mmd", False):
-        return
-    sync_send, async_send = httpx.Client.send, httpx.AsyncClient.send
+    """Patch Client.send / AsyncClient.send of httpx and of httpx2 (the transport of openai 3.x)."""
+    import importlib
+    for name in ("httpx", "httpx2"):
+        try:
+            mod = importlib.import_module(name)
+        except ImportError:
+            continue
+        if getattr(mod.Client.send, "_mmd", False):
+            continue
+        sync_send, async_send = mod.Client.send, mod.AsyncClient.send
 
-    def send(self, request, *a, **kw):
-        _tag(request)
-        return sync_send(self, request, *a, **kw)
+        def send(self, request, *a, _orig=sync_send, **kw):
+            _tag(request)
+            return _orig(self, request, *a, **kw)
 
-    async def asend(self, request, *a, **kw):
-        _tag(request)
-        return await async_send(self, request, *a, **kw)
+        async def asend(self, request, *a, _orig=async_send, **kw):
+            _tag(request)
+            return await _orig(self, request, *a, **kw)
 
-    send._mmd = asend._mmd = True
-    httpx.Client.send, httpx.AsyncClient.send = send, asend
+        send._mmd = asend._mmd = True
+        mod.Client.send, mod.AsyncClient.send = send, asend
 
 
 if _ROOT:

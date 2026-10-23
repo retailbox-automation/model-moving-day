@@ -1,0 +1,826 @@
+{
+ "label": "control-forward",
+ "ts": 1792773044.963,
+ "exit_code": 0,
+ "elapsed_s": 8.757555,
+ "wall_s": 95.154,
+ "sandbox_cost": 0.08835829,
+ "summary": {
+  "runs": [
+   {
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_response_model_none[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_retries.py::test_validation_with_retries[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_int[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_bool[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_str[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_literal[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_union[openai]": {
+     "outcome": "skipped",
+     "message": "openai does not support union_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)"
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_enum[openai]": {
+     "outcome": "skipped",
+     "message": "openai does not support enum_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)"
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_annotated_int[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_union_streaming[openai]": {
+     "outcome": "skipped",
+     "message": "openai does not support union_streaming (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)"
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_basic_response_methods[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_basic_response_methods[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable_from_create[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable_from_create[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_with_completion[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_with_completion[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_partial[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_partial[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_basic_response_methods_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_basic_response_methods_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable_from_create_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable_from_create_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_with_completion_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_with_completion_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_iterable_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_partial_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/slow/test_response.py::test_create_partial_async[gpt-4.1-nano-Mode.RESPONSES_TOOLS_WITH_INBUILT_TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}"
+    },
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_async_validator_model_rejected_before_cache_lookup": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_banned_words_validation_old[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]": {
+     "outcome": "passed",
+     "message": ""
+    }
+   }
+  ],
+  "durations_s": [
+   91.8
+  ],
+  "exit_codes": [
+   1
+  ],
+  "freeze_before": [],
+  "freeze_after": [],
+  "pytest_tail": "               messages=extract_messages(kwargs),\n                create_kwargs=kwargs,\n                failed_attempts=failed_attempts,\n            ) from last_exception\nE           instructor.v2.core.errors.InstructorRetryException: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}\n\ninstructor/v2/core/retry.py:653: InstructorRetryException\n------------------------------ Captured log call -------------------------------\nERROR    instructor.v2.retry:retry.py:527 API call failed on attempt 1: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}\nERROR    instructor.v2.retry:retry.py:639 Max retries exceeded. Total attempts: 1, Last error: Error code: 501 - {'error': {'message': 'model-moving-day proxy does not route /v1/responses'}}\n------------------- generated xml file: /mmd/out/junit-0.xml -------------------\n=========================== short test summary info ============================\nSKIPPED [1] tests/llm/test_core_providers/capabilities.py:166: openai does not support union_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)\nSKIPPED [1] tests/llm/test_core_providers/capabilities.py:166: openai does not support enum_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)\nSKIPPED [1] tests/llm/test_core_providers/capabilities.py:166: openai does not support union_streaming (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)\n20 failed, 169 passed, 3 skipped, 1 deselected in 88.10s (0:01:28)\n",
+  "calls": {
+   "tests": {
+    "": [
+     "unknown"
+    ]
+   },
+   "sites": {
+    "unknown": {
+     "calls": 107,
+     "prompt_tokens": 20006,
+     "completion_tokens": 3077,
+     "reasoning_tokens": 1236,
+     "cost": 0.0087711,
+     "seconds": 55.625,
+     "models": {
+      "nvidia/nemotron-3-super-120b-a12b": 47
+     },
+     "diagnoses": {},
+     "errors": {
+      "501": 60
+     },
+     "max_tokens": {
+      "1000": 4
+     },
+     "changes": {
+      "model:model": 47
+     }
+    }
+   },
+   "cost": 0.0087711
+  },
+  "envelope_spent": 0.0087711,
+  "proxy_log_tail": "[mmd-proxy] listening on 127.0.0.1:8765\n"
+ },
+ "stdout_tail": "",
+ "stderr_tail": ""
+}
