@@ -41,6 +41,7 @@ def test_call_log_summary_per_test_and_site_with_diagnoses():
     a = s["sites"]["pkg/a.py:10"]
     assert (a["calls"], a["prompt_tokens"], a["completion_tokens"], a["reasoning_tokens"]) == (2, 200, 650, 600)
     assert a["diagnoses"] == {"empty_content_length": 1, "leading_whitespace": 1}
+    assert a["finish"] == {"length": 1, "stop": 1}
     assert s["sites"]["unknown"]["errors"] == {"501": 1}
     assert s["cost"] == 0.0015
 

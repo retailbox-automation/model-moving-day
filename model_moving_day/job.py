@@ -67,7 +67,7 @@ def summarize_calls(calls):
             tests[test].append(site)
         s = sites.setdefault(site, {"calls": 0, "prompt_tokens": 0, "completion_tokens": 0, "reasoning_tokens": 0,
                                     "cost": 0.0, "seconds": 0.0, "models": {}, "diagnoses": {}, "errors": {},
-                                    "max_tokens": {}, "changes": {}})
+                                    "max_tokens": {}, "changes": {}, "finish": {}})
         s["calls"] += 1
         u = c.get("usage") or {}
         s["prompt_tokens"] += u.get("prompt_tokens") or 0
@@ -83,6 +83,8 @@ def summarize_calls(calls):
         for d in (_diagnose(c), "leading_whitespace" if c.get("content_lead_ws") else None):
             if d:
                 s["diagnoses"][d] = s["diagnoses"].get(d, 0) + 1
+        if c.get("finish"):
+            s["finish"][c["finish"]] = s["finish"].get(c["finish"], 0) + 1
         if c.get("max_tokens") is not None:
             mt = str(c["max_tokens"])
             s["max_tokens"][mt] = s["max_tokens"].get(mt, 0) + 1
