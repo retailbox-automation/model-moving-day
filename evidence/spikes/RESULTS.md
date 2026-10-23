@@ -76,3 +76,14 @@ Last `x-ratelimit-*` headers seen:
 - `n=1|Lightning`: prompt_tokens 35, completion_tokens 3, choices returned 1, cost $0.000003
 - `n=3|Lightning`: prompt_tokens 35, completion_tokens 9, choices returned 3, cost $0.000004
 
+## Verdicts against PLAN.md
+
+- S1 Nano: reasoning-off forms that pass: ctk_top, ctk_extra
+- S1 Lightning: reasoning-off forms that pass: effort_none, ctk_top, ctk_extra
+- S1 Super: reasoning-off forms that pass: effort_none, ctk_top, ctk_extra
+- S1 Ultra: reasoning-off forms that pass: effort_none, ctk_top, ctk_extra
+- S2a empty Nano reproduced: yes (5/5 empty)
+- S2b fixed: yes (5/5 with write_fact, 0 length)
+- S2c Super: 10/10 facts, bar 9 -> pass
+- S2c Lightning: 5/10 facts, bar 8 -> FAIL
+

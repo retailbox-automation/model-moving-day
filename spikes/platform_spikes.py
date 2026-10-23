@@ -369,8 +369,34 @@ def report():
                 out.append(f"- `{r['label']}`: prompt_tokens {u.get('prompt_tokens')}, completion_tokens "
                            f"{u.get('completion_tokens')}, choices returned {nch}, cost ${r.get('cost', 0):.6f}")
         out.append("")
+    out += verdicts(s1, s2)
     (ROOT / "evidence" / "spikes" / "RESULTS.md").write_text("\n".join(out) + "\n")
     print("\n".join(out))
+
+
+def verdicts(s1, s2):
+    """Pass/fail against the PLAN.md rules that need more than one table cell."""
+    out = ["## Verdicts against PLAN.md", ""]
+    if s1:
+        for m in LADDER:
+            good = [f for f in FORMS if f != "default" and all(
+                r["ok"] and (r.get("reasoning_tokens") or 0) == 0 and r["reasoning_len"] == 0 and r["content"].strip()
+                and r["finish"] == "stop" for r in s1 if r["model"] == m and r["label"].split("|")[1] == f)]
+            out.append(f"- S1 {SHORT[m]}: reasoning-off forms that pass: {', '.join(good) or 'none'}")
+    if s2:
+        def grp(prefix):
+            return [r for r in s2 if r["label"].startswith(prefix) and r["ok"]]
+        a = grp("S2a|Nano")
+        empty = sum(1 for r in a if not r["tool_calls"] and not r["content"].strip())
+        out.append(f"- S2a empty Nano reproduced: {'yes' if empty >= 3 else 'no'} ({empty}/5 empty)")
+        b = grp("S2b|Nano")
+        fixed = sum(1 for r in b if any(tc["function"]["name"] == "write_fact" for tc in r["tool_calls"]))
+        blen = sum(1 for r in b if r["finish"] == "length")
+        out.append(f"- S2b fixed: {'yes' if fixed >= 4 and blen == 0 else 'no'} ({fixed}/5 with write_fact, {blen} length)")
+        for name, bar in (("Super", 9), ("Lightning", 8)):
+            n = sum(len(facts(r)) for r in grp(f"S2c|{name}"))
+            out.append(f"- S2c {name}: {n}/10 facts, bar {bar} -> {'pass' if n >= bar else 'FAIL'}")
+    return out + [""]
 
 
 def fixtures():
