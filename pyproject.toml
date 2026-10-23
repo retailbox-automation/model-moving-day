@@ -8,9 +8,13 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
+# Token Factory Sandboxes client (Nebius); needed only to run target tests in Sandboxes
+sandbox = ["contree-sdk>=0.3.6"]
 
 [tool.setuptools]
 packages = ["model_moving_day"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+norecursedirs = ["tests/fixtures"]
+markers = ["live: calls Token Factory or Sandboxes; skipped without NEBIUS_API_KEY"]
