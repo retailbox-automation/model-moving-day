@@ -55,9 +55,11 @@ def prepare(box, t):
     return r, sb.trailing_json(r.stdout)
 
 
-def run_job(box, image, t, routes, k, cap_usd, ledger, extra_files=None, frozen_hashes=None, timeout_s=1500, note=""):
-    spec = {"repo_dir": "/work/repo", "routes": routes, "k": k, "pytest_args": t.pytest_args, "env": t.env,
-            "cap_usd": cap_usd, "timeout_s": timeout_s, "port": 8765, "frozen_hashes": frozen_hashes or {}}
+def run_job(box, image, t, routes, k, cap_usd, ledger, extra_files=None, frozen_hashes=None, timeout_s=1500, note="",
+            extra_args=(), proxy_env=True):
+    spec = {"repo_dir": "/work/repo", "routes": routes, "k": k, "pytest_args": [*t.pytest_args, *extra_args],
+            "env": t.env, "cap_usd": cap_usd, "timeout_s": timeout_s, "port": 8765, "frozen_hashes": frozen_hashes or {},
+            "proxy_env": proxy_env}
     files = dict(package_files(), **{"/mmd/spec.json": json.dumps(spec).encode()})
     files.update({f"/work/repo/{rel}": src for rel, src in (extra_files or {}).items()})
     env_box = sb.Envelope(ledger, box.tag, cap_usd, f"{t.name} job {note}")

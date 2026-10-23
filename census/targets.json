@@ -1,0 +1,32 @@
+{
+ "instructor": {
+  "github": "567-labs/instructor",
+  "commit": "6cd771c5254a69f6a6cf9cdf357fb2f9523f0b85",
+  "license": "MIT (LICENSE at the pinned commit)",
+  "install": ["pytest<9.0.0,>=8.3.3", "pytest-asyncio>=0.24.0,<2.0.0", "python-dotenv>=1.0.1", "jsonref>=1.1.0,<2.0.0"],
+  "pytest_args": ["tests/llm/test_core_providers", "tests/llm/test_openai", "-k", "openai",
+                  "--ignore=tests/llm/test_openai/test_attr.py", "--ignore=tests/llm/test_openai/test_multimodal.py",
+                  "--deselect=tests/llm/test_openai/test_validators.py::test_patch_completes_successfully",
+                  "--asyncio-mode=auto", "-q", "-rs"],
+  "env": {},
+  "live_args": [],
+  "exclusions": {
+   "tests/llm/test_openai/test_attr.py": "embeddings endpoint; the proxy routes chat completions only",
+   "tests/llm/test_openai/test_multimodal.py": "image and audio input; the ladder is text-only Nemotron",
+   "tests/llm/test_openai/test_validators.py::test_patch_completes_successfully": "OpenAI moderation endpoint"
+  }
+ },
+ "llm": {
+  "github": "simonw/llm",
+  "commit": "aebaca27f9acb6cc56ba4b33ab81e08d6dcb3bc3",
+  "license": "Apache-2.0 (LICENSE at the pinned commit)",
+  "install": ["pytest", "pytest-asyncio", "pytest-recording", "httpx2-pytest>=2", "syrupy", "llm-echo==0.3a3", "numpy", "cogapp"],
+  "pytest_args": ["tests/test_tools.py::test_tool_use_basic", "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+                  "tests/test_tools_streaming.py", "-q", "-rs"],
+  "env": {},
+  "live_args": ["--disable-recording"],
+  "exclusions": {
+   "tests/test_openai_responses.py": "Responses API (/v1/responses); the proxy routes chat completions only"
+  }
+ }
+}

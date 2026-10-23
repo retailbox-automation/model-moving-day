@@ -62,3 +62,17 @@ def test_frozen_hash_check_inside_the_sandbox(tmp_path):
     assert job.check_hashes(tmp_path, hashes) == ["missing tests/gone.py"]
     f.write_text("b")
     assert sorted(job.check_hashes(tmp_path, hashes)) == ["changed tests/test_x.py", "missing tests/gone.py"]
+
+
+def test_test_env_points_sdks_at_the_proxy_and_hides_the_real_key(monkeypatch):
+    monkeypatch.setenv("NEBIUS_API_KEY", "real-key")
+    env = job.build_env({"repo_dir": "/work/repo", "env": {"X": "1"}}, 8765, "/mmd")
+    assert env["OPENAI_BASE_URL"] == "http://127.0.0.1:8765/v1" and env["OPENAI_API_KEY"] == "mmd-proxy"
+    assert "NEBIUS_API_KEY" not in env and env["X"] == "1" and env["MMD_REPO_ROOT"] == "/work/repo"
+    assert env["PYTHONPATH"].split(":")[0] == "/mmd/model_moving_day/tracer"
+
+
+def test_baseline_runs_can_leave_the_sdk_endpoint_alone(monkeypatch):
+    monkeypatch.delenv("OPENAI_BASE_URL", raising=False)
+    env = job.build_env({"repo_dir": "/r", "proxy_env": False}, 8765, "/mmd")
+    assert "OPENAI_BASE_URL" not in env and "OPENAI_API_BASE" not in env and env["OPENAI_API_KEY"] == "mmd-proxy"

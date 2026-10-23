@@ -106,6 +106,18 @@ def check_hashes(repo_dir, hashes):
     return problems
 
 
+def build_env(spec, port, mmd_root):
+    """Environment for the target's tests: SDKs point at the proxy (unless proxy_env is false, for cassette
+    baselines), a dummy OpenAI key, the tracer on PYTHONPATH, and never the real Token Factory key."""
+    env = dict(os.environ, OPENAI_API_KEY="mmd-proxy", MMD_REPO_ROOT=spec["repo_dir"],
+               PYTHONPATH=os.pathsep.join([str(Path(mmd_root) / "model_moving_day" / "tracer"), spec["repo_dir"]]))
+    if spec.get("proxy_env", True):
+        env.update(OPENAI_BASE_URL=f"http://127.0.0.1:{port}/v1", OPENAI_API_BASE=f"http://127.0.0.1:{port}/v1")
+    env.pop("NEBIUS_API_KEY", None)  # the tests never see the real key; only the proxy does
+    env.update(spec.get("env") or {})
+    return env
+
+
 def _wait_port(port, timeout=20):
     import socket
     t0 = time.time()
@@ -134,11 +146,7 @@ def main():
     try:
         if not _wait_port(port):
             raise RuntimeError("proxy did not start: " + (OUT / "proxy.log").read_text()[-500:])
-        env = dict(os.environ, OPENAI_BASE_URL=f"http://127.0.0.1:{port}/v1", OPENAI_API_BASE=f"http://127.0.0.1:{port}/v1",
-                   OPENAI_API_KEY="mmd-proxy", MMD_REPO_ROOT=spec["repo_dir"],
-                   PYTHONPATH=os.pathsep.join([str(Path(mmd_root) / "model_moving_day" / "tracer"), spec["repo_dir"]]))
-        env.pop("NEBIUS_API_KEY", None)  # the tests never see the real key; only the proxy does
-        env.update(spec.get("env") or {})
+        env = build_env(spec, port, mmd_root)
         summary["freeze_before"] = check_hashes(spec["repo_dir"], spec.get("frozen_hashes") or {})
         if summary["freeze_before"]:
             raise RuntimeError("frozen checks differ from the manifest before the run: " + "; ".join(summary["freeze_before"][:5]))
