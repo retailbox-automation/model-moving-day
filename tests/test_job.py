@@ -32,7 +32,7 @@ def test_call_log_summary_per_test_and_site_with_diagnoses():
          "cost": 0.001, "finish": "length", "content_empty": True, "text_in_reasoning": True, "tool_calls": 0, "seconds": 2.0},
         {"site": "pkg/a.py:10", "test": "t1", "mode": "forward", "status": 200, "model": "M",
          "usage": {"prompt_tokens": 100, "completion_tokens": 50}, "cost": 0.0005, "finish": "stop",
-         "content_empty": False, "tool_calls": 1, "seconds": 1.0},
+         "content_empty": False, "content_lead_ws": True, "tool_calls": 1, "seconds": 1.0},
         {"site": "pkg/b.py:3", "test": "t2", "mode": "broken", "status": 200, "cost": 0.0, "content_empty": True},
         {"site": "unknown", "test": "t2", "path": "/v1/embeddings", "status": 501},
     ]
@@ -40,7 +40,7 @@ def test_call_log_summary_per_test_and_site_with_diagnoses():
     assert s["tests"]["t1"] == ["pkg/a.py:10"] and set(s["tests"]["t2"]) == {"pkg/b.py:3", "unknown"}
     a = s["sites"]["pkg/a.py:10"]
     assert (a["calls"], a["prompt_tokens"], a["completion_tokens"], a["reasoning_tokens"]) == (2, 200, 650, 600)
-    assert a["diagnoses"] == {"empty_content_length": 1}
+    assert a["diagnoses"] == {"empty_content_length": 1, "leading_whitespace": 1}
     assert s["sites"]["unknown"]["errors"] == {"501": 1}
     assert s["cost"] == 0.0015
 

@@ -29,7 +29,8 @@ def server(tmp_path, monkeypatch):
     up = FakeUpstream()
     monkeypatch.setattr(tf.urllib.request, "urlopen", up)
     routes = {"default": {"mode": "forward", "model": LIGHT, "reasoning": "off"},
-              "sites": {"app/x.py:10": {"mode": "broken"}, "app/y.py:5": {"mode": "forward", "model": NANO}},
+              "sites": {"app/x.py:10": {"mode": "broken"}, "app/y.py:5": {"mode": "forward", "model": NANO},
+                        "app/as_req.py:1": {"mode": "as_requested"}},
               "spans": {"app/y.py": [[5, 7, "app/y.py:5"]]}}
     ledger = tf.Ledger(tmp_path / "led.jsonl", caps={"total": 0.05, "c1": 0.05})
     srv = proxy.make_server(0, routes, tmp_path / "calls.jsonl", tf.Client("c1", ledger=ledger, key="k", log=lambda m: None))
@@ -64,7 +65,7 @@ def test_default_route_normalizes_and_forwards(server):
     rec = calls(tmp)[0]
     assert rec["site"] == "app/z.py:1" and rec["test"] == "tests/test_a.py::test_a" and rec["model"] == LIGHT
     assert rec["requested_model"] == "gpt-4.1-mini" and {c["key"] for c in rec["changes"]} >= {"seed", "model"}
-    assert rec["usage"]["prompt_tokens"] == 10 and rec["cost"] > 0
+    assert rec["usage"]["prompt_tokens"] == 10 and rec["cost"] > 0 and rec["content_lead_ws"] is False
 
 
 def test_chain_header_is_resolved_to_an_ast_site_before_routing(server):
@@ -75,6 +76,19 @@ def test_chain_header_is_resolved_to_an_ast_site_before_routing(server):
     REAL_URLOPEN(req, timeout=10).read()
     assert up.bodies[-1]["model"] == NANO  # app/y.py:6 lies inside the span of site app/y.py:5
     assert calls(tmp)[-1]["site"] == "app/y.py:5" and calls(tmp)[-1]["chain"] == ["lib/funnel.py:20", "app/y.py:6"]
+
+
+def test_as_requested_mode_serves_the_model_the_patched_app_asks_for(server):
+    base, up, tmp, _ = server
+    req = urllib.request.Request(base + "/v1/chat/completions", data=json.dumps({"model": NANO, "messages": []}).encode(),
+                                 headers={"Content-Type": "application/json", "x-mmd-site": "app/as_req.py:1"}, method="POST")
+    REAL_URLOPEN(req, timeout=10).read()
+    assert up.bodies[-1]["model"] == NANO and calls(tmp)[-1]["mode"] == "as_requested"
+    req = urllib.request.Request(base + "/v1/chat/completions", data=json.dumps({"model": "gpt-4.1-mini", "messages": []}).encode(),
+                                 headers={"Content-Type": "application/json", "x-mmd-site": "app/as_req.py:1"}, method="POST")
+    with pytest.raises(urllib.error.HTTPError) as e:
+        REAL_URLOPEN(req, timeout=10)
+    assert e.value.code == 400 and "not a Token Factory model" in calls(tmp)[-1]["error"]
 
 
 def test_site_route_overrides_the_model(server):

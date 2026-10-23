@@ -5,6 +5,8 @@ the tracer headers, picks a route (per call site, else the default), normalizes 
 rung, sends it through tf_client (spend reserved in a ledger first) and logs one JSON line per call. Routes:
   forward  - serve with the route's model (and reasoning switch / max_tokens floor)
   broken   - answer 200 with empty content and no tool calls, without calling any model (must-differ control)
+  as_requested - serve the model the request names (the patched app already asks for a Nemotron ID); the proxy
+             only logs and enforces the spend cap
 Streaming requests are served from a non-streaming upstream call and re-emitted as server-sent events.
 
     python -m model_moving_day.proxy --port 8765 --routes routes.json --log calls.jsonl \
@@ -86,7 +88,11 @@ class _Handler(BaseHTTPRequestHandler):
             raw = _broken(body)
             rec.update(status=200, model=None, cost=0.0, content_empty=True, seconds=round(time.time() - t0, 3))
         else:
-            model = route["model"]
+            model = body.get("model") if rec["mode"] == "as_requested" else route["model"]
+            if model not in tf.PRICES:
+                rec.update(status=400, error=f"{model!r} is not a Token Factory model known to tf_client")
+                srv.log(rec)
+                return self._send(400, {"error": {"message": rec["error"]}})
             out, changes = nz.normalize(body, model, route.get("reasoning", "keep"), route.get("min_max_tokens"))
             out.pop("stream", None), out.pop("stream_options", None)
             msgs = out.pop("messages")
@@ -104,6 +110,7 @@ class _Handler(BaseHTTPRequestHandler):
             raw = reply.raw
             rec.update(status=200, seconds=reply.seconds, usage=reply.usage, cost=reply.cost, finish=reply.finish_reason,
                        content_empty=not reply.content, text_in_reasoning=reply.from_reasoning,
+                       content_lead_ws=bool(reply.content) and reply.content[:1].isspace(),
                        reasoning_tokens=reply.reasoning_tokens, tool_calls=len(reply.tool_calls),
                        max_tokens=out.get("max_tokens"))
         srv.log(rec)

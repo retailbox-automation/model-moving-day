@@ -80,9 +80,9 @@ def summarize_calls(calls):
         if c.get("status") != 200:
             k = str(c.get("status"))
             s["errors"][k] = s["errors"].get(k, 0) + 1
-        d = _diagnose(c)
-        if d:
-            s["diagnoses"][d] = s["diagnoses"].get(d, 0) + 1
+        for d in (_diagnose(c), "leading_whitespace" if c.get("content_lead_ws") else None):
+            if d:
+                s["diagnoses"][d] = s["diagnoses"].get(d, 0) + 1
         if c.get("max_tokens") is not None:
             mt = str(c["max_tokens"])
             s["max_tokens"][mt] = s["max_tokens"].get(mt, 0) + 1
