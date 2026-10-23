@@ -29,7 +29,8 @@ def server(tmp_path, monkeypatch):
     up = FakeUpstream()
     monkeypatch.setattr(tf.urllib.request, "urlopen", up)
     routes = {"default": {"mode": "forward", "model": LIGHT, "reasoning": "off"},
-              "sites": {"app/x.py:10": {"mode": "broken"}, "app/y.py:5": {"mode": "forward", "model": NANO}}}
+              "sites": {"app/x.py:10": {"mode": "broken"}, "app/y.py:5": {"mode": "forward", "model": NANO}},
+              "spans": {"app/y.py": [[5, 7, "app/y.py:5"]]}}
     ledger = tf.Ledger(tmp_path / "led.jsonl", caps={"total": 0.05, "c1": 0.05})
     srv = proxy.make_server(0, routes, tmp_path / "calls.jsonl", tf.Client("c1", ledger=ledger, key="k", log=lambda m: None))
     t = threading.Thread(target=srv.serve_forever, daemon=True)
@@ -64,6 +65,16 @@ def test_default_route_normalizes_and_forwards(server):
     assert rec["site"] == "app/z.py:1" and rec["test"] == "tests/test_a.py::test_a" and rec["model"] == LIGHT
     assert rec["requested_model"] == "gpt-4.1-mini" and {c["key"] for c in rec["changes"]} >= {"seed", "model"}
     assert rec["usage"]["prompt_tokens"] == 10 and rec["cost"] > 0
+
+
+def test_chain_header_is_resolved_to_an_ast_site_before_routing(server):
+    base, up, tmp, _ = server
+    post_chain = {"x-mmd-site": "lib/funnel.py:20", "x-mmd-chain": "lib/funnel.py:20|app/y.py:6"}
+    req = urllib.request.Request(base + "/v1/chat/completions", data=json.dumps({"model": "m", "messages": []}).encode(),
+                                 headers={"Content-Type": "application/json", **post_chain}, method="POST")
+    REAL_URLOPEN(req, timeout=10).read()
+    assert up.bodies[-1]["model"] == NANO  # app/y.py:6 lies inside the span of site app/y.py:5
+    assert calls(tmp)[-1]["site"] == "app/y.py:5" and calls(tmp)[-1]["chain"] == ["lib/funnel.py:20", "app/y.py:6"]
 
 
 def test_site_route_overrides_the_model(server):
@@ -135,3 +146,4 @@ def test_tracer_tags_requests_with_the_innermost_repo_frame(tmp_path):
     assert out.returncode == 0, out.stderr
     seen = json.loads(out.stdout)
     assert seen["x-mmd-site"] == "pkg/llm.py:4" and seen["x-mmd-test"] == "tests/t.py::t (call)"
+    assert seen["x-mmd-chain"] == "pkg/llm.py:4"  # repo frames only, innermost first; the test file is excluded

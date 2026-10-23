@@ -14,6 +14,7 @@ import argparse, json, threading, time, uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
+from model_moving_day import find
 from model_moving_day import normalize as nz
 from model_moving_day import tf_client as tf
 
@@ -69,9 +70,10 @@ class _Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         srv, t0 = self.server, time.time()
         body = json.loads(self.rfile.read(int(self.headers.get("Content-Length") or 0)) or b"{}")
-        site = self.headers.get("x-mmd-site") or "unknown"
+        chain = [c for c in (self.headers.get("x-mmd-chain") or "").split("|") if c]
+        site = find.resolve_site(chain, srv.routes.get("spans") or {}) if chain else (self.headers.get("x-mmd-site") or "unknown")
         test = (self.headers.get("x-mmd-test") or "").replace(" (call)", "").replace(" (setup)", "").replace(" (teardown)", "")
-        rec = {"ts": round(t0, 3), "path": self.path, "site": site, "test": test, "requested_model": body.get("model"),
+        rec = {"ts": round(t0, 3), "path": self.path, "site": site, "chain": chain, "test": test, "requested_model": body.get("model"),
                "stream": bool(body.get("stream"))}
         path = self.path.split("?")[0]
         if path not in CHAT_PATHS:

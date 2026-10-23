@@ -2,7 +2,8 @@
 
 Patches httpx (used by the OpenAI SDK, litellm and most LLM clients) so every request carries two headers:
 x-mmd-site = "<path relative to MMD_REPO_ROOT>:<line>" of the innermost stack frame that belongs to the target
-repo's own source (not its tests, not site-packages), and x-mmd-test = $PYTEST_CURRENT_TEST. The recording proxy
+repo's own source (not its tests, not site-packages), x-mmd-chain = all such frames (innermost first, up to 8),
+and x-mmd-test = $PYTEST_CURRENT_TEST. The recording proxy
 logs both, which links each of the repo's tests to the call sites it really reaches.
 """
 import os, sys
@@ -11,22 +12,25 @@ _ROOT = os.path.realpath(os.environ.get("MMD_REPO_ROOT", "")) + os.sep if os.env
 _SKIP = set((os.environ.get("MMD_SKIP_DIRS") or "tests,test,.venv,venv").split(","))
 
 
-def _site():
-    f = sys._getframe(2)
-    while f is not None:
+def _chain(limit=8):
+    """Repo source frames (not tests, not site-packages), innermost first, as "path:line"."""
+    out, f = [], sys._getframe(2)
+    while f is not None and len(out) < limit:
         fn = os.path.realpath(f.f_code.co_filename)
         if _ROOT and fn.startswith(_ROOT) and "site-packages" not in fn:
             rel = fn[len(_ROOT):]
             base = os.path.basename(rel)
             if rel.split(os.sep)[0] not in _SKIP and not base.startswith("test_") and base != "conftest.py":
-                return f"{rel.replace(os.sep, '/')}:{f.f_lineno}"
+                out.append(f"{rel.replace(os.sep, '/')}:{f.f_lineno}")
         f = f.f_back
-    return "unknown"
+    return out
 
 
 def _tag(request):
     try:
-        request.headers["x-mmd-site"] = _site()
+        chain = _chain()
+        request.headers["x-mmd-site"] = chain[0] if chain else "unknown"
+        request.headers["x-mmd-chain"] = "|".join(chain)
         request.headers["x-mmd-test"] = os.environ.get("PYTEST_CURRENT_TEST", "")
     except Exception as e:  # never break the app under test; say why on stderr
         print(f"[mmd-tracer] could not tag request: {type(e).__name__}: {e}", file=sys.stderr)

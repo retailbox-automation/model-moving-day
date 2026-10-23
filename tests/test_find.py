@@ -25,7 +25,7 @@ def test_call_site_details():
     assert (s.sdk, s.api, s.kind, s.is_async) == ("openai", "chat.completions.create", "chat", False)
     assert s.model_expr == "DEFAULT_MODEL" and s.model_literal == "gpt-4.1-mini"  # resolved through a module constant
     assert {"seed", "temperature"} <= set(s.kwargs)
-    assert s.id == f"app/openai_app.py:{s.line}"
+    assert s.id == f"app/openai_app.py:{s.line}" and s.end_line == s.line + 1  # the call spans two lines
 
     e = got[("app/openai_app.py", "Extractor.extract")]
     assert e.is_async and e.model_expr == "self.model" and e.model_literal is None
@@ -53,3 +53,13 @@ def test_unparsable_file_is_reported_not_skipped(tmp_path):
     res = find.scan(tmp_path)
     assert [s.file for s in res.sites] == ["ok.py"]
     assert [e[0] for e in res.errors] == ["bad.py"]
+
+
+def test_resolve_chain_prefers_the_innermost_frame_inside_a_known_call():
+    spans = find.site_spans(find.find_call_sites(REPO))
+    line = sites()[("app/openai_app.py", "summarize")].line
+    # innermost frame is a dynamic funnel (no AST site), the next one is inside the summarize() call expression
+    chain = ["lib/funnel.py:20", f"app/openai_app.py:{line + 1}", "app/main.py:3"]
+    assert find.resolve_site(chain, spans) == f"app/openai_app.py:{line}"
+    assert find.resolve_site(["lib/funnel.py:20", "app/main.py:3"], spans) == "lib/funnel.py:20"
+    assert find.resolve_site([], spans) == "unknown"

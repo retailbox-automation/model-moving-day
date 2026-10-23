@@ -32,6 +32,7 @@ ENV_RE = re.compile(r"MODEL|BASE_URL|API_BASE|ENDPOINT|LLM", re.I)
 class CallSite:
     file: str
     line: int
+    end_line: int
     col: int
     func: str
     sdk: str
@@ -125,7 +126,7 @@ class _Visitor(ast.NodeVisitor):
                 lit = m.value
             elif isinstance(m, ast.Name) and m.id in self.constants:
                 lit = self.constants[m.id]
-            self.sites.append(CallSite(self.rel, node.lineno, node.col_offset, ".".join(self.stack) or "<module>",
+            self.sites.append(CallSite(self.rel, node.lineno, node.end_lineno or node.lineno, node.col_offset, ".".join(self.stack) or "<module>",
                                        hit[0], hit[1], hit[2], id(node) in self.awaited or hit[1].startswith("a") and hit[0] == "litellm",
                                        expr, lit, sorted(kw)))
         self.generic_visit(node)
@@ -192,3 +193,25 @@ def find_model_literals(root):
 
 def find_env_vars(root):
     return scan(root).env_vars
+
+
+def site_spans(sites):
+    """{file: [[start_line, end_line, site_id], ...]} for resolving traced frames to AST call sites."""
+    spans = {}
+    for s in sites:
+        spans.setdefault(s.file, []).append([s.line, s.end_line, s.id])
+    return spans
+
+
+def resolve_site(chain, spans):
+    """Map a traced chain of repo frames (innermost first, "file:line") to a call-site id.
+
+    The innermost frame that lies inside a known call expression wins (a wrapper deep in a library funnel does not
+    hide the app-level call that went through it); with no such frame, the innermost frame itself is the site.
+    """
+    for frame in chain:
+        file, _, line = frame.rpartition(":")
+        for start, end, sid in spans.get(file, []):
+            if line.isdigit() and start <= int(line) <= end:
+                return sid
+    return chain[0] if chain else "unknown"
