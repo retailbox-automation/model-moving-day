@@ -1,0 +1,110 @@
+{
+ "label": "control-forward",
+ "ts": 1792773296.503,
+ "exit_code": 0,
+ "elapsed_s": 3.016668,
+ "wall_s": 16.13,
+ "sandbox_cost": 0.0306668,
+ "summary": {
+  "runs": [
+   {
+    "tests/test_tools.py::test_tool_use_basic": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '\\nThe produc...*2,869,461**.' == 'The result o...,869,461 \\\\).'\n  \n  - The result of \\( 1231 \\times 2331 \\) is \\( 2,869,461 \\).\n  + \n  + The product of 1231 and 2331 is **2,869,461**."
+    },
+    "tests/test_tools.py::test_tool_use_chain_of_two_calls": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '\\nYES' == 'YES'\n  \n  + \n    YES"
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_a": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '\\n\\nThe curr... is **0.36**.' == 'The current ...ed-version**.'\n  \n  + \n  + \n  - The current version of *llm* is **0.fixed-version**.\n  ?                        ^   ^        ^^^^^^^^^^^^^\n  + The current version of `llm` is **0.36**.\n  ?                        ^   ^        ^^"
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_b": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '\\nThe curren... is **0.36**.' == 'The current ...ed-version**.'\n  \n  + \n  - The current version of *llm* is **0.fixed-version**.\n  ?                        ^   ^        ^^^^^^^^^^^^^\n  + The current version of `llm` is **0.36**.\n  ?                        ^   ^        ^^"
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_c": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '\\n\\nThe curr... is **0.36**.' == 'The installe...ixed-version.'\n  \n  - The installed version of LLM on this system is 0.fixed-version.\n  + \n  + \n  + The current version of `llm` is **0.36**."
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_d": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '\\nThe curren... is **0.36**.' == 'The current ...ed-version**.'\n  \n  + \n  - The current version of *llm* is **0.fixed-version**.\n  ?                        ^   ^        ^^^^^^^^^^^^^\n  + The current version of `llm` is **0.36**.\n  ?                        ^   ^        ^^"
+    }
+   }
+  ],
+  "durations_s": [
+   14.0
+  ],
+  "exit_codes": [
+   1
+  ],
+  "freeze_before": [],
+  "freeze_after": [],
+  "pytest_tail": "e\")\n    def test_tools_streaming_variant_c():\n        model = llm.get_model(\"gpt-4.1-mini\")\n        chain = model.chain(\n            \"What is the current llm version?\", tools=[llm_version], key=API_KEY\n        )\n>       assert (\n            \"\".join(chain)\n            == \"The installed version of LLM on this system is 0.fixed-version.\"\n        )\nE       AssertionError: assert '\\n\\nThe curr... is **0.36**.' == 'The installe...ixed-version.'\nE         \nE         - The installed version of LLM on this system is 0.fixed-version.\nE         + \nE         + \nE         + The current version of `llm` is **0.36**.\n\ntests/test_tools_streaming.py:38: AssertionError\n________________________ test_tools_streaming_variant_d ________________________\n\n    @pytest.mark.vcr(record_mode=\"none\")\n    def test_tools_streaming_variant_d():\n        model = llm.get_model(\"gpt-4.1-mini\")\n        chain = model.chain(\n            \"What is the current llm version?\", tools=[llm_version], key=API_KEY\n        )\n>       assert \"\".join(chain) == \"The current version of *llm* is **0.fixed-version**.\"\nE       AssertionError: assert '\\nThe curren... is **0.36**.' == 'The current ...ed-version**.'\nE         \nE         + \nE         - The current version of *llm* is **0.fixed-version**.\nE         ?                        ^   ^        ^^^^^^^^^^^^^\nE         + The current version of `llm` is **0.36**.\nE         ?                        ^   ^        ^^\n\ntests/test_tools_streaming.py:53: AssertionError\n6 failed in 11.94s\n",
+  "calls": {
+   "tests": {
+    "tests/test_tools.py::test_tool_use_basic": [
+     "llm/default_plugins/openai_models.py:1441"
+    ],
+    "tests/test_tools.py::test_tool_use_chain_of_two_calls": [
+     "llm/default_plugins/openai_models.py:1494"
+    ],
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_a": [
+     "llm/default_plugins/openai_models.py:1441"
+    ],
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_b": [
+     "llm/default_plugins/openai_models.py:1441"
+    ],
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_c": [
+     "llm/default_plugins/openai_models.py:1441"
+    ],
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_d": [
+     "llm/default_plugins/openai_models.py:1441"
+    ]
+   },
+   "sites": {
+    "llm/default_plugins/openai_models.py:1441": {
+     "calls": 10,
+     "prompt_tokens": 3619,
+     "completion_tokens": 341,
+     "reasoning_tokens": 132,
+     "cost": 0.0013926,
+     "seconds": 7.764,
+     "models": {
+      "nvidia/nemotron-3-super-120b-a12b": 10
+     },
+     "diagnoses": {},
+     "errors": {},
+     "max_tokens": {},
+     "changes": {
+      "model:model": 10
+     }
+    },
+    "llm/default_plugins/openai_models.py:1494": {
+     "calls": 3,
+     "prompt_tokens": 1477,
+     "completion_tokens": 150,
+     "reasoning_tokens": 82,
+     "cost": 0.0005781,
+     "seconds": 2.787,
+     "models": {
+      "nvidia/nemotron-3-super-120b-a12b": 3
+     },
+     "diagnoses": {},
+     "errors": {},
+     "max_tokens": {},
+     "changes": {
+      "model:model": 3
+     }
+    }
+   },
+   "cost": 0.0019707
+  },
+  "envelope_spent": 0.0019707,
+  "proxy_log_tail": "[mmd-proxy] listening on 127.0.0.1:8765\n"
+ },
+ "stdout_tail": "",
+ "stderr_tail": ""
+}

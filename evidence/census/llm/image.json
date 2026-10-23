@@ -1,0 +1,16 @@
+{
+ "target": "llm",
+ "commit": "aebaca27f9acb6cc56ba4b33ab81e08d6dcb3bc3",
+ "image_uuid": "aacc4e57-1f66-4324-9835-c2bd07721c44",
+ "tag": "mmd-llm:aebaca27f9ac",
+ "exit_code": 0,
+ "elapsed_s": 3.088706,
+ "wall_s": 9.595,
+ "sandbox_cost": 0.03175,
+ "info": {
+  "prepared": "llm",
+  "packages": 44
+ },
+ "stdout_tail": "<<<MMD-JSON>>>{\"prepared\": \"llm\", \"packages\": 44}\n",
+ "stderr_tail": "WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.\n"
+}

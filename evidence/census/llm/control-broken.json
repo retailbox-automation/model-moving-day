@@ -1,0 +1,102 @@
+{
+ "label": "control-broken",
+ "ts": 1792773301.933,
+ "exit_code": 0,
+ "elapsed_s": 2.850775,
+ "wall_s": 5.308,
+ "sandbox_cost": 0.028999550000000002,
+ "summary": {
+  "runs": [
+   {
+    "tests/test_tools.py::test_tool_use_basic": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '' == 'The result o...,869,461 \\\\).'\n  \n  - The result of \\( 1231 \\times 2331 \\) is \\( 2,869,461 \\)."
+    },
+    "tests/test_tools.py::test_tool_use_chain_of_two_calls": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '' == 'YES'\n  \n  - YES"
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_a": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '' == 'The current ...ed-version**.'\n  \n  - The current version of *llm* is **0.fixed-version**."
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_b": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '' == 'The current ...ed-version**.'\n  \n  - The current version of *llm* is **0.fixed-version**."
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_c": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '' == 'The installe...ixed-version.'\n  \n  - The installed version of LLM on this system is 0.fixed-version."
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_d": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '' == 'The current ...ed-version**.'\n  \n  - The current version of *llm* is **0.fixed-version**."
+    }
+   }
+  ],
+  "durations_s": [
+   3.3
+  ],
+  "exit_codes": [
+   1
+  ],
+  "freeze_before": [],
+  "freeze_after": [],
+  "pytest_tail": "*.\"\nE       AssertionError: assert '' == 'The current ...ed-version**.'\nE         \nE         - The current version of *llm* is **0.fixed-version**.\n\ntests/test_tools_streaming.py:28: AssertionError\n________________________ test_tools_streaming_variant_c ________________________\n\n    @pytest.mark.vcr(record_mode=\"none\")\n    def test_tools_streaming_variant_c():\n        model = llm.get_model(\"gpt-4.1-mini\")\n        chain = model.chain(\n            \"What is the current llm version?\", tools=[llm_version], key=API_KEY\n        )\n>       assert (\n            \"\".join(chain)\n            == \"The installed version of LLM on this system is 0.fixed-version.\"\n        )\nE       AssertionError: assert '' == 'The installe...ixed-version.'\nE         \nE         - The installed version of LLM on this system is 0.fixed-version.\n\ntests/test_tools_streaming.py:38: AssertionError\n________________________ test_tools_streaming_variant_d ________________________\n\n    @pytest.mark.vcr(record_mode=\"none\")\n    def test_tools_streaming_variant_d():\n        model = llm.get_model(\"gpt-4.1-mini\")\n        chain = model.chain(\n            \"What is the current llm version?\", tools=[llm_version], key=API_KEY\n        )\n>       assert \"\".join(chain) == \"The current version of *llm* is **0.fixed-version**.\"\nE       AssertionError: assert '' == 'The current ...ed-version**.'\nE         \nE         - The current version of *llm* is **0.fixed-version**.\n\ntests/test_tools_streaming.py:53: AssertionError\n6 failed in 1.25s\n",
+  "calls": {
+   "tests": {
+    "tests/test_tools.py::test_tool_use_basic": [
+     "llm/default_plugins/openai_models.py:1441"
+    ],
+    "tests/test_tools.py::test_tool_use_chain_of_two_calls": [
+     "llm/default_plugins/openai_models.py:1494"
+    ],
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_a": [
+     "llm/default_plugins/openai_models.py:1441"
+    ],
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_b": [
+     "llm/default_plugins/openai_models.py:1441"
+    ],
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_c": [
+     "llm/default_plugins/openai_models.py:1441"
+    ],
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_d": [
+     "llm/default_plugins/openai_models.py:1441"
+    ]
+   },
+   "sites": {
+    "llm/default_plugins/openai_models.py:1441": {
+     "calls": 5,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.0,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "max_tokens": {},
+     "changes": {}
+    },
+    "llm/default_plugins/openai_models.py:1494": {
+     "calls": 1,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.0,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "max_tokens": {},
+     "changes": {}
+    }
+   },
+   "cost": 0.0
+  },
+  "envelope_spent": 0.0,
+  "proxy_log_tail": "[mmd-proxy] listening on 127.0.0.1:8765\n"
+ },
+ "stdout_tail": "",
+ "stderr_tail": ""
+}

@@ -1,0 +1,56 @@
+{
+ "label": "control-baseline",
+ "ts": 1792773280.254,
+ "exit_code": 0,
+ "elapsed_s": 3.018482,
+ "wall_s": 5.845,
+ "sandbox_cost": 0.030687540000000003,
+ "summary": {
+  "runs": [
+   {
+    "tests/test_tools.py::test_tool_use_basic": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/test_tools.py::test_tool_use_chain_of_two_calls": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_a": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_b": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_c": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_d": {
+     "outcome": "passed",
+     "message": ""
+    }
+   }
+  ],
+  "durations_s": [
+   3.5
+  ],
+  "exit_codes": [
+   0
+  ],
+  "freeze_before": [],
+  "freeze_after": [],
+  "pytest_tail": "......                                                                   [100%]\n6 passed in 1.44s\n",
+  "calls": {
+   "tests": {},
+   "sites": {},
+   "cost": 0.0
+  },
+  "envelope_spent": 0.0,
+  "proxy_log_tail": "[mmd-proxy] listening on 127.0.0.1:8765\n"
+ },
+ "stdout_tail": "",
+ "stderr_tail": ""
+}
