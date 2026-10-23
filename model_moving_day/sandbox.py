@@ -73,13 +73,14 @@ class Sandbox:
         with self._lock, open(self.log_path, "a") as f:
             f.write(json.dumps(rec) + "\n")
 
-    def run(self, image, shell, env=None, files=None, timeout=900, tag=None, disposable=True, truncate=1 << 20):
+    def run(self, image, shell, env=None, files=None, timeout=900, tag=None, disposable=True, truncate=1 << 20,
+            reserve=RUN_RESERVE):
         self._count_and_claim()
         host = f"mmd-{uuid.uuid4().hex[:12]}"
         rec = {"ts": round(time.time(), 3), "image": image, "command": shell, "env_keys": sorted(env or {}),
-               "files": sorted(files or {}), "hostname": host}
+               "files": sorted(files or {}), "hostname": host, "reserved": reserve}
         with self._slots:
-            self.ledger.reserve(self.tag, RUN_RESERVE, f"sandbox run {host}")
+            self.ledger.reserve(self.tag, reserve, f"sandbox run {host}")
             t0 = time.time()
             try:
                 img = self.contree.images.use(image)
@@ -87,15 +88,15 @@ class Sandbox:
                                disposable=disposable, truncate_output_at=truncate).wait()
                 res = done.result
             except Exception as e:
-                rec.update(error=f"{type(e).__name__}: {e}"[:500], wall_s=round(time.time() - t0, 3),
+                rec.update(error=f"{type(e).__name__}: {e}"[:500], wall_s=round(time.time() - t0, 3), end_ts=round(time.time(), 3),
                            operation=self._ops.get(host), cost=None)
                 self._log(rec)  # the reservation is kept: we do not know what the run cost
                 raise
         cost = float(res.cost or 0.0)
-        self.ledger.settle(self.tag, cost - RUN_RESERVE, f"sandbox run {host} reported cost")
+        self.ledger.settle(self.tag, cost - reserve, f"sandbox run {host} reported cost")
         out = RunResult(res.exit_code, _text(res.stdout), _text(res.stderr), res.elapsed_time.total_seconds(),
                         round(time.time() - t0, 3), cost, str(done.uuid) if done.uuid else "")
-        rec.update(operation=self._ops.get(host), exit_code=out.exit_code, elapsed_s=out.elapsed_s, wall_s=out.wall_s,
+        rec.update(end_ts=round(time.time(), 3), operation=self._ops.get(host), exit_code=out.exit_code, elapsed_s=out.elapsed_s, wall_s=out.wall_s,
                    cost=cost, result_image=out.image_uuid)
         self._log(rec)
         return out

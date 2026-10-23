@@ -67,6 +67,16 @@ def test_each_run_reserves_then_settles_to_the_reported_cost_and_is_logged(tmp_p
     assert "s3cr3t" not in (tmp_path / "runs.jsonl").read_text()
 
 
+def test_a_run_can_reserve_more_than_the_default(tmp_path):
+    b, led = box(tmp_path, FakeResult(cost=0.64, elapsed=60.0))
+    seen = []
+    orig = led.reserve
+    led.reserve = lambda tag, usd, note: (seen.append(usd), orig(tag, usd, note))
+    b.run("python:3.12-slim", "sleep 60", reserve=0.80)
+    assert seen == [0.80] and led.spent()[1]["c1"] == pytest.approx(0.64)
+    assert json.loads((tmp_path / "runs.jsonl").read_text())["reserved"] == 0.80
+
+
 def test_failed_run_keeps_the_full_reservation(tmp_path):
     class Boom(FakeContree):
         def __init__(self):
