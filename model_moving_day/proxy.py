@@ -12,7 +12,7 @@ Streaming requests are served from a non-streaming upstream call and re-emitted 
     python -m model_moving_day.proxy --port 8765 --routes routes.json --log calls.jsonl \
         --ledger ledger.jsonl --cap 0.50 --tag c1
 """
-import argparse, json, threading, time, uuid
+import argparse, json, threading, time, urllib.request, uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -66,7 +66,19 @@ class _Handler(BaseHTTPRequestHandler):
         self.wfile.write(data)
 
     def do_GET(self):
-        self.server.log({"path": self.path, "method": "GET", "status": 501})
+        path = self.path.split("?")[0]
+        if path in ("/v1/models", "/models"):  # free listing, used by the patched app's deprecation check
+            req = urllib.request.Request(f"{tf.API}/models", headers={"Authorization": f"Bearer {self.server.client.key}"})
+            try:
+                with urllib.request.urlopen(req, timeout=30) as r:
+                    data = r.read()
+                self.server.log({"ts": round(time.time(), 3), "path": path, "method": "GET", "status": 200})
+                return self._send(200, data.decode())
+            except Exception as e:
+                self.server.log({"ts": round(time.time(), 3), "path": path, "method": "GET", "status": 502,
+                                 "error": f"{type(e).__name__}: {e}"[:300]})
+                return self._send(502, {"error": {"message": "listing models failed"}})
+        self.server.log({"ts": round(time.time(), 3), "path": self.path, "method": "GET", "status": 501})
         self._send(501, {"error": {"message": f"model-moving-day proxy does not serve GET {self.path}"}})
 
     def do_POST(self):

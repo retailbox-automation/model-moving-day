@@ -123,6 +123,15 @@ def test_budget_exhaustion_is_returned_as_an_error_and_logged(server, tmp_path):
     assert e.value.code == 402 and calls(tmp)[-1]["error"].startswith("BudgetExceeded")
 
 
+def test_models_listing_is_passed_through_for_the_deprecation_check(server, monkeypatch):
+    import io
+    base, up, tmp, _ = server
+    monkeypatch.setattr(tf.urllib.request, "urlopen", lambda req, timeout=None: io.BytesIO(b'{"data": [{"id": "a"}]}'))
+    with REAL_URLOPEN(base + "/v1/models", timeout=10) as r:
+        assert json.loads(r.read())["data"] == [{"id": "a"}]
+    assert calls(tmp)[-1] == {**calls(tmp)[-1], "method": "GET", "path": "/v1/models", "status": 200}
+
+
 def test_unsupported_endpoint_is_logged(server):
     base, up, tmp, _ = server
     with pytest.raises(urllib.error.HTTPError) as e:
