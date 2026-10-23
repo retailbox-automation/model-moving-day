@@ -1,0 +1,1 @@
+{"_dryrun": {"github": "example/app", "commit": "0000000000000000000000000000000000000000", "install": [], "pytest_args": [], "node_args": ["-q"], "license": "MIT"}}

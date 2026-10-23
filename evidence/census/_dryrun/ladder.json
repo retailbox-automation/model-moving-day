@@ -1,0 +1,554 @@
+{
+ "target": "_dryrun",
+ "commit": "0000000000000000000000000000000000000000",
+ "k": 3,
+ "margin": 0.2,
+ "baseline": "assumed 1.0: upstream CI runs these tests live",
+ "rungs": [
+  "Nano",
+  "Lightning",
+  "Super",
+  "Ultra"
+ ],
+ "sites": {
+  "app/extract.py:40": {
+   "cells": [
+    {
+     "rung": "Nano",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "params": {},
+     "k": 3,
+     "valid_runs": 3,
+     "passed_runs": 0,
+     "infra_errors": 0,
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.5615
+     ],
+     "fail_rate_upper_rule_of_three": null,
+     "passes": false,
+     "calls": 6,
+     "tokens_per_call": [
+      750.0,
+      150.0
+     ],
+     "reasoning_tokens": 600,
+     "usd_per_1000_calls": 0.081,
+     "model_cost": 0.0,
+     "diagnoses": {
+      "empty_content_length": 4
+     },
+     "finish": {
+      "stop": 6
+     },
+     "changes": {
+      "dropped:seed": 6
+     },
+     "first_failure": "tests/test_extract.py::test_names: AssertionError: scripted",
+     "per_run": [
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_extract.py::test_names": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_extract.py::test_names": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_extract.py::test_names": "failed"
+       }
+      }
+     ]
+    },
+    {
+     "rung": "Nano",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "params": {
+      "reasoning": "off"
+     },
+     "k": 3,
+     "valid_runs": 3,
+     "passed_runs": 3,
+     "infra_errors": 0,
+     "rate": 1.0,
+     "wilson95": [
+      0.4385,
+      1.0
+     ],
+     "fail_rate_upper_rule_of_three": 1.0,
+     "passes": true,
+     "calls": 6,
+     "tokens_per_call": [
+      750.0,
+      150.0
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": 0.081,
+     "model_cost": 0.0,
+     "diagnoses": {},
+     "finish": {
+      "stop": 6
+     },
+     "changes": {
+      "dropped:seed": 6
+     },
+     "first_failure": "",
+     "per_run": [
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_extract.py::test_names": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_extract.py::test_names": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_extract.py::test_names": "passed"
+       }
+      }
+     ],
+     "fix": {
+      "kind": "reasoning_off",
+      "why": "diagnoses {'empty_content_length': 4} at Nano",
+      "by": "nvidia/nemotron-3-super-120b-a12b"
+     }
+    }
+   ],
+   "chosen": "Nano",
+   "fix": {
+    "kind": "reasoning_off",
+    "why": "diagnoses {'empty_content_length': 4} at Nano",
+    "by": "nvidia/nemotron-3-super-120b-a12b"
+   },
+   "reason": "Nano passed 3/3 after reasoning_off",
+   "flip_tests": [
+    "tests/test_extract.py::test_names"
+   ],
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B"
+  },
+  "app/summary.py:12": {
+   "cells": [
+    {
+     "rung": "Nano",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "params": {},
+     "k": 3,
+     "valid_runs": 3,
+     "passed_runs": 0,
+     "infra_errors": 0,
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.5615
+     ],
+     "fail_rate_upper_rule_of_three": null,
+     "passes": false,
+     "calls": 6,
+     "tokens_per_call": [
+      750.0,
+      150.0
+     ],
+     "reasoning_tokens": 600,
+     "usd_per_1000_calls": 0.081,
+     "model_cost": 0.0,
+     "diagnoses": {},
+     "finish": {
+      "stop": 6
+     },
+     "changes": {
+      "dropped:seed": 6
+     },
+     "first_failure": "tests/test_summary.py::test_len: AssertionError: scripted",
+     "per_run": [
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_summary.py::test_len": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_summary.py::test_len": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_summary.py::test_len": "failed"
+       }
+      }
+     ]
+    },
+    {
+     "rung": "Lightning",
+     "model": "nvidia/Nemotron-3_5-Lightning",
+     "params": {},
+     "k": 3,
+     "valid_runs": 3,
+     "passed_runs": 3,
+     "infra_errors": 0,
+     "rate": 1.0,
+     "wilson95": [
+      0.4385,
+      1.0
+     ],
+     "fail_rate_upper_rule_of_three": 1.0,
+     "passes": true,
+     "calls": 6,
+     "tokens_per_call": [
+      750.0,
+      150.0
+     ],
+     "reasoning_tokens": 600,
+     "usd_per_1000_calls": 0.081,
+     "model_cost": 0.0,
+     "diagnoses": {},
+     "finish": {
+      "stop": 6
+     },
+     "changes": {
+      "dropped:seed": 6
+     },
+     "first_failure": "",
+     "per_run": [
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_summary.py::test_len": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_summary.py::test_len": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_summary.py::test_len": "passed"
+       }
+      }
+     ]
+    }
+   ],
+   "chosen": "Lightning",
+   "fix": null,
+   "reason": "Lightning passed 3/3",
+   "flip_tests": [
+    "tests/test_summary.py::test_len"
+   ],
+   "model": "nvidia/Nemotron-3_5-Lightning"
+  },
+  "app/plan.py:88": {
+   "cells": [
+    {
+     "rung": "Nano",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "params": {},
+     "k": 3,
+     "valid_runs": 3,
+     "passed_runs": 0,
+     "infra_errors": 0,
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.5615
+     ],
+     "fail_rate_upper_rule_of_three": null,
+     "passes": false,
+     "calls": 6,
+     "tokens_per_call": [
+      750.0,
+      150.0
+     ],
+     "reasoning_tokens": 600,
+     "usd_per_1000_calls": 0.081,
+     "model_cost": 0.0,
+     "diagnoses": {},
+     "finish": {
+      "stop": 6
+     },
+     "changes": {
+      "dropped:seed": 6
+     },
+     "first_failure": "tests/test_plan.py::test_steps: AssertionError: scripted",
+     "per_run": [
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_plan.py::test_steps": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_plan.py::test_steps": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_plan.py::test_steps": "failed"
+       }
+      }
+     ]
+    },
+    {
+     "rung": "Lightning",
+     "model": "nvidia/Nemotron-3_5-Lightning",
+     "params": {},
+     "k": 3,
+     "valid_runs": 3,
+     "passed_runs": 0,
+     "infra_errors": 0,
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.5615
+     ],
+     "fail_rate_upper_rule_of_three": null,
+     "passes": false,
+     "calls": 6,
+     "tokens_per_call": [
+      750.0,
+      150.0
+     ],
+     "reasoning_tokens": 600,
+     "usd_per_1000_calls": 0.081,
+     "model_cost": 0.0,
+     "diagnoses": {},
+     "finish": {
+      "stop": 6
+     },
+     "changes": {
+      "dropped:seed": 6
+     },
+     "first_failure": "tests/test_plan.py::test_steps: AssertionError: scripted",
+     "per_run": [
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_plan.py::test_steps": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_plan.py::test_steps": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_plan.py::test_steps": "failed"
+       }
+      }
+     ]
+    },
+    {
+     "rung": "Super",
+     "model": "nvidia/nemotron-3-super-120b-a12b",
+     "params": {},
+     "k": 3,
+     "valid_runs": 3,
+     "passed_runs": 0,
+     "infra_errors": 0,
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.5615
+     ],
+     "fail_rate_upper_rule_of_three": null,
+     "passes": false,
+     "calls": 6,
+     "tokens_per_call": [
+      750.0,
+      150.0
+     ],
+     "reasoning_tokens": 600,
+     "usd_per_1000_calls": 0.36,
+     "model_cost": 0.0,
+     "diagnoses": {},
+     "finish": {
+      "stop": 6
+     },
+     "changes": {
+      "dropped:seed": 6
+     },
+     "first_failure": "tests/test_plan.py::test_steps: AssertionError: scripted",
+     "per_run": [
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_plan.py::test_steps": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_plan.py::test_steps": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_plan.py::test_steps": "failed"
+       }
+      }
+     ]
+    },
+    {
+     "rung": "Ultra",
+     "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+     "params": {},
+     "k": 3,
+     "valid_runs": 3,
+     "passed_runs": 0,
+     "infra_errors": 0,
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.5615
+     ],
+     "fail_rate_upper_rule_of_three": null,
+     "passes": false,
+     "calls": 6,
+     "tokens_per_call": [
+      750.0,
+      150.0
+     ],
+     "reasoning_tokens": 600,
+     "usd_per_1000_calls": 1.2,
+     "model_cost": 0.0,
+     "diagnoses": {},
+     "finish": {
+      "stop": 6
+     },
+     "changes": {
+      "dropped:seed": 6
+     },
+     "first_failure": "tests/test_plan.py::test_steps: AssertionError: scripted",
+     "per_run": [
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_plan.py::test_steps": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_plan.py::test_steps": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_plan.py::test_steps": "failed"
+       }
+      }
+     ]
+    }
+   ],
+   "chosen": null,
+   "fix": null,
+   "reason": "no model passed, the old model stays",
+   "flip_tests": [
+    "tests/test_plan.py::test_steps"
+   ]
+  }
+ },
+ "jobs": [
+  {
+   "note": "ladder Nano",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "tests": 3,
+   "sandbox_cost": 0.0,
+   "cpu_s": 0.0,
+   "wall_s": 0.0,
+   "model_spend": 0.0,
+   "error": null,
+   "durations_s": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "note": "ladder Nano + fix",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "tests": 1,
+   "sandbox_cost": 0.0,
+   "cpu_s": 0.0,
+   "wall_s": 0.0,
+   "model_spend": 0.0,
+   "error": null,
+   "durations_s": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "note": "ladder Lightning",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "tests": 2,
+   "sandbox_cost": 0.0,
+   "cpu_s": 0.0,
+   "wall_s": 0.0,
+   "model_spend": 0.0,
+   "error": null,
+   "durations_s": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "note": "ladder Super",
+   "model": "nvidia/nemotron-3-super-120b-a12b",
+   "tests": 1,
+   "sandbox_cost": 0.0,
+   "cpu_s": 0.0,
+   "wall_s": 0.0,
+   "model_spend": 0.0,
+   "error": null,
+   "durations_s": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "note": "ladder Ultra",
+   "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+   "tests": 1,
+   "sandbox_cost": 0.0,
+   "cpu_s": 0.0,
+   "wall_s": 0.0,
+   "model_spend": 0.0,
+   "error": null,
+   "durations_s": [
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "brain": "nvidia/nemotron-3-super-120b-a12b"
+}

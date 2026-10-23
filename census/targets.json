@@ -29,7 +29,12 @@
    "tests/llm/test_openai/test_multimodal.py": "image and audio input; the ladder is text-only Nemotron",
    "tests/llm/test_openai/test_validators.py::test_patch_completes_successfully": "OpenAI moderation endpoint",
    "tests/llm/test_openai/slow/test_response.py": "Responses API (/v1/responses); the proxy routes chat completions only (20 tests failed with 501 in control run 1)"
-  }
+  },
+  "node_args": [
+   "--asyncio-mode=auto",
+   "-q",
+   "-rs"
+  ]
  },
  "llm": {
   "github": "simonw/llm",
@@ -58,6 +63,17 @@
   ],
   "exclusions": {
    "tests/test_openai_responses.py": "Responses API (/v1/responses); the proxy routes chat completions only"
+  },
+  "node_args": [
+   "-q",
+   "-rs",
+   "--disable-recording"
+  ],
+  "notes": {
+   "wording_pinned_tests": {
+    "tests/test_tools.py::test_tool_use_basic": "asserts gpt-4o-mini's exact sentence 'The result of \\\\( 1231 \\\\times 2331 \\\\) is \\\\( 2,869,461 \\\\).'",
+    "tests/test_tools_streaming.py": "asserts the recorded tool output '0.fixed-version'; a live run returns the installed llm version"
+   }
   }
  }
 }
