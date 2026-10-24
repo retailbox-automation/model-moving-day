@@ -1,0 +1,735 @@
+{
+ "target": "instructor",
+ "run_id": "20261024T123251Z-c41f4d",
+ "kind": "confirm",
+ "smoke": null,
+ "status": "complete",
+ "started_utc": "2026-10-24T12:32:51Z",
+ "commit": "6cd771c5254a69f6a6cf9cdf357fb2f9523f0b85",
+ "manifest": {
+  "sha256": "fee85e44a3c3a658f4519ea66833af5cb735bceadae20468efb5bb5c0baa48c9",
+  "commit": "9c2ea99dfd40fedfcd9c95391a4dac5c7cbb2bb4",
+  "branch": "lane-c1",
+  "remote_head": "9c2ea99dfd40fedfcd9c95391a4dac5c7cbb2bb4"
+ },
+ "k": 5,
+ "margin": 0.2,
+ "baseline": 1.0,
+ "baseline_note": "pass rate assumed 1.0 (strictest), not measured by us. Upstream CI run 39368977288 at the pinned 6cd771c: step 'Run core provider tests (OpenAI)' (tests/llm/test_core_providers -k openai, gpt-4.1-mini, one run) succeeded; the run's overall conclusion is failure from another job (checked with gh run view, 2026-10-24).",
+ "rungs": [],
+ "excluded_sites": {
+  "instructor/v2/providers/openai/client.py:23": "Responses API call site: 20 tests exist (tests/llm/test_openai/slow/test_response.py, sync and async) and are excluded because the proxy does not route /v1/responses (decision 2026-10-24: found, not measured)",
+  "instructor/v2/providers/openai/client.py:29": "Responses API call site: 20 tests exist (tests/llm/test_openai/slow/test_response.py, sync and async) and are excluded because the proxy does not route /v1/responses (decision 2026-10-24: found, not measured)"
+ },
+ "brain": null,
+ "frozen_sha256": "248a5aaab4d859643fcff59971c1d4717424cdb7e3a3b802de76932b05120510",
+ "sandbox_max_runs": 80,
+ "sites": {
+  "instructor/v2/core/retry.py:224": {
+   "status": "pending",
+   "chosen": null,
+   "model": null,
+   "fix": null,
+   "fallback": null,
+   "reason": "",
+   "flip_tests": [
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces",
+    "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]"
+   ],
+   "flags": {
+    "cassette_only": false,
+    "flip_tests_empty_only": [],
+    "good_side": "forward",
+    "isolated": true,
+    "wrong_control": true,
+    "wrong_control_missing": []
+   },
+   "cells": [
+    {
+     "rung": "confirm",
+     "model": "nvidia/Nemotron-3_5-Lightning",
+     "params": {},
+     "k": 5,
+     "valid_runs": 0,
+     "passed_runs": 0,
+     "infra_runs": 15,
+     "status": "infra",
+     "passes": false,
+     "runs_with_retried_infra": {
+      "pass": 0,
+      "fail": 0
+     },
+     "rate": null,
+     "wilson95": [
+      0.0,
+      1.0
+     ],
+     "fail_rate_upper_rule_of_three": null,
+     "calls": 0,
+     "calls_per_test_run": 0.0,
+     "tokens_per_call": [
+      null,
+      null
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": null,
+     "model_cost": 0,
+     "usd_per_passed_run": null,
+     "diagnoses": {},
+     "finish": {},
+     "changes": {},
+     "errors": {},
+     "repaired_empty_args": 0,
+     "first_failure": "",
+     "infra_failures": [
+      "run 0: a flip test is missing from the run (infrastructure)",
+      "run 1: a flip test is missing from the run (infrastructure)",
+      "run 2: a flip test is missing from the run (infrastructure)",
+      "run 3: a flip test is missing from the run (infrastructure)",
+      "run 4: a flip test is missing from the run (infrastructure)"
+     ],
+     "per_test_passed": {
+      "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces": [
+       0,
+       0
+      ],
+      "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]": [
+       0,
+       0
+      ],
+      "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]": [
+       0,
+       0
+      ],
+      "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]": [
+       0,
+       0
+      ],
+      "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]": [
+       0,
+       0
+      ],
+      "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]": [
+       0,
+       0
+      ],
+      "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]": [
+       0,
+       0
+      ],
+      "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": [
+       0,
+       0
+      ]
+     },
+     "per_run": [
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      }
+     ],
+     "role": "confirm",
+     "routing_problems": [
+      "no calls recorded for its flip tests"
+     ],
+     "requested": {}
+    }
+   ]
+  },
+  "instructor/v2/core/retry.py:523": {
+   "status": "pending",
+   "chosen": null,
+   "model": null,
+   "fix": null,
+   "fallback": null,
+   "reason": "",
+   "flip_tests": [
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]",
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]",
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]",
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]",
+    "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]",
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]",
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]",
+    "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]",
+    "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]",
+    "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]",
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]",
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]",
+    "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]",
+    "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]",
+    "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]",
+    "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]",
+    "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]",
+    "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]",
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces",
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]"
+   ],
+   "flags": {
+    "cassette_only": false,
+    "flip_tests_empty_only": [
+     "tests/llm/test_core_providers/test_retries.py::test_validation_with_retries[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_annotated_int[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_bool[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_int[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_literal[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_str[openai]"
+    ],
+    "good_side": "forward",
+    "isolated": true,
+    "wrong_control": true,
+    "wrong_control_missing": []
+   },
+   "cells": [
+    {
+     "rung": "confirm",
+     "model": "nvidia/nemotron-3-super-120b-a12b",
+     "params": {},
+     "k": 5,
+     "valid_runs": 0,
+     "passed_runs": 0,
+     "infra_runs": 15,
+     "status": "infra",
+     "passes": false,
+     "runs_with_retried_infra": {
+      "pass": 0,
+      "fail": 0
+     },
+     "rate": null,
+     "wilson95": [
+      0.0,
+      1.0
+     ],
+     "fail_rate_upper_rule_of_three": null,
+     "calls": 0,
+     "calls_per_test_run": 0.0,
+     "tokens_per_call": [
+      null,
+      null
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": null,
+     "model_cost": 0,
+     "usd_per_passed_run": null,
+     "diagnoses": {},
+     "finish": {},
+     "changes": {},
+     "errors": {},
+     "repaired_empty_args": 0,
+     "first_failure": "",
+     "infra_failures": [
+      "run 0: a flip test is missing from the run (infrastructure)",
+      "run 1: a flip test is missing from the run (infrastructure)",
+      "run 2: a flip test is missing from the run (infrastructure)",
+      "run 3: a flip test is missing from the run (infrastructure)",
+      "run 4: a flip test is missing from the run (infrastructure)"
+     ],
+     "per_test_passed": {
+      "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]": [
+       0,
+       0
+      ],
+      "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces": [
+       0,
+       0
+      ],
+      "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]": [
+       0,
+       0
+      ],
+      "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]": [
+       0,
+       0
+      ],
+      "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]": [
+       0,
+       0
+      ],
+      "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]": [
+       0,
+       0
+      ]
+     },
+     "per_run": [
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      }
+     ],
+     "role": "confirm",
+     "routing_problems": [
+      "no calls recorded for its flip tests"
+     ],
+     "requested": {}
+    }
+   ]
+  },
+  "instructor/v2/validation/llm_validators.py:34": {
+   "status": "pending",
+   "chosen": null,
+   "model": null,
+   "fix": null,
+   "fallback": null,
+   "reason": "",
+   "flip_tests": [
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]",
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]"
+   ],
+   "flags": {
+    "cassette_only": false,
+    "flip_tests_empty_only": [],
+    "good_side": "forward",
+    "isolated": true,
+    "wrong_control": true,
+    "wrong_control_missing": []
+   },
+   "cells": [
+    {
+     "rung": "confirm",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "params": {},
+     "k": 5,
+     "valid_runs": 0,
+     "passed_runs": 0,
+     "infra_runs": 15,
+     "status": "infra",
+     "passes": false,
+     "runs_with_retried_infra": {
+      "pass": 0,
+      "fail": 0
+     },
+     "rate": null,
+     "wilson95": [
+      0.0,
+      1.0
+     ],
+     "fail_rate_upper_rule_of_three": null,
+     "calls": 0,
+     "calls_per_test_run": 0.0,
+     "tokens_per_call": [
+      null,
+      null
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": null,
+     "model_cost": 0,
+     "usd_per_passed_run": null,
+     "diagnoses": {},
+     "finish": {},
+     "changes": {},
+     "errors": {},
+     "repaired_empty_args": 0,
+     "first_failure": "",
+     "infra_failures": [
+      "run 0: a flip test is missing from the run (infrastructure)",
+      "run 1: a flip test is missing from the run (infrastructure)",
+      "run 2: a flip test is missing from the run (infrastructure)",
+      "run 3: a flip test is missing from the run (infrastructure)",
+      "run 4: a flip test is missing from the run (infrastructure)"
+     ],
+     "per_test_passed": {
+      "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]": [
+       0,
+       0
+      ],
+      "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]": [
+       0,
+       0
+      ]
+     },
+     "per_run": [
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      },
+      {
+       "passed": null,
+       "tests": {}
+      }
+     ],
+     "role": "confirm",
+     "routing_problems": [
+      "no calls recorded for its flip tests"
+     ],
+     "requested": {}
+    }
+   ]
+  }
+ },
+ "jobs": [
+  {
+   "utc": "2026-10-24T12:32:59Z",
+   "note": "confirm",
+   "model": null,
+   "sites": [
+    "instructor/v2/core/retry.py:224",
+    "instructor/v2/core/retry.py:523",
+    "instructor/v2/validation/llm_validators.py:34"
+   ],
+   "k": 5,
+   "tests": 33,
+   "sandbox_cost_diagnostic": 0.12540441000000002,
+   "cpu_s": 12.494901,
+   "wall_s": 7.18,
+   "exit_code": 0,
+   "model_spend": 0.0,
+   "error": null,
+   "envelope_error": null,
+   "exit_codes": [
+    4,
+    4,
+    4,
+    4,
+    4
+   ],
+   "durations_s": [
+    3.6,
+    3.4,
+    3.8,
+    3.6,
+    3.4
+   ],
+   "freeze_before": [],
+   "freeze_after": [],
+   "isolation": {
+    "31/environ": "PermissionError",
+    "31/mem": "PermissionError",
+    "32/environ": "PermissionError",
+    "32/mem": "PermissionError"
+   },
+   "test_uid": 10001,
+   "untraced": 0,
+   "site_runs": {}
+  },
+  {
+   "utc": "2026-10-24T12:33:05Z",
+   "note": "confirm (infra re-run 1)",
+   "model": null,
+   "sites": [
+    "instructor/v2/core/retry.py:224",
+    "instructor/v2/core/retry.py:523",
+    "instructor/v2/validation/llm_validators.py:34"
+   ],
+   "k": 5,
+   "tests": 33,
+   "sandbox_cost_diagnostic": 0.1208528,
+   "cpu_s": 12.039784,
+   "wall_s": 6.145,
+   "exit_code": 0,
+   "model_spend": 0.0,
+   "error": null,
+   "envelope_error": null,
+   "exit_codes": [
+    4,
+    4,
+    4,
+    4,
+    4
+   ],
+   "durations_s": [
+    3.6,
+    3.4,
+    3.4,
+    3.4,
+    3.4
+   ],
+   "freeze_before": [],
+   "freeze_after": [],
+   "isolation": {
+    "31/environ": "PermissionError",
+    "31/mem": "PermissionError",
+    "32/environ": "PermissionError",
+    "32/mem": "PermissionError"
+   },
+   "test_uid": 10001,
+   "untraced": 0,
+   "site_runs": {}
+  },
+  {
+   "utc": "2026-10-24T12:33:11Z",
+   "note": "confirm (infra re-run 2)",
+   "model": null,
+   "sites": [
+    "instructor/v2/core/retry.py:224",
+    "instructor/v2/core/retry.py:523",
+    "instructor/v2/validation/llm_validators.py:34"
+   ],
+   "k": 5,
+   "tests": 33,
+   "sandbox_cost_diagnostic": 0.12112542,
+   "cpu_s": 12.06705,
+   "wall_s": 6.249,
+   "exit_code": 0,
+   "model_spend": 0.0,
+   "error": null,
+   "envelope_error": null,
+   "exit_codes": [
+    4,
+    4,
+    4,
+    4,
+    4
+   ],
+   "durations_s": [
+    3.4,
+    3.6,
+    3.4,
+    3.4,
+    3.4
+   ],
+   "freeze_before": [],
+   "freeze_after": [],
+   "isolation": {
+    "31/environ": "PermissionError",
+    "31/mem": "PermissionError",
+    "32/environ": "PermissionError",
+    "32/mem": "PermissionError"
+   },
+   "test_uid": 10001,
+   "untraced": 0,
+   "site_runs": {}
+  }
+ ],
+ "ended_utc": "2026-10-24T12:33:11Z"
+}

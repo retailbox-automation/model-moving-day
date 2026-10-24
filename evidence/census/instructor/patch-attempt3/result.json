@@ -1,0 +1,17 @@
+{
+ "ladder_run": "20261024T114940Z-f6c56a",
+ "moved": [],
+ "kept": {
+  "instructor/v2/core/retry.py:224": "infra",
+  "instructor/v2/core/retry.py:523": "infra",
+  "instructor/v2/validation/llm_validators.py:34": "infra"
+ },
+ "branch": null,
+ "commit": null,
+ "pr": "/Users/oskolamicheal/Projects/Retailbox - Nebius NVIDIA Hackathon/_wt-c1/evidence/census/instructor/patch/PR.md",
+ "confirm": {
+  "instructor/v2/core/retry.py:224": "infra",
+  "instructor/v2/core/retry.py:523": "infra",
+  "instructor/v2/validation/llm_validators.py:34": "infra"
+ }
+}
