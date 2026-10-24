@@ -72,6 +72,7 @@ def test_patch_loop_edits_source_and_refuses_frozen_tests(tmp_path, repo):
     tool_msgs = [m["content"] for _, msgs, _ in b.client.requests[-1:] for m in msgs if m["role"] == "tool"]
     assert any("frozen behaviour check" in m for m in tool_msgs)
     freeze.verify(repo, fr)
+    assert not list(repo.rglob("__pycache__"))  # edits are compiled in memory, nothing else lands in the target repo
 
 
 def test_an_edit_that_does_not_compile_is_reverted(tmp_path, repo):

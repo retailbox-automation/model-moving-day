@@ -47,6 +47,8 @@
    "covered": true,
    "isolated": true,
    "good_side": "forward",
+   "cassette_only": false,
+   "wrong_control": false,
    "details": [
     {
      "test": "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces",
@@ -102,6 +104,8 @@
    "covered": false,
    "isolated": true,
    "good_side": "forward",
+   "cassette_only": false,
+   "wrong_control": false,
    "details": [
     {
      "test": "tests/llm/test_core_providers/test_response_modes.py::test_response_model_none[openai]",
@@ -147,6 +151,8 @@
    "covered": true,
    "isolated": true,
    "good_side": "forward",
+   "cassette_only": false,
+   "wrong_control": false,
    "details": [
     {
      "test": "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]",
@@ -305,6 +311,8 @@
    "covered": true,
    "isolated": true,
    "good_side": "forward",
+   "cassette_only": false,
+   "wrong_control": false,
    "details": [
     {
      "test": "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]",
@@ -323,6 +331,10 @@
   "instructor/v2/providers/openai/client.py:23",
   "instructor/v2/providers/openai/client.py:29"
  ],
+ "excluded_sites": {
+  "instructor/v2/providers/openai/client.py:23": "Responses API call site: 20 tests exist (tests/llm/test_openai/slow/test_response.py, sync and async) and are excluded because the proxy does not route /v1/responses (decision 2026-10-24: found, not measured)",
+  "instructor/v2/providers/openai/client.py:29": "Responses API call site: 20 tests exist (tests/llm/test_openai/slow/test_response.py, sync and async) and are excluded because the proxy does not route /v1/responses (decision 2026-10-24: found, not measured)"
+ },
  "covered_sites": [
   "instructor/v2/core/retry.py:224",
   "instructor/v2/core/retry.py:523",

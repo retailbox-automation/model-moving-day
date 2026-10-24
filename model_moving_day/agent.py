@@ -3,7 +3,7 @@ patch. Super for repos under ~200K tokens of source, Ultra above (Super has a 26
 
 Every model call is logged as one JSON line (step, model, latency, prompt/completion/reasoning tokens, $).
 """
-import json, os, py_compile, time
+import json, os, time
 from pathlib import Path
 
 from model_moving_day import freeze, ladder, tf_client as tf
@@ -12,10 +12,12 @@ SUPER = "nvidia/nemotron-3-super-120b-a12b"
 ULTRA = "nvidia/Nemotron-3-Ultra-550b-a55b"
 SAMPLING = {"temperature": 1.0, "top_p": 0.95}
 CTK = {SUPER: {"force_nonempty_content": True}, ULTRA: {"enable_thinking": True, "force_nonempty_content": True}}
-FIXES = {  # fix kind -> (route params for the proxy, call-log diagnoses that justify it)
+FIXES = {  # fix kind -> (route params for the proxy, call-log diagnoses that justify it,
+           #             request changes that prove the fix reached the request: "kind:key" as the proxy logs them)
     "reasoning_off": ({"reasoning": "off"}, {"empty_content_length", "answer_in_reasoning_field", "empty_content",
-                                             "leading_whitespace"}),
-    "raise_max_tokens": ({"min_max_tokens": 8000}, {"empty_content_length"}),
+                                             "leading_whitespace"}, {"reasoning:enable_thinking"}),
+    "raise_max_tokens": ({"min_max_tokens": 8000}, {"empty_content_length"},
+                         {"raised:max_tokens", "raised:max_completion_tokens"}),
 }
 
 
@@ -80,12 +82,12 @@ class Brain:
         kind = args.get("kind")
         if kind not in FIXES:
             return None
-        params, justified_by = FIXES[kind]
+        params, justified_by, expect = FIXES[kind]
         seen = set((evidence.get("diagnoses") or {}).keys())
         if not seen & justified_by:  # the model's proposal must be backed by what the call log recorded
             self._log({"step": "diagnose rejected", "model": self.model, "kind": kind, "seen": sorted(seen)})
             return None
-        return ladder.Fix(kind, params, args.get("cause", "")[:400], by=self.model)
+        return ladder.Fix(kind, params, args.get("cause", "")[:400], by=self.model, expect=tuple(sorted(expect)))
 
     # --- patch writing ---------------------------------------------------------------------------------------
     PATCH_TOOLS = [
@@ -107,7 +109,8 @@ class Brain:
         """Let the brain wrap each planned call site with the helper; tests stay frozen (hash-checked every step)."""
         repo = Path(repo)
         sites = "\n".join(f"- site '{s['slug']}' at {s['site']} ({'async' if s['is_async'] else 'sync'}) -> "
-                          f"{s['model']} (fallback {s['fallback']})" for s in plan["sites"])
+                          f"{s['model']} (fallback {s['fallback']})" + (f"; the line reads: {s['code']}" if s.get("code") else "")
+                          for s in plan["sites"])
         msgs = [{"role": "system", "content": (
             "You edit a Python repository so that each planned LLM call site goes through the Nemotron move helper. "
             f"The helper is importable as `{helper_import}` and provides call(site, create, *args, **kwargs) for "
@@ -153,12 +156,11 @@ class Brain:
             if not old or text.count(old) != 1:
                 return f"error: the snippet occurs {text.count(old) if old else 0} times; it must occur exactly once"
             new_text = text.replace(old, args.get("new", ""))
+            try:  # compile in memory: py_compile would leave __pycache__ files in the target repo
+                compile(new_text, str(path), "exec")
+            except SyntaxError as e:
+                return f"error: the edit does not compile and was not applied: {str(e)[:300]}"
             path.write_text(new_text)
-            try:
-                py_compile.compile(str(path), doraise=True)
-            except py_compile.PyCompileError as e:
-                path.write_text(text)
-                return f"error: the edit does not compile and was reverted: {str(e)[:300]}"
             edits.append({"path": rel, "old": old, "new": args.get("new", "")})
             return "ok"
         return f"error: unknown tool {name}"

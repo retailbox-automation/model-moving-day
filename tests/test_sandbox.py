@@ -57,10 +57,15 @@ def test_run_returns_output_exit_code_and_times(tmp_path):
     assert call["shell"] == "echo hello" and call["env"] == {"A": "1"} and call["hostname"].startswith("mmd-")
 
 
-def test_each_run_reserves_then_settles_to_the_reported_cost_and_is_logged(tmp_path):
+def test_the_reported_cost_is_a_diagnostic_line_not_spend(tmp_path):
+    """Billing check 2026-10-24: Sandboxes are not charged, so the field never counts against a cap."""
     b, led = box(tmp_path, FakeResult(cost=0.002, elapsed=4.0))
-    b.run("python:3.12-slim", "pytest -q", env={"SECRET": "s3cr3t"})
-    assert led.spent()[1]["c1"] == pytest.approx(0.002)
+    b.run("python:3.12-slim", "pytest -q", env={"SECRET": "s3cr3t"}, files={"/mmd/secret/tf.key": b"s3cr3t-key"})
+    total, by_tag = led.spent()
+    assert total == 0 and by_tag == {sb.DIAG_TAG: 0.0}
+    line = json.loads((tmp_path / "l.jsonl").read_text().splitlines()[-1])
+    assert "$0.002000 (diagnostic, not billed)" in line["note"]
+    assert "s3cr3t-key" not in (tmp_path / "runs.jsonl").read_text()
     rec = json.loads((tmp_path / "runs.jsonl").read_text())
     assert rec["image"] == "python:3.12-slim" and rec["command"] == "pytest -q" and rec["cost"] == 0.002
     assert rec["elapsed_s"] == 4.0 and "operation" in rec and "SECRET" in rec["env_keys"]
@@ -85,8 +90,8 @@ def test_failed_run_keeps_the_full_reservation(tmp_path):
     led = tf.Ledger(tmp_path / "l.jsonl", caps={"total": 1.0, "c1": 1.0})
     b = sb.Sandbox(Boom(), ledger=led, log_path=tmp_path / "runs.jsonl")
     with pytest.raises(RuntimeError):
-        b.run("python:3.12-slim", "true")
-    assert led.spent()[1]["c1"] == pytest.approx(sb.RUN_RESERVE)
+        b.run("python:3.12-slim", "true", reserve=0.01)
+    assert led.spent()[1]["c1"] == pytest.approx(0.01)
     assert json.loads((tmp_path / "runs.jsonl").read_text())["error"].startswith("RuntimeError")
 
 

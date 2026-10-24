@@ -1,4 +1,4 @@
-import email.message, io, json, threading, urllib.error
+import email.message, http.client, io, json, ssl, threading, urllib.error
 
 import pytest
 
@@ -36,6 +36,8 @@ class FakeHTTP:
             for k, v in headers.items():
                 hdrs[k] = v
             raise urllib.error.HTTPError(req.full_url, status, "err", hdrs, io.BytesIO(b'{"detail":"x"}'))
+        if isinstance(item, bytes):  # a raw body, e.g. truncated JSON
+            return io.BytesIO(item)
         return io.BytesIO(json.dumps(item).encode())
 
 
@@ -154,3 +156,64 @@ def test_ledger_cap_holds_under_concurrency(tmp_path):
         t.join()
     assert (len(ok), len(refused)) == (5, 15)
     assert led.spent()[0] == pytest.approx(0.05)
+
+
+def test_reservation_handles_null_max_tokens_n_and_max_completion_tokens():
+    body = {"model": SUPER, "messages": []}
+    base = len(json.dumps(dict(body, max_tokens=None))) / 3 * 0.30
+    assert tf.reserve_usd(dict(body, max_tokens=None), 0.30, 0.90) == pytest.approx((base + 8192 * 0.90) / 1e6)
+    b = dict(body, max_completion_tokens=2000, n=3)
+    assert tf.reserve_usd(b, 0.30, 0.90) == pytest.approx((len(json.dumps(b)) / 3 * 0.30 + 2000 * 3 * 0.90) / 1e6)
+
+
+def test_null_max_tokens_is_served(ledger, monkeypatch):
+    c, fake = client(ledger, monkeypatch, [reply(content="ok")])
+    assert c.chat(SUPER, [], max_tokens=None).content == "ok" and fake.requests[0]["max_tokens"] is None
+
+
+def test_raw_keeps_the_servers_empty_tool_arguments_and_only_the_parsed_copy_is_repaired(ledger, monkeypatch):
+    tc = [{"id": "1", "type": "function", "function": {"name": "f", "arguments": ""}}]
+    c, _ = client(ledger, monkeypatch, [reply(content=None, tool_calls=tc)])
+    r = c.chat(SUPER, [], max_tokens=64)
+    assert r.raw["choices"][0]["message"]["tool_calls"][0]["function"]["arguments"] == ""
+    assert r.tool_calls[0]["function"]["arguments"] == "{}"
+
+
+def test_rate_limit_headers_are_kept(ledger, monkeypatch):
+    class Resp(io.BytesIO):
+        headers = {"X-RateLimit-Remaining-Requests": "299", "Content-Type": "application/json", "Retry-After": "1"}
+    monkeypatch.setattr(tf.urllib.request, "urlopen", lambda req, timeout=None: Resp(json.dumps(reply(content="ok")).encode()))
+    r = tf.Client("c1", ledger=ledger, key="k").chat(SUPER, [], max_tokens=64)
+    assert r.headers == {"x-ratelimit-remaining-requests": "299", "retry-after": "1"}
+
+
+@pytest.mark.parametrize("failure", [
+    http.client.RemoteDisconnected("Remote end closed connection without response"),
+    http.client.IncompleteRead(b"{", 100),
+    ConnectionResetError(54, "reset"),
+    ssl.SSLError("bad record mac"),
+    b'{"choices": [',                       # truncated JSON body
+    {"id": "x", "choices": []},             # no choices
+    {"id": "x", "error": "overloaded"},     # choices missing
+], ids=["remote-disconnected", "incomplete-read", "connection-reset", "ssl", "broken-json", "empty-choices", "no-choices"])
+def test_network_and_body_failures_are_retried_then_raised_as_tferror_with_reservations_kept(ledger, monkeypatch, failure):
+    c, fake = client(ledger, monkeypatch, [failure, failure], max_attempts=2)
+    with pytest.raises(tf.TFError) as e:
+        c.chat(SUPER, [], max_tokens=1000)
+    assert e.value.status is None and len(fake.requests) == 2
+    reserve = tf.reserve_usd({"model": SUPER, "messages": [], "max_tokens": 1000}, 0.30, 0.90)
+    assert ledger.spent()[0] == pytest.approx(2 * reserve)
+
+
+def test_a_transient_failure_then_success_settles_to_the_real_cost_plus_the_kept_reservation(ledger, monkeypatch):
+    c, fake = client(ledger, monkeypatch, [http.client.RemoteDisconnected("x"), reply(content="ok")])
+    r = c.chat(SUPER, [], max_tokens=1000)
+    reserve = tf.reserve_usd({"model": SUPER, "messages": [], "max_tokens": 1000}, 0.30, 0.90)
+    assert r.content == "ok" and ledger.spent()[0] == pytest.approx(reserve + r.cost)
+
+
+def test_embeddings_bill_input_tokens_only(ledger, monkeypatch):
+    c, fake = client(ledger, monkeypatch, [{"data": [{"embedding": [0.1, 0.2]}], "usage": {"prompt_tokens": 1000}}])
+    r = c.embed(tf.EMBEDDING_MODEL, ["a", "b"])
+    assert r.cost == pytest.approx(1000 * 0.01 / 1e6) and ledger.spent()[0] == pytest.approx(r.cost)
+    assert fake.requests[0] == {"model": tf.EMBEDDING_MODEL, "input": ["a", "b"]}

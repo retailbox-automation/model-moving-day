@@ -1,9 +1,12 @@
 """Run commands in Nebius Token Factory Sandboxes (contree-sdk) and keep model spend inside a ledger envelope.
 
-Sandbox runs report a `cost` field (the docs call it "for diagnostics only"; whether beta runs bill the balance is
-not confirmed). We treat it as real spend: each run reserves RUN_RESERVE in the shared ledger first and settles
-to the reported cost afterwards; a run that never reports keeps the whole reservation. Every run is logged
-(operation id, image, command, env keys without values, times, cost) and the number of runs is capped.
+Sandbox runs report a `cost` field. The docs call it "for diagnostics only", and the billing check of 2026-10-24
+(Transactions and Usage show only model tokens, $0.54, while the field summed to $0.493 over 15 runs) confirms
+that beta runs are not charged. So the field is recorded as a diagnostic: a ledger line with usd 0 under the tag
+DIAG_TAG and the value in the note, never counted against a cap. If billing ever shows Sandboxes, pass
+`reserve` > 0 again: the run then reserves first and settles to the reported cost. Every run is logged
+(operation id, image, command, env keys without values, file paths without contents, times, cost) and the number
+of runs is capped (MMD_SANDBOX_MAX_RUNS).
 
 A sandbox run cannot see the shared spend ledger on the host, so before a run that may call Token Factory we
 reserve a fixed envelope in the shared ledger; inside the sandbox `tf_client` runs against a private ledger
@@ -15,7 +18,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 JSON_MARK = "<<<MMD-JSON>>>"
-RUN_RESERVE = 0.01  # USD reserved per sandbox run until its reported cost is known
+RUN_RESERVE = 0.0  # USD reserved per sandbox run; 0 since the billing check of 2026-10-24 (see the module doc)
+DIAG_TAG = "c1-sandbox-diag"
 DEFAULT_LOG = Path(__file__).resolve().parents[1] / "evidence" / "sandbox" / "runs.jsonl"
 
 
@@ -80,7 +84,8 @@ class Sandbox:
         rec = {"ts": round(time.time(), 3), "image": image, "command": shell, "env_keys": sorted(env or {}),
                "files": sorted(files or {}), "hostname": host, "reserved": reserve}
         with self._slots:
-            self.ledger.reserve(self.tag, reserve, f"sandbox run {host}")
+            if reserve:
+                self.ledger.reserve(self.tag, reserve, f"sandbox run {host}")
             t0 = time.time()
             try:
                 img = self.contree.images.use(image)
@@ -93,7 +98,10 @@ class Sandbox:
                 self._log(rec)  # the reservation is kept: we do not know what the run cost
                 raise
         cost = float(res.cost or 0.0)
-        self.ledger.settle(self.tag, cost - reserve, f"sandbox run {host} reported cost")
+        if reserve:
+            self.ledger.settle(self.tag, cost - reserve, f"sandbox run {host} reported cost")
+        else:
+            self.ledger.settle(DIAG_TAG, 0.0, f"sandbox run {host} reported cost ${cost:.6f} (diagnostic, not billed)")
         out = RunResult(res.exit_code, _text(res.stdout), _text(res.stderr), res.elapsed_time.total_seconds(),
                         round(time.time() - t0, 3), cost, str(done.uuid) if done.uuid else "")
         rec.update(end_ts=round(time.time(), 3), operation=self._ops.get(host), exit_code=out.exit_code, elapsed_s=out.elapsed_s, wall_s=out.wall_s,

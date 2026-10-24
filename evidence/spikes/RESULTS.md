@@ -10,10 +10,10 @@ Cell = runs passing / runs. Pass = HTTP 200, reasoning tokens 0 or unreported, e
 
 | Model | default | effort_none | ctk_top | ctk_extra | content had 391 |
 |---|---|---|---|---|---|
-| Nano | 0/2 (0) | 0/2 (0) | 2/2 (0) ✅ | 2/2 (0) ✅ | 6/8 |
-| Lightning | 0/2 (253) | 2/2 (0) ✅ | 2/2 (0) ✅ | 2/2 (0) ✅ | 8/8 |
-| Super | 0/2 (69) | 2/2 (0) ✅ | 2/2 (0) ✅ | 2/2 (0) ✅ | 8/8 |
-| Ultra | 0/2 (48) | 2/2 (0) ✅ | 2/2 (0) ✅ | 2/2 (0) ✅ | 8/8 |
+| Nano | 0/2 (0.0) | 0/2 (0.0) | 2/2 (0.0) ✅ | 2/2 (0.0) ✅ | 6/8 |
+| Lightning | 0/2 (235.5) | 2/2 (0.0) ✅ | 2/2 (0.0) ✅ | 2/2 (0.0) ✅ | 8/8 |
+| Super | 0/2 (51.5) | 2/2 (0.0) ✅ | 2/2 (0.0) ✅ | 2/2 (0.0) ✅ | 8/8 |
+| Ultra | 0/2 (41.5) | 2/2 (0.0) ✅ | 2/2 (0.0) ✅ | 2/2 (0.0) ✅ | 8/8 |
 
 ## S2. The 14.10 fact task
 
@@ -40,8 +40,8 @@ Cell = runs passing / runs. Pass = HTTP 200, reasoning tokens 0 or unreported, e
 
 | Model | Parsed /20 | Calls with get_today | Raw `arguments: ""` | Median s | Median completion tokens | Median reasoning tokens |
 |---|---|---|---|---|---|---|
-| Super | 20/20 ✅ | 20 | 0 | 1.251 | 80 | 64 |
-| Ultra | 20/20 ✅ | 20 | 0 | 0.945 | 68 | 52 |
+| Super | 20/20 ✅ | 20 | 0 | 1.2465 | 80.0 | 64.0 |
+| Ultra | 20/20 ✅ | 20 | 0 | 0.9345 | 68.0 | 52.0 |
 
 ## S5. Where reasoning text arrives
 

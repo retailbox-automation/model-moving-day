@@ -3,15 +3,20 @@ import json, subprocess
 from model_moving_day import fakes, pr
 
 
-def test_dry_run_climbs_fixes_and_publishes_red_cells(tmp_path):
+def test_dry_run_climbs_fixes_publishes_red_and_infra_cells_and_says_it_is_a_dry_run(tmp_path):
     lo, text = fakes.dry_run(tmp_path)
     s = lo["sites"]
-    assert s["app/extract.py:40"]["chosen"] == "Nano" and s["app/extract.py:40"]["fix"]["kind"] == "reasoning_off"
-    assert [c["rung"] for c in s["app/extract.py:40"]["cells"]] == ["Nano", "Nano"]  # red cell kept, then the fixed one
-    assert s["app/summary.py:12"]["chosen"] == "Lightning"
-    assert s["app/plan.py:88"]["chosen"] is None and s["app/plan.py:88"]["reason"] == "no model passed, the old model stays"
-    assert len([c for c in s["app/plan.py:88"]["cells"]]) == 4
+    ex = s["app/extract.py:40"]
+    assert ex["chosen"] == "Nano" and ex["fix"]["kind"] == "reasoning_off" and ex["fix"]["applied"]
+    assert [(c["rung"], c["role"]) for c in ex["cells"]] == [("Nano", "ladder"), ("Nano", "ladder"), ("Lightning", "fallback")]
+    assert s["app/summary.py:12"]["chosen"] == "Lightning" and s["app/summary.py:12"]["fallback"]["rung"] == "Super"
+    assert s["app/plan.py:88"]["status"] == "red" and s["app/plan.py:88"]["reason"] == "no model passed, the old model stays"
+    assert len(s["app/plan.py:88"]["cells"]) == 4
+    flaky = s["app/flaky.py:7"]  # the platform kept failing at Nano: published as infra, never climbed
+    assert flaky["status"] == "infra" and flaky["chosen"] is None and [c["rung"] for c in flaky["cells"]] == ["Nano"]
     assert "**stays on the old model**" in text and "`app/unused.py:7`" in text and "+reasoning_off" in text
+    assert text.startswith("> DRY RUN") and "# DRY RUN: Move" in text and "A human approved" not in text
+    assert "infra: 9 runs lost" in text and "not measured: excluded before the run (example exclusion)" in text
     assert json.loads((tmp_path / "_dryrun" / "ladder.json").read_text())["k"] == 3
 
 

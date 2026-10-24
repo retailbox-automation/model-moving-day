@@ -62,3 +62,25 @@ def test_manifest_hash_is_stable_and_changes_with_content(repo):
     a = freeze.freeze(repo, ["t1"]).sha256()
     assert a == freeze.freeze(repo, ["t1"]).sha256()
     assert a != freeze.freeze(repo, ["t1", "t2"]).sha256()
+
+
+def test_pytest_configuration_and_nested_test_dirs_are_frozen(repo):
+    """An agent must not be able to switch tests off through addopts/--deselect or hide a test deeper in the tree."""
+    (repo / "pytest.ini").write_text("[pytest]\n")
+    (repo / "pyproject.toml").write_text("[tool.pytest.ini_options]\naddopts = ''\n")
+    (repo / "pkg" / "sub" / "tests").mkdir(parents=True)
+    (repo / "pkg" / "sub" / "tests" / "test_deep.py").write_text("def test_d():\n    pass\n")
+    (repo / "build" / "lib" / "tests").mkdir(parents=True)
+    (repo / "build" / "lib" / "tests" / "copy.py").write_text("")
+    fr = freeze.freeze(repo, [])
+    assert {"pytest.ini", "pyproject.toml", "pkg/sub/tests/test_deep.py"} <= set(fr.hashes)
+    assert "build/lib/tests/copy.py" not in fr.hashes
+    (repo / "pyproject.toml").write_text("[tool.pytest.ini_options]\naddopts = '--deselect tests/test_core.py::test_x'\n")
+    with pytest.raises(freeze.FreezeViolation) as e:
+        freeze.verify(repo, fr)
+    assert "changed pyproject.toml" in str(e.value)
+    (repo / "pyproject.toml").write_text("[tool.pytest.ini_options]\naddopts = ''\n")
+    (repo / "tox.ini").write_text("[pytest]\naddopts = -p no:asyncio\n")
+    with pytest.raises(freeze.FreezeViolation) as e:
+        freeze.verify(repo, fr)
+    assert "added tox.ini" in str(e.value)

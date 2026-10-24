@@ -12,13 +12,17 @@ NANO = "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B"
 
 class FakeUpstream:
     def __init__(self):
-        self.bodies = []
+        self.bodies, self.message, self.urls = [], None, []
 
     def __call__(self, req, timeout=None):
         import io
         body = json.loads(req.data)
         self.bodies.append(body)
-        msg = {"role": "assistant", "content": f"served by {body['model']}"}
+        self.urls.append(req.full_url)
+        if req.full_url.endswith("/embeddings"):
+            return io.BytesIO(json.dumps({"data": [{"embedding": [0.0, 1.0]}], "model": body["model"],
+                                          "usage": {"prompt_tokens": 7, "total_tokens": 7}}).encode())
+        msg = self.message or {"role": "assistant", "content": f"served by {body['model']}"}
         return io.BytesIO(json.dumps({"id": "x", "object": "chat.completion", "model": body["model"],
                                       "choices": [{"index": 0, "message": msg, "finish_reason": "stop"}],
                                       "usage": {"prompt_tokens": 10, "completion_tokens": 5}}).encode())
@@ -30,7 +34,8 @@ def server(tmp_path, monkeypatch):
     monkeypatch.setattr(tf.urllib.request, "urlopen", up)
     routes = {"default": {"mode": "forward", "model": LIGHT, "reasoning": "off"},
               "sites": {"app/x.py:10": {"mode": "broken"}, "app/y.py:5": {"mode": "forward", "model": NANO},
-                        "app/as_req.py:1": {"mode": "as_requested"}},
+                        "app/as_req.py:1": {"mode": "as_requested"}, "app/pass.py:1": {"mode": "passthrough"},
+                        "app/wrong.py:1": {"mode": "wrong"}},
               "spans": {"app/y.py": [[5, 7, "app/y.py:5"]]}}
     ledger = tf.Ledger(tmp_path / "led.jsonl", caps={"total": 0.05, "c1": 0.05})
     srv = proxy.make_server(0, routes, tmp_path / "calls.jsonl", tf.Client("c1", ledger=ledger, key="k", log=lambda m: None))
@@ -164,11 +169,11 @@ def test_tracer_tags_requests_with_the_innermost_repo_frame(tmp_path):
         print(json.dumps(seen))
     """))
     env = {"PYTHONPATH": str(proxy.TRACER_DIR), "MMD_REPO_ROOT": str(repo), "PYTEST_CURRENT_TEST": "tests/t.py::t (call)",
-           "PATH": "/usr/bin:/bin"}
+           "PATH": "/usr/bin:/bin", "MMD_RUN": "4"}
     out = subprocess.run([sys.executable, str(repo / "tests" / "run.py"), str(repo)], env=env, capture_output=True, text=True)
     assert out.returncode == 0, out.stderr
     seen = json.loads(out.stdout)
-    assert seen["x-mmd-site"] == "pkg/llm.py:4" and seen["x-mmd-test"] == "tests/t.py::t (call)"
+    assert seen["x-mmd-site"] == "pkg/llm.py:4" and seen["x-mmd-test"] == "tests/t.py::t (call)" and seen["x-mmd-run"] == "4"
     assert seen["x-mmd-chain"] == "pkg/llm.py:4"  # repo frames only, innermost first; the test file is excluded
 
 
@@ -186,8 +191,138 @@ def test_tracer_tags_requests_made_by_the_real_openai_sdk(server):
     """))
     script = "import sys; sys.path.insert(0, sys.argv[1]); from pkg.ask import ask; print(ask().choices[0].message.content)"
     env = {"PYTHONPATH": str(proxy.TRACER_DIR), "MMD_REPO_ROOT": str(repo), "PYTEST_CURRENT_TEST": "tests/t.py::t (call)",
-           "OPENAI_BASE_URL": base + "/v1", "OPENAI_API_KEY": "dummy", "PATH": "/usr/bin:/bin"}
+           "OPENAI_BASE_URL": base + "/v1", "OPENAI_API_KEY": "dummy", "PATH": "/usr/bin:/bin", "MMD_RUN": "1"}
     out = subprocess.run([sys.executable, "-c", script, str(repo)], env=env, capture_output=True, text=True, timeout=60)
     assert out.returncode == 0, out.stderr[-2000:]
     rec = calls(tmp)[-1]
-    assert rec["site"] == "pkg/ask.py:4" and rec["test"] == "tests/t.py::t"
+    assert rec["site"] == "pkg/ask.py:4" and rec["test"] == "tests/t.py::t" and rec["run"] == 1
+
+
+def test_any_unexpected_proxy_error_is_logged_with_status_500_and_answered(server):
+    """Before: an exception inside do_POST dropped the connection and left no line in calls.jsonl."""
+    base, up, tmp, _ = server
+    req = urllib.request.Request(base + "/v1/chat/completions", data=b"{not json", method="POST",
+                                 headers={"Content-Type": "application/json", "x-mmd-site": "app/z.py:1", "x-mmd-run": "2"})
+    with pytest.raises(urllib.error.HTTPError) as e:
+        REAL_URLOPEN(req, timeout=10)
+    rec = calls(tmp)[-1]
+    assert e.value.code == 500 and rec["status"] == 500 and rec["proxy_error"].startswith("JSONDecodeError")
+    assert rec["site"] == "app/z.py:1" and rec["run"] == 2 and up.bodies == []
+
+
+def test_null_max_tokens_is_served_and_logged(server):
+    base, up, tmp, _ = server
+    status, _ = post(base, {"model": "m", "messages": [{"role": "user", "content": "x"}], "max_tokens": None})
+    assert status == 200 and calls(tmp)[-1]["status"] == 200 and len(up.bodies) == 1
+
+
+def test_the_app_gets_the_servers_raw_answer_and_empty_arguments_are_only_logged(server):
+    base, up, tmp, _ = server
+    up.message = {"role": "assistant", "content": None,
+                  "tool_calls": [{"id": "1", "type": "function", "function": {"name": "f", "arguments": ""}}]}
+    _, text = post(base, {"model": "m", "messages": [], "tools": [{"type": "function", "function": {"name": "f"}}]})
+    assert json.loads(text)["choices"][0]["message"]["tool_calls"][0]["function"]["arguments"] == ""
+    assert calls(tmp)[-1]["repaired_empty_args"] == 1
+
+
+def test_passthrough_sends_the_body_as_the_app_built_it(server):
+    base, up, tmp, _ = server
+    body = {"model": NANO, "messages": [{"role": "user", "content": "x"}, {"role": "assistant", "content": "{"}],
+            "seed": 3, "stream": True, "stream_options": {"include_usage": True}}
+    post(base, body, site="app/pass.py:1")
+    sent = up.bodies[-1]
+    assert sent == {"model": NANO, "messages": body["messages"], "seed": 3}  # prefill and seed kept, stream removed
+    assert calls(tmp)[-1]["mode"] == "passthrough" and calls(tmp)[-1]["changes"] == []
+
+
+def test_run_index_header_is_logged(server):
+    base, up, tmp, _ = server
+    req = urllib.request.Request(base + "/v1/chat/completions", data=json.dumps({"model": "m", "messages": []}).encode(),
+                                 headers={"Content-Type": "application/json", "x-mmd-run": "3"}, method="POST")
+    REAL_URLOPEN(req, timeout=10).read()
+    assert calls(tmp)[-1]["run"] == 3
+
+
+def test_embeddings_are_refused_when_the_routes_name_no_embedding_model(server):
+    base, up, tmp, _ = server
+    with pytest.raises(urllib.error.HTTPError) as e:
+        post(base, {"model": "text-embedding-3-small", "input": "x"}, path="/v1/embeddings")
+    assert e.value.code == 501 and up.bodies == []
+
+
+def test_embeddings_served_when_the_routes_name_a_model(tmp_path, monkeypatch):
+    up = FakeUpstream()
+    monkeypatch.setattr(tf.urllib.request, "urlopen", up)
+    ledger = tf.Ledger(tmp_path / "led.jsonl", caps={"total": 0.05, "c1": 0.05})
+    routes = {"default": {"mode": "broken"}, "embedding_model": tf.EMBEDDING_MODEL}
+    srv = proxy.make_server(0, routes, tmp_path / "calls.jsonl", tf.Client("c1", ledger=ledger, key="k", log=lambda m: None))
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    try:
+        status, text = post(f"http://127.0.0.1:{srv.server_address[1]}",
+                            {"model": "text-embedding-3-small", "input": ["a"], "encoding_format": "float"}, path="/v1/embeddings")
+    finally:
+        srv.shutdown()
+    assert status == 200 and json.loads(text)["data"][0]["embedding"] == [0.0, 1.0]
+    assert up.bodies[-1] == {"model": tf.EMBEDDING_MODEL, "input": ["a"], "encoding_format": "float"}
+    rec = calls(tmp_path)[-1]
+    assert rec["mode"] == "embedding" and rec["model"] == tf.EMBEDDING_MODEL and rec["cost"] > 0
+
+
+VALIDATOR_TOOL = {"type": "function", "function": {"name": "Validator", "parameters": {
+    "type": "object", "properties": {"is_valid": {"type": "boolean"}, "reason": {"anyOf": [{"type": "string"}, {"type": "null"}]},
+                                     "fixed_value": {"anyOf": [{"type": "string"}, {"type": "null"}]}},
+    "required": ["is_valid"]}}}
+USER_TOOL = {"type": "function", "function": {"name": "User", "parameters": {
+    "$defs": {"Role": {"enum": ["admin", "user"], "type": "string"}},
+    "type": "object", "properties": {"name": {"type": "string"}, "age": {"type": "integer", "maximum": 120},
+                                     "role": {"$ref": "#/$defs/Role"}, "tags": {"type": "array", "items": {"type": "string"}}},
+    "required": ["name", "age"]}}}
+
+
+def test_wrong_mode_answers_with_a_wellformed_wrong_tool_call_without_calling_a_model(server):
+    base, up, tmp, _ = server
+    _, text = post(base, {"model": "m", "messages": [], "tools": [USER_TOOL, VALIDATOR_TOOL],
+                          "tool_choice": {"type": "function", "function": {"name": "Validator"}}}, site="app/wrong.py:1")
+    tc = json.loads(text)["choices"][0]["message"]["tool_calls"][0]
+    assert tc["function"]["name"] == "Validator" and json.loads(tc["function"]["arguments"])["is_valid"] is True
+    _, text = post(base, {"model": "m", "messages": [], "tools": [USER_TOOL]}, site="app/wrong.py:1")
+    args = json.loads(json.loads(text)["choices"][0]["message"]["tool_calls"][0]["function"]["arguments"])
+    assert args == {"name": "mmd-wrong", "age": 120, "role": "user", "tags": ["mmd-wrong"]}
+    assert up.bodies == [] and calls(tmp)[-1]["mode"] == "wrong" and calls(tmp)[-1]["tool_calls"] == 1
+
+
+def test_wrong_mode_json_schema_and_plain_text(server):
+    base, up, tmp, _ = server
+    schema = {"type": "object", "properties": {"answer": {"type": "number"}}}
+    _, text = post(base, {"model": "m", "messages": [], "response_format": {"type": "json_schema", "json_schema": {
+        "name": "A", "schema": schema}}}, site="app/wrong.py:1")
+    assert json.loads(json.loads(text)["choices"][0]["message"]["content"]) == {"answer": 7919.5}
+    _, text = post(base, {"model": "m", "messages": [], "stream": True}, site="app/wrong.py:1")
+    assert proxy.WRONG_TEXT in text and up.bodies == []
+
+
+def test_proxy_reads_its_key_from_stdin_not_from_the_environment(tmp_path):
+    import os, socket, time as _t
+    routes = tmp_path / "routes.json"
+    routes.write_text(json.dumps({"default": {"mode": "broken"}}))
+    with socket.socket() as sock:
+        sock.bind(("127.0.0.1", 0))
+        port = sock.getsockname()[1]
+    env = {k: v for k, v in os.environ.items() if k != "NEBIUS_API_KEY"}
+    p = subprocess.Popen([sys.executable, "-m", "model_moving_day.proxy", "--port", str(port), "--routes", str(routes),
+                          "--log", str(tmp_path / "calls.jsonl"), "--ledger", str(tmp_path / "led.jsonl"), "--cap", "0.01",
+                          "--key-stdin"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=env,
+                         cwd=str(proxy.TRACER_DIR.parents[1]))
+    try:
+        p.stdin.write(b"secret-from-stdin\n")
+        p.stdin.close()
+        for _ in range(100):
+            with socket.socket() as sock:
+                if sock.connect_ex(("127.0.0.1", port)) == 0:
+                    break
+            _t.sleep(0.05)
+        status, _ = post(f"http://127.0.0.1:{port}", {"model": "m", "messages": []})
+        assert status == 200 and p.poll() is None
+    finally:
+        p.terminate()
+        p.wait(timeout=5)

@@ -5,8 +5,8 @@ Handles the Nemotron quirks we hit in practice: text arriving in `reasoning` wit
 Every call reserves its worst-case cost in a shared append-only ledger before it is sent, so a hard
 spend cap holds across processes and threads. Token Factory has no spend limit of its own.
 """
-import fcntl, json, os, time, urllib.error, urllib.request
-from dataclasses import dataclass
+import fcntl, http.client, json, os, time, urllib.error, urllib.request
+from dataclasses import dataclass, field
 from pathlib import Path
 
 API = os.environ.get("TF_BASE_URL", "https://api.tokenfactory.nebius.com/v1")
@@ -22,7 +22,13 @@ PRICES = {
     "Qwen/Qwen3-235B-A22B-Instruct-2507": (0.20, 0.60),
     "deepseek-ai/DeepSeek-V4-Flash-0731": (0.14, 0.28),
     "openai/gpt-oss-120b": (0.15, 0.60),
+    "Qwen/Qwen3-Embedding-8B": (0.01, 0.0),  # the only embedding model on Token Factory (input tokens only)
 }
+EMBEDDING_MODEL = "Qwen/Qwen3-Embedding-8B"
+# Failures after the request may have reached the server (connection reset, truncated or unparsable body, TLS error,
+# no choices): the reservation is kept, because the call may still be billed, and the call is retried.
+# HTTPError is a URLError, so it is caught before this tuple.
+TRANSIENT = (TimeoutError, urllib.error.URLError, http.client.HTTPException, OSError, ValueError)
 DEFAULT_CAPS = {"total": 40.0, "b2": 20.0, "c1": 15.0, "demo": 5.0}
 
 
@@ -48,7 +54,8 @@ class Reply:
     usage: dict
     cost: float
     seconds: float
-    raw: dict
+    raw: dict             # exactly what the server sent (tool-call repairs live in `tool_calls` only)
+    headers: dict = field(default_factory=dict)  # x-ratelimit-* and retry-after response headers, lower-cased
 
     @property
     def truncated(self):
@@ -57,6 +64,16 @@ class Reply:
     @property
     def reasoning_tokens(self):
         return (self.usage.get("completion_tokens_details") or {}).get("reasoning_tokens") or 0
+
+
+@dataclass
+class EmbedReply:
+    model: str
+    usage: dict
+    cost: float
+    seconds: float
+    raw: dict
+    headers: dict = field(default_factory=dict)
 
 
 def tool_args(tool_call):
@@ -113,11 +130,12 @@ class Ledger:
 
 
 class Client:
-    def __init__(self, tag, ledger=None, key=None, fallbacks=None, timeout=300, max_attempts=5, log=print):
+    def __init__(self, tag, ledger=None, key=None, fallbacks=None, timeout=300, max_attempts=5, log=print, max_sleep=None):
         self.tag, self.ledger = tag, ledger or Ledger()
         self.key = key or os.environ["NEBIUS_API_KEY"]
         self.fallbacks = fallbacks or {}  # {"model-id": ["fallback-id", ...]}, tried in order on HTTP 404
         self.timeout, self.max_attempts, self.log = timeout, max_attempts, log
+        self.max_sleep = max_sleep  # cap on one back-off sleep (Retry-After included); None = as the server says
 
     def chat(self, model, messages, **params):
         chain = [model] + self.fallbacks.get(model, [])
@@ -135,31 +153,76 @@ class Client:
             raise TFError(None, f"no price for {model}; add it to PRICES before calling")
         p_in, p_out = PRICES[model]
         body = {"model": model, "messages": messages, **params}
-        est_in = len(json.dumps(body)) / 3  # generous: ~3 characters per token
-        reserve = (est_in * p_in + params.get("max_tokens", 8192) * p_out) / 1e6
+        raw, headers, seconds, reserve = self._post("/chat/completions", body, reserve_usd(body, p_in, p_out), _check_chat)
+        reply = _parse(model, raw, seconds, p_in, p_out)
+        reply.headers = headers
+        self.ledger.settle(self.tag, reply.cost - reserve, f"settle {model}")
+        return reply
+
+    def embed(self, model, input, **params):
+        """POST /embeddings; embeddings bill input tokens only."""
+        if model not in PRICES:
+            raise TFError(None, f"no price for {model}; add it to PRICES before calling")
+        p_in = PRICES[model][0]
+        body = {"model": model, "input": input, **params}
+        raw, headers, seconds, reserve = self._post("/embeddings", body, len(json.dumps(body)) / 3 * p_in / 1e6, _check_embed)
+        usage = raw.get("usage") or {}
+        cost = (usage.get("prompt_tokens") or usage.get("total_tokens") or 0) * p_in / 1e6
+        self.ledger.settle(self.tag, cost - reserve, f"settle {model}")
+        return EmbedReply(model, usage, cost, round(seconds, 3), raw, headers)
+
+    def _post(self, path, body, reserve, check):
+        """Send with a reservation per attempt; returns (raw, rate-limit headers, seconds, reservation)."""
+        model = body["model"]
         for attempt in range(self.max_attempts):
             self.ledger.reserve(self.tag, reserve, f"reserve {model}")
             t0 = time.time()
             try:
-                req = urllib.request.Request(f"{API}/chat/completions", data=json.dumps(body).encode(), method="POST",
+                req = urllib.request.Request(f"{API}{path}", data=json.dumps(body).encode(), method="POST",
                                              headers={"Content-Type": "application/json", "Authorization": f"Bearer {self.key}"})
                 with urllib.request.urlopen(req, timeout=self.timeout) as r:
+                    headers = {k.lower(): v for k, v in (getattr(r, "headers", None) or {}).items()
+                               if k.lower().startswith("x-ratelimit") or k.lower() == "retry-after"}
                     raw = json.load(r)
+                check(raw)
             except urllib.error.HTTPError as e:
                 self.ledger.settle(self.tag, -reserve, f"release {model} HTTP {e.code}")  # error responses are not billed
                 if e.code in RETRY_STATUSES and attempt + 1 < self.max_attempts:
-                    time.sleep(_retry_after(e.headers.get("Retry-After"), attempt))
+                    wait = _retry_after(e.headers.get("Retry-After"), attempt)
+                    time.sleep(wait if self.max_sleep is None else min(wait, self.max_sleep))
                     continue
-                raise TFError(e.code, e.read()[:500].decode(errors="replace"))
-            except (TimeoutError, urllib.error.URLError) as e:  # reservation kept: the request may still be billed
+                raise TFError(e.code, _error_body(e))
+            except TRANSIENT as e:  # reservation kept: the request may still be billed
                 if attempt + 1 < self.max_attempts:
                     time.sleep(2 ** attempt)
                     continue
-                raise TFError(None, f"{type(e).__name__}: {e}")
-            reply = _parse(model, raw, time.time() - t0, p_in, p_out)
-            self.ledger.settle(self.tag, reply.cost - reserve, f"settle {model}")
-            return reply
+                raise TFError(None, f"{type(e).__name__}: {e}"[:500])
+            return raw, headers, time.time() - t0, reserve
         raise AssertionError("unreachable")
+
+
+def reserve_usd(body, p_in, p_out):
+    """Worst-case cost of one chat call: ~3 characters per input token, the output budget times n choices."""
+    out = body.get("max_tokens") or body.get("max_completion_tokens") or 8192
+    return (len(json.dumps(body)) / 3 * p_in + out * (body.get("n") or 1) * p_out) / 1e6
+
+
+def _check_chat(raw):
+    if not isinstance(raw, dict) or not isinstance(raw.get("choices"), list) or not raw["choices"] \
+            or not isinstance(raw["choices"][0], dict):
+        raise ValueError(f"response without choices: {json.dumps(raw)[:200]}")
+
+
+def _check_embed(raw):
+    if not isinstance(raw, dict) or not isinstance(raw.get("data"), list) or not raw["data"]:
+        raise ValueError(f"embedding response without data: {json.dumps(raw)[:200]}")
+
+
+def _error_body(e):
+    try:
+        return e.read()[:500].decode(errors="replace")
+    except Exception as read_error:  # the error body itself may be cut off
+        return f"(error body unreadable: {type(read_error).__name__})"
 
 
 def _retry_after(header, attempt):
@@ -174,9 +237,9 @@ def _parse(model, raw, seconds, p_in, p_out):
     msg = choice.get("message") or {}
     content = msg.get("content") or ""
     reasoning = msg.get("reasoning") or msg.get("reasoning_content") or ""
-    tool_calls = msg.get("tool_calls") or []
-    for tc in tool_calls:
-        tc.setdefault("function", {})["arguments"] = tc["function"].get("arguments") or "{}"
+    tool_calls = [dict(tc, function=dict(tc.get("function") or {})) for tc in msg.get("tool_calls") or []]
+    for tc in tool_calls:  # normalized copies: `raw` keeps exactly what the server sent
+        tc["function"]["arguments"] = tc["function"].get("arguments") or "{}"
     from_reasoning = not content and not tool_calls and bool(reasoning)
     usage = raw.get("usage") or {}
     cost = (usage.get("prompt_tokens", 0) * p_in + usage.get("completion_tokens", 0) * p_out) / 1e6

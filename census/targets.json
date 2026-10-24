@@ -34,6 +34,33 @@
    "--asyncio-mode=auto",
    "-q",
    "-rs"
+  ],
+  "helper_package": "instructor",
+  "retiring_model": "gpt-4.1-mini",
+  "site_exclusions": {
+   "instructor/v2/providers/openai/client.py:23": "Responses API call site: 20 tests exist (tests/llm/test_openai/slow/test_response.py, sync and async) and are excluded because the proxy does not route /v1/responses (decision 2026-10-24: found, not measured)",
+   "instructor/v2/providers/openai/client.py:29": "Responses API call site: 20 tests exist (tests/llm/test_openai/slow/test_response.py, sync and async) and are excluded because the proxy does not route /v1/responses (decision 2026-10-24: found, not measured)"
+  },
+  "baseline_evidence": "Upstream CI run 39368977288 at the pinned 6cd771c: step 'Run core provider tests (OpenAI)' (tests/llm/test_core_providers -k openai, gpt-4.1-mini, one run) succeeded; the run's overall conclusion is failure from another job (checked with gh run view, 2026-10-24).",
+  "scope_decisions": [
+   {
+    "commit": "be1e926",
+    "local_commit_time_utc": "2026-10-23T16:28:41Z",
+    "what": "test selection (tests/llm/test_core_providers and tests/llm/test_openai, -k openai) and exclusions: embeddings (test_attr.py), image/audio input (test_multimodal.py), moderation endpoint (test_patch_completes_successfully)",
+    "order": "before the first instructor sandbox run (image prepared 16:28:51Z)"
+   },
+   {
+    "commit": "e73fdac",
+    "local_commit_time_utc": "2026-10-23T16:32:57Z",
+    "what": "excluded tests/llm/test_openai/slow/test_response.py (Responses API, 20 tests)",
+    "order": "after control attempt 1 (runs from 16:29:09Z), where all 20 failed with HTTP 501 because the proxy does not route /v1/responses; attempt 1 is kept in evidence/census/instructor/attempt1/"
+   },
+   {
+    "commit": "census/MANIFEST.json",
+    "local_commit_time_utc": "2026-10-24",
+    "what": "client.py:23 and :29 listed as 'found, not measured' (decision 2026-10-24 not to proxy /v1/responses in this phase); retry.py:483 stays 'traced, not covered' (its one test passes on an empty answer)",
+    "order": "after the controls, before any ladder job"
+   }
   ]
  },
  "llm": {
@@ -69,11 +96,29 @@
    "-rs",
    "--disable-recording"
   ],
-  "notes": {
-   "wording_pinned_tests": {
-    "tests/test_tools.py::test_tool_use_basic": "asserts gpt-4o-mini's exact sentence 'The result of \\\\( 1231 \\\\times 2331 \\\\) is \\\\( 2,869,461 \\\\).'",
-    "tests/test_tools_streaming.py": "asserts the recorded tool output '0.fixed-version'; a live run returns the installed llm version"
+  "helper_package": "llm",
+  "retiring_model": "gpt-4o-mini and gpt-4.1-mini",
+  "site_exclusions": {
+   "llm/default_plugins/openai_models.py:1441": "not testable live: its 5 flip tests assert wording recorded from the old model (tests/test_tools.py:226, gpt-4o-mini's exact sentence) or the recorded tool output '0.fixed-version' (tests/test_tools_streaming.py :18, :28, :40, :53; a live run returns the installed llm version), and the variants expect different sentences, so no live model, the old one included, can pass them",
+   "llm/default_plugins/openai_models.py:2552": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+   "llm/default_plugins/openai_models.py:2677": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+   "llm/default_plugins/openai_models.py:2799": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+   "llm/default_plugins/openai_models.py:2926": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured"
+  },
+  "baseline_evidence": "Cassette replay 6/6 at aebaca2 (control-baseline, one run, recorded answers of gpt-4o-mini and gpt-4.1-mini); the ladder still uses the assumed 1.0.",
+  "scope_decisions": [
+   {
+    "commit": "be1e926",
+    "local_commit_time_utc": "2026-10-23T16:28:41Z",
+    "what": "3 test nodes chosen (test_tool_use_basic, test_tool_use_chain_of_two_calls, tests/test_tools_streaming.py), Responses tests excluded",
+    "order": "before the first llm sandbox run (image prepared 16:34:23Z)"
+   },
+   {
+    "commit": "census/MANIFEST.json",
+    "local_commit_time_utc": "2026-10-24",
+    "what": "openai_models.py:1441 excluded from the ladder as not testable live (acceptance 2026-10-24, MF2); :1494 stays, flagged cassette-only (live forward and live broken both fail; only the recorded answer passes)",
+    "order": "after the controls (Super live 0/6), before any ladder job"
    }
-  }
+  ]
  }
 }

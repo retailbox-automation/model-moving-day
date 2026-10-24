@@ -39,6 +39,8 @@ def test_ultra_with_tools_gets_the_required_switches_even_when_reasoning_off_was
     body, ch = nz.normalize({"model": "m", "messages": [], "tools": [{"type": "function"}]}, ULTRA, reasoning="off")
     assert body["chat_template_kwargs"] == {"enable_thinking": True, "force_nonempty_content": True}
     assert any(c["kind"] == "reasoning" and "Ultra" in c["why"] for c in ch)
+    # the reasoning-off fix did not survive, so it must not be listed as applied
+    assert ("reasoning", "enable_thinking") not in kinds(ch) and ("refused", "enable_thinking") in kinds(ch)
 
 
 def test_extra_body_is_flattened_like_the_openai_sdk_does():
@@ -52,6 +54,15 @@ def test_min_max_tokens_raises_a_small_budget():
     assert body["max_tokens"] == 8000 and ("raised", "max_tokens") in kinds(ch)
     body, ch = nz.normalize({"model": "m", "messages": [], "max_tokens": 9000}, NANO, min_max_tokens=8000)
     assert body["max_tokens"] == 9000 and ("raised", "max_tokens") not in kinds(ch)
+
+
+def test_min_max_tokens_sets_a_budget_when_the_request_has_none():
+    """The fix must change the request even when the app sends no max_tokens (instructor's tests do not)."""
+    for req in ({"model": "m", "messages": []}, {"model": "m", "messages": [], "max_tokens": None}):
+        body, ch = nz.normalize(req, NANO, min_max_tokens=8000)
+        assert body["max_tokens"] == 8000 and ("raised", "max_tokens") in kinds(ch)
+    body, ch = nz.normalize({"model": "m", "messages": [], "max_completion_tokens": 500}, NANO, min_max_tokens=8000)
+    assert body["max_completion_tokens"] == 8000 and "max_tokens" not in body
 
 
 def test_input_is_not_mutated():

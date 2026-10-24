@@ -58,6 +58,9 @@ def normalize(request, model, reasoning="keep", min_max_tokens=None):
     if model == ULTRA and body.get("tools") and (ctk.get("enable_thinking") is not True or not ctk.get("force_nonempty_content")):
         before = dict(ctk)
         ctk.update(enable_thinking=True, force_nonempty_content=True)
+        if reasoning == "off":  # the asked switch did not survive: say so instead of listing it as applied
+            changes[:] = [c for c in changes if not (c["kind"] == "reasoning" and c["key"] == "enable_thinking")]
+            _change(changes, "refused", "enable_thinking", False, True, "reasoning off is not possible on Ultra with tools")
         _change(changes, "reasoning", "chat_template_kwargs", before, dict(ctk),
                 "Ultra with tools must run with enable_thinking and force_nonempty_content (NVIDIA model card)")
     if ctk:
@@ -66,7 +69,7 @@ def normalize(request, model, reasoning="keep", min_max_tokens=None):
     if min_max_tokens:
         key = "max_tokens" if "max_tokens" in body or "max_completion_tokens" not in body else "max_completion_tokens"
         cur = body.get(key)
-        if cur is not None and cur < min_max_tokens:
+        if cur is None or cur < min_max_tokens:  # an absent budget is set too: otherwise the fix changes nothing
             body[key] = min_max_tokens
             _change(changes, "raised", key, cur, min_max_tokens, "reasoning tokens share the max_tokens budget")
     return body, changes

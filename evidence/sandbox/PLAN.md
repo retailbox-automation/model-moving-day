@@ -14,3 +14,15 @@ Raw records: `evidence/sandbox/raw.jsonl` (no secrets: env values are never writ
 
 Stop rule (from the brief): any non-zero `cost` reported by a sandbox result, or any credit change, stops the
 spike and is reported.
+
+## Amendment (decided 2026-10-23T16:04Z, written down here 2026-10-24)
+
+The stop rule above was replaced at 16:04Z, after the first T1 run reported `cost` $0.00104: each sandbox run
+instead reserved $0.01 in the shared spend ledger and was settled to its reported `cost`. Reason: the Sandboxes docs
+call the field "for diagnostics only". The billing check of 2026-10-24 (Token Factory Transactions and Usage for
+October show only model tokens, $0.54, while the field summed to $0.493 over 15 runs) found no charge for Sandboxes
+in the beta, so from phase B on the field is logged as a diagnostic and nothing is reserved for it. This is an
+observation dated 2026-10-24, not a statement that Sandboxes are free.
+
+Step T4 was carried out by the census itself, not by this spike script: `census prepare instructor` and
+`census control instructor` (evidence/census/instructor/image.json and control-*.json). raw.jsonl holds T0–T3.

@@ -9,6 +9,25 @@ import math
 from dataclasses import dataclass, field
 
 Z95 = 1.959963984540054
+NANO, LIGHT = "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B", "nvidia/Nemotron-3_5-Lightning"
+SUPER, ULTRA = "nvidia/nemotron-3-super-120b-a12b", "nvidia/Nemotron-3-Ultra-550b-a55b"
+RUNGS = [("Nano", NANO), ("Lightning", LIGHT), ("Super", SUPER), ("Ultra", ULTRA)]
+# Decision parameters; census/MANIFEST.json records them before the first ladder job and the ladder refuses to run
+# when they differ. Baseline 1.0 is the strictest choice (assumed, not measured: see the manifest).
+K, MARGIN, BASELINE = 5, 0.2, 1.0
+MAX_INFRA_RETRIES = 2  # re-runs of the same rung for runs lost to infrastructure; then the site's status is "infra"
+
+
+def is_infra_status(code):
+    """Proxy-logged statuses that say nothing about the model: budget (402), rate limit (429), any 5xx (502 from
+    upstream, 500 from the proxy itself, 501 for an endpoint the proxy does not route) and None (timeout or a
+    connection that failed after retries)."""
+    code = str(code)
+    return code in ("402", "429", "None") or (code.isdigit() and 500 <= int(code) <= 599)
+
+
+def required_passes(k, baseline, margin):
+    return math.ceil((baseline - margin) * k - 1e-9)
 
 
 def wilson(k, n, z=Z95):
@@ -90,12 +109,18 @@ def cell_passes(cell, baseline, margin, k):
     return cell.n >= k and cell.rate >= baseline - margin - 1e-12
 
 
+def decided_red(cell, baseline, margin, k):
+    """True when the valid runs already hold more failures than a passing cell of K runs may have."""
+    return cell.n - cell.k > k - required_passes(k, baseline, margin)
+
+
 @dataclass
 class Fix:
     kind: str
     params: dict
     why: str
     by: str = "rule"  # "rule" or the model that proposed it
+    expect: tuple = ()  # request changes ("kind:key") that prove the fix reached the request
 
 
 @dataclass

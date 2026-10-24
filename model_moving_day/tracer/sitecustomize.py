@@ -1,11 +1,11 @@
 """Call-site tracer, loaded by Python at start-up when this directory is on PYTHONPATH.
 
 Patches httpx and httpx2 (openai 3.x, litellm and most LLM clients send through one of them) so every request
-carries three headers:
+carries these headers:
 x-mmd-site = "<path relative to MMD_REPO_ROOT>:<line>" of the innermost stack frame that belongs to the target
 repo's own source (not its tests, not site-packages), x-mmd-chain = all such frames (innermost first, up to 8),
-and x-mmd-test = $PYTEST_CURRENT_TEST. The recording proxy
-logs both, which links each of the repo's tests to the call sites it really reaches.
+x-mmd-test = $PYTEST_CURRENT_TEST and x-mmd-run = $MMD_RUN (which of the K test runs sent it). The recording
+proxy logs them, which links each of the repo's tests and runs to the call sites it really reaches.
 """
 import os, sys
 
@@ -33,6 +33,7 @@ def _tag(request):
         request.headers["x-mmd-site"] = chain[0] if chain else "unknown"
         request.headers["x-mmd-chain"] = "|".join(chain)
         request.headers["x-mmd-test"] = os.environ.get("PYTEST_CURRENT_TEST", "")
+        request.headers["x-mmd-run"] = os.environ.get("MMD_RUN", "")
     except Exception as e:  # never break the app under test; say why on stderr
         print(f"[mmd-tracer] could not tag request: {type(e).__name__}: {e}", file=sys.stderr)
 

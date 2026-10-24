@@ -113,9 +113,11 @@
     "tests/test_tools_streaming.py::test_tools_streaming_variant_c",
     "tests/test_tools_streaming.py::test_tools_streaming_variant_d"
    ],
-   "covered": true,
+   "covered": false,
    "isolated": true,
    "good_side": "baseline",
+   "cassette_only": true,
+   "wrong_control": false,
    "details": [
     {
      "test": "tests/test_tools.py::test_tool_use_basic",
@@ -147,7 +149,8 @@
      "broken": "failed",
      "forward": "failed"
     }
-   ]
+   ],
+   "excluded": "not testable live: its 5 flip tests assert wording recorded from the old model (tests/test_tools.py:226, gpt-4o-mini's exact sentence) or the recorded tool output '0.fixed-version' (tests/test_tools_streaming.py :18, :28, :40, :53; a live run returns the installed llm version), and the variants expect different sentences, so no live model, the old one included, can pass them"
   },
   {
    "site": "llm/default_plugins/openai_models.py:1494",
@@ -158,6 +161,8 @@
    "covered": true,
    "isolated": true,
    "good_side": "baseline",
+   "cassette_only": true,
+   "wrong_control": false,
    "details": [
     {
      "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
@@ -179,8 +184,14 @@
   "llm/default_plugins/openai_models.py:3017",
   "llm/default_plugins/openai_models.py:519"
  ],
+ "excluded_sites": {
+  "llm/default_plugins/openai_models.py:1441": "not testable live: its 5 flip tests assert wording recorded from the old model (tests/test_tools.py:226, gpt-4o-mini's exact sentence) or the recorded tool output '0.fixed-version' (tests/test_tools_streaming.py :18, :28, :40, :53; a live run returns the installed llm version), and the variants expect different sentences, so no live model, the old one included, can pass them",
+  "llm/default_plugins/openai_models.py:2552": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+  "llm/default_plugins/openai_models.py:2677": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+  "llm/default_plugins/openai_models.py:2799": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+  "llm/default_plugins/openai_models.py:2926": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured"
+ },
  "covered_sites": [
-  "llm/default_plugins/openai_models.py:1441",
   "llm/default_plugins/openai_models.py:1494"
  ]
 }
