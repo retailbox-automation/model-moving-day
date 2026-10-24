@@ -1,0 +1,760 @@
+{
+ "amendments": [],
+ "baseline_before": {
+  "method": "priced on the Nemotron cell's measured prompt tokens and visible output tokens per call (reasoning tokens excluded), i.e. as if the old app made the same calls; per passed run as well as per 1,000 calls",
+  "model": "gpt-6-luna",
+  "source": "platform.openai.com/docs/pricing.md and /docs/deprecations.md, read 2026-10-20 (docs/kb/05-c1-domain.md)",
+  "usd_per_1m_tokens": [
+   0.1,
+   0.5
+  ],
+  "why": "OpenAI's recommended replacement for gpt-4o, gpt-4o-mini, gpt-4.1 and gpt-4.1-mini (retiring 2027-01-14, announced 2026-10-14), the models the targets' tests name"
+ },
+ "budgets": {
+  "c1_cap_usd": 15.0,
+  "cap_usd_per_job": 1.0,
+  "sandbox_runs": {
+   "limit": "MMD_SANDBOX_MAX_RUNS, set by the orchestrator before the first ladder job (default in code 40)",
+   "logged_when_written": 15,
+   "plan": "instructor ladder <= 8, llm ladder <= 8, third repo prepare + controls + ladder <= 13, patch confirm 3, fallback cells, smoke 1-2",
+   "planned_phase_b": 48
+  },
+  "tokens_only": "only model tokens count against the caps; the Sandboxes `cost` field is logged as a diagnostic (billing check 2026-10-24: Sandboxes are not charged)"
+ },
+ "code": {
+  "files_sha256": {
+   "model_moving_day/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "model_moving_day/agent.py": "78801912e52ad9d8cb36170a54e8fa9b42c2024c3dc012eb3292a478dea8ff7b",
+   "model_moving_day/census.py": "2d8a8f912e25c4b25e2e2b63ac8954f58b395f20f5905e8b4727b6d735f4dfd8",
+   "model_moving_day/fakes.py": "f208be4bfa5a18a6f643494f70884a725e8bcf95243b5fd1f0a7dc3f7a7de5a2",
+   "model_moving_day/find.py": "0ec906cb4de772f9b0fc046ee09ecda8e20722216524e746afd6010c6ca1a568",
+   "model_moving_day/freeze.py": "36546c55162515e28a086179cb15b7f801ed6d961f36192558292534fb72ceb0",
+   "model_moving_day/job.py": "bb6cfb52fa389378d217df37c4c1eb85dae3495dd80e9b7df451cbd8ef4f0ce7",
+   "model_moving_day/ladder.py": "4f3afad51e534b389929eccc9324cf6eefc2bba9d1064f656650ad5a8a683aab",
+   "model_moving_day/manifest.py": "23fc7cd151932a2c036a2af1b457b0f6fb85001da3c02085ae393a3690302898",
+   "model_moving_day/normalize.py": "a035f94e364f826be9c76b58e9a988f2d1adcea5425fee0a98e770dd98b289b4",
+   "model_moving_day/patch.py": "f05bf3868c3cf9b4b697e47a7388a9ec549611a7f227dd3e0613004e97f05eff",
+   "model_moving_day/pr.py": "3752f9d7f5386f8081136a74873ab0226812af00a4d33b5cbd4de918128f932f",
+   "model_moving_day/proxy.py": "8c129e98b75cf525cce818d7928e0b886b9fb0890e7f366fb4fd29e6f02b93a6",
+   "model_moving_day/runner.py": "3119e28ca1cbfdb0ff1c8dde36c78e69c994d34e95c174ce7c471315d5ca9d49",
+   "model_moving_day/sandbox.py": "fca5c4187051a81f489b1ee8fa18b88472ace6fd81ff574fbed7fc2f8e683b58",
+   "model_moving_day/templates/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "model_moving_day/templates/nemotron_move.py": "f1fa54817d56089e84dc3215d4cd5378f7b55542a6c217c60a958f02efc0739a",
+   "model_moving_day/tf_client.py": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b",
+   "model_moving_day/tracer/sitecustomize.py": "e17fe6b1d7988aaf3d5cdc2d1f8581d0666759a62e5832c9a131ab3fb39c2b4d"
+  },
+  "git_head_when_written": "9ae2f384e21919fbfefc3a1322f3ba2d02186dfe",
+  "tf_client_sha256": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b"
+ },
+ "first_written_utc": "2026-10-24T10:47:17Z",
+ "not_claimed": [
+  "baseline pass rate 1.0 is assumed (strictest), not measured by us",
+  "K runs of one cell run in one sandbox at the same time, often with temperature 0: they are not independent, so the Wilson interval is optimistic",
+  "covered = the test fails when the proxy answers with an empty message (must-differ control 1); tests that check only types or shapes pass any well-formed answer; a second control with well-formed wrong answers is run only where the manifest lists control-wrong",
+  "streaming tests get server-sent events re-synthesized by the proxy from a non-streaming upstream call",
+  "during the ladder the proxy normalizes requests per rung (logged per call); the patched app is confirmed separately without normalization",
+  "per-call $ is priced on Nemotron's token counts; the baseline uses the same counts (another tokenizer differs)",
+  "test traffic, not production traffic"
+ ],
+ "publication": "every cell is published, including red cells, infra cells, cells of an aborted ladder, smoke runs and the 'old model stays' outcome; every job and cell is also appended to evidence/census/<target>/ladder-log.jsonl, and each ladder run writes its own ladder-<run_id>.json (never overwritten)",
+ "reason": "First version, phase B stage 1 (acceptance 2026-10-24 MF1-MF8): instructor and llm; paper-qa is added by amendment after its controls, before its ladder",
+ "rules": {
+  "baseline_pass_rate": 1.0,
+  "brain": {
+   "chat_template_kwargs": {
+    "nvidia/Nemotron-3-Ultra-550b-a55b": {
+     "enable_thinking": true,
+     "force_nonempty_content": true
+    },
+    "nvidia/nemotron-3-super-120b-a12b": {
+     "force_nonempty_content": true
+    }
+   },
+   "models": [
+    "nvidia/nemotron-3-super-120b-a12b",
+    "nvidia/Nemotron-3-Ultra-550b-a55b"
+   ],
+   "rule": "Super for repos under ~200K tokens of source, Ultra above",
+   "sampling": {
+    "temperature": 1.0,
+    "top_p": 0.95
+   }
+  },
+  "cell_passes": "at least K valid runs and pass rate >= baseline - margin (with K=5: at least 4 of 5)",
+  "confirm": "the patched app is run through the proxy route 'passthrough' (the body exactly as the app built it, no normalization) with NEMOTRON_MOVE=1, K runs of the moved sites' flip tests, same rules",
+  "embedding_model": {
+   "model": "Qwen/Qwen3-Embedding-8B",
+   "rule": "served for /v1/embeddings only when a target needs it; the same on every rung",
+   "usd_per_1m_input_tokens": 0.01
+  },
+  "fallback": "after the climb, every chosen site below Ultra gets one measured cell on the next rung up with its own parameters; the helper falls back only to a fallback cell that passed, else it raises",
+  "fix_rule": "at most one fix per red cell, proposed by the brain and accepted only when the proxy's call log recorded a diagnosis that justifies it; the fixed cell counts only if its calls show the request change the fix declares, else it is published as 'fix not applied' and the site climbs",
+  "fixes": {
+   "raise_max_tokens": {
+    "justified_by_diagnoses": [
+     "empty_content_length"
+    ],
+    "must_show_request_change": [
+     "raised:max_completion_tokens",
+     "raised:max_tokens"
+    ],
+    "route_params": {
+     "min_max_tokens": 8000
+    }
+   },
+   "reasoning_off": {
+    "justified_by_diagnoses": [
+     "answer_in_reasoning_field",
+     "empty_content",
+     "empty_content_length",
+     "leading_whitespace"
+    ],
+    "must_show_request_change": [
+     "reasoning:enable_thinking"
+    ],
+    "route_params": {
+     "reasoning": "off"
+    }
+   }
+  },
+  "infra": {
+   "a run is an infrastructure error, not a run, when": [
+    "the job left no summary (sandbox run lost) or the summary has an error",
+    "the pytest run timed out (exit code 'timeout')",
+    "a flip test of the site is missing from the run's junit report",
+    "a flip test failed and the run logged a proxy status 402/429/5xx/None at a call site the failing tests reach (a run whose flip tests all passed stays a valid pass)"
+   ],
+   "persisting": "the site's status becomes 'infra' at that rung and it does not climb",
+   "retries": 2,
+   "retry_rule": "re-run only the missing valid runs of the same rung and parameters; a cell already holding more failures than a passing cell may have is not re-run"
+  },
+  "jobs": {
+   "per_batch_timeout_s": 3000,
+   "runs_in_parallel": true,
+   "sandbox_timeout_s": 3300,
+   "test_uid": 10001,
+   "upstream": {
+    "attempts": 2,
+    "max_backoff_s": 30,
+    "timeout_s": 270
+   }
+  },
+  "k": 5,
+  "margin": 0.2,
+  "nested_sites": "an outer moved site wins: a moved call inside another moved call is not remapped (the proxy attributes such calls to the outer, innermost-AST site, which is what the ladder measures)",
+  "prices_source": "tokenfactory.nebius.com/api/public/models_info, read 2026-10-23",
+  "required_passes": 4,
+  "run_passes": "every flip test of the call site passed in that run (a skipped flip test is a failure)",
+  "rungs": [
+   {
+    "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+    "rung": "Nano",
+    "usd_per_1m_tokens": [
+     0.06,
+     0.24
+    ]
+   },
+   {
+    "model": "nvidia/Nemotron-3_5-Lightning",
+    "rung": "Lightning",
+    "usd_per_1m_tokens": [
+     0.06,
+     0.24
+    ]
+   },
+   {
+    "model": "nvidia/nemotron-3-super-120b-a12b",
+    "rung": "Super",
+    "usd_per_1m_tokens": [
+     0.3,
+     0.9
+    ]
+   },
+   {
+    "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+    "rung": "Ultra",
+    "usd_per_1m_tokens": [
+     1.0,
+     3.0
+    ]
+   }
+  ]
+ },
+ "schema": "mmd-census-manifest/1",
+ "smoke": [
+  {
+   "id": "S-instructor-super-k1",
+   "k": 1,
+   "purpose": "wiring check of the phase-B job (parallel runs, run tags, key file, test uid, frozen hashes, infra accounting) before the first decision run; published; not for decision",
+   "rungs": [
+    "Super"
+   ],
+   "target": "instructor"
+  }
+ ],
+ "targets": {
+  "instructor": {
+   "ast_sites_not_reached": [],
+   "baseline_evidence": "Upstream CI run 39368977288 at the pinned 6cd771c: step 'Run core provider tests (OpenAI)' (tests/llm/test_core_providers -k openai, gpt-4.1-mini, one run) succeeded; the run's overall conclusion is failure from another job (checked with gh run view, 2026-10-24).",
+   "commit": "6cd771c5254a69f6a6cf9cdf357fb2f9523f0b85",
+   "env": {},
+   "evidence_sha256": {
+    "control-broken.json": "c073fdc662cb0a01909ab71d04467afb4e3a71e47e1047d68023777ccab154d3",
+    "control-forward.json": "e178a9d8877c68d62af90a8a6daebda74da53959fae9c05669dc6ddccd1be58f",
+    "coverage.json": "a9fdb15b7fa87b3f1be6edf2ce8b0e09ea26539c4706b3dd606122f22e5af8ea",
+    "image.json": "579af53a7b403a8ed681efe02e33bf7cbf2abbe418092f6dfb4018e46eb9a3da"
+   },
+   "excluded_sites": {
+    "instructor/v2/providers/openai/client.py:23": "Responses API call site: 20 tests exist (tests/llm/test_openai/slow/test_response.py, sync and async) and are excluded because the proxy does not route /v1/responses (decision 2026-10-24: found, not measured)",
+    "instructor/v2/providers/openai/client.py:29": "Responses API call site: 20 tests exist (tests/llm/test_openai/slow/test_response.py, sync and async) and are excluded because the proxy does not route /v1/responses (decision 2026-10-24: found, not measured)"
+   },
+   "excluded_tests": {
+    "tests/llm/test_openai/slow/test_response.py": "Responses API (/v1/responses); the proxy routes chat completions only (20 tests failed with 501 in control run 1)",
+    "tests/llm/test_openai/test_attr.py": "embeddings endpoint; the proxy routes chat completions only",
+    "tests/llm/test_openai/test_multimodal.py": "image and audio input; the ladder is text-only Nemotron",
+    "tests/llm/test_openai/test_validators.py::test_patch_completes_successfully": "OpenAI moderation endpoint"
+   },
+   "flip_tests": {
+    "instructor/v2/core/retry.py:224": [
+     "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces",
+     "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]",
+     "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]",
+     "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]",
+     "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]",
+     "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]",
+     "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]",
+     "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]"
+    ],
+    "instructor/v2/core/retry.py:523": [
+     "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]",
+     "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]",
+     "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]",
+     "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]",
+     "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]",
+     "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]",
+     "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]",
+     "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]",
+     "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]",
+     "tests/llm/test_core_providers/test_retries.py::test_validation_with_retries[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_annotated_int[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_bool[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_int[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_literal[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_str[openai]",
+     "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]",
+     "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]",
+     "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]",
+     "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]",
+     "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]",
+     "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]",
+     "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]",
+     "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]",
+     "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]",
+     "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces",
+     "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]",
+     "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]",
+     "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]",
+     "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]"
+    ],
+    "instructor/v2/validation/llm_validators.py:34": [
+     "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]",
+     "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]"
+    ]
+   },
+   "frozen": {
+    "commit": "6cd771c5254a69f6a6cf9cdf357fb2f9523f0b85",
+    "extra_paths": [],
+    "files": 266,
+    "hashes": {
+     "pyproject.toml": "ebbece9384f8a5e3099b040bb175b5f56312d02e502de9a286c3ad6688fbf7b3",
+     "tests/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+     "tests/assets/gettysburg.wav": "7630daffb2f28f2724d81f1ff2039eb69a5fa360db3919721a77032a58db0d46",
+     "tests/assets/image.jpg": "eae125f6a0a5f44c73bd190412034a6c979d4636a45eea45c23409e12e5962c2",
+     "tests/assets/invoice.pdf": "4f40104ae327753398fe2038b5a4c19cec59c299a79e21761b915f09449e7f1f",
+     "tests/benchmarks/test_benchmark_local.py": "ec7796da9952be130ff5f176be45b16a93e65826bd8cccb7565125208d8c3d09",
+     "tests/cache/test_cache_integration.py": "2c4494c8c5f44996a7e7ef8c7229e13791231a30ec47ed518f8edb3b2f14b9d3",
+     "tests/cache/test_cache_key.py": "8b6aa23af0a55e36e6c3f20b629a251cc9555891a26b730042f8a663bc15f0b4",
+     "tests/cache/test_cache_namespace.py": "005c2d3bd02a72e3bff0fb86591fd86a1dcdfbf8bb67d88a9df387a83c54ecbc",
+     "tests/cache/test_cache_response_roundtrip.py": "6a28811d71489f37b614d0fa794570214160d90cf2b19c99d5386f291f9be37c",
+     "tests/cache/test_cache_validation_policy.py": "4a5fb77bf4d29effc21f5334523ca63a0729f1fd2b7bb61cdaa9e27de4cc49ad",
+     "tests/cli/test_files.py": "d2e9202d7f605714b4dcd193b95c563f5125a501018738c5d9c6d5ac4df280f4",
+     "tests/cli/test_help.py": "83e7e12e21f67cd5f7622211e10333f9263bebd31e49323f9b3176243c073c3b",
+     "tests/conftest.py": "2fdbbe34857d974108356310e9c26768ed9ff06a5d974dfc0e2d3d03b4892e8c",
+     "tests/core/test_exception_backwards_compat.py": "505a99c2a8c8d24132b6dd52c163504f9ae7f20775ce2b58f6954b45ae2bcbd1",
+     "tests/core/test_exceptions.py": "ba590b8ea9d3c093307be544147767be1ed53910aff6864f4be8d9d7ccc62955",
+     "tests/core/test_patch.py": "d108ea114328cb6d670100284d5cd3cbe08df50f4458842e7c84eddf465afdeb",
+     "tests/core/test_retry_http_semantics.py": "23bc5687a3c4331c52720cc73d3e6a68744eea735de34e04ad31b1f334079a63",
+     "tests/core/test_retry_json_mode.py": "5b34eba77082ba7824502414e896e9083c7a96c56dc9e92745be04ca3ae57011",
+     "tests/core/test_schema.py": "e8fcace598e5e3d2eb1c484ed3fdeea2a9719901b048c68a6946aea8a6b7deb5",
+     "tests/core/test_schema_utils.py": "68fa3c10006731058036dc4b2d3d0b3dd5843fb1a223869615b8dd1f6f0d8713",
+     "tests/coverage/_openai.py": "815a416fc8bdeb5208da9b6632ff07ce67ceebc6700e933ec37e67126c67ae75",
+     "tests/coverage/_streams.py": "307a45ac4e68badaab74e85dbc39a838a461defe2d6a9595ccc884df9a7debaf",
+     "tests/coverage/client_cleanup.py": "52cb327373eee9dfd5ec15a67ab6df5456dcb10769ae6c62d97779cd391eefe8",
+     "tests/coverage/test_anthropic_handlers_coverage.py": "b0b361b5ae0348bf8632aa6143f72c72723cb6d1cac5418f30fbe46b5df372ef",
+     "tests/coverage/test_anthropic_support_coverage.py": "6ff0dcf46d556bf24d8c443cc953b381c1a59666527064009e03fff92d233d8b",
+     "tests/coverage/test_auto_client_coverage.py": "f7c1b935a6d5d919a8b6e958d1e625ad7c2fcd9a7bd7734bafaf5a352ed13705",
+     "tests/coverage/test_auto_client_tail_coverage.py": "aef741bc6c3f33200b466b9fdd44847f96c7849ac9f2d8a1ed025db4b1a10d1a",
+     "tests/coverage/test_batch_anthropic_coverage.py": "6b3b58c4373fa8f8623e1996b8a10bd2eb47a965be52bfe7e7515626209e7f8b",
+     "tests/coverage/test_batch_api_coverage.py": "f3efe1481ffc2f25cc6d9d4ef052f1affcc0f5f5172235f768337218c5ff53e4",
+     "tests/coverage/test_batch_openai_coverage.py": "2d855c4cd17461df1e300d63e9dfacd957e64655c18af09115d2fb0f8bd6ee9d",
+     "tests/coverage/test_bedrock_coverage.py": "88edc82c8af58d685fd1bb7f833ebe531e3ad699fa439fd2d3d42ef8208dc742",
+     "tests/coverage/test_cache_coverage.py": "cd9508f81d589135019aa42f33ba4363f342fd55a0df69fe46700e258a695e58",
+     "tests/coverage/test_cohere_coverage.py": "d2c7896c59e148f3485a05c9f5c7feef458a4a29f305811ca492d5dcf79a430c",
+     "tests/coverage/test_core_client_coverage.py": "2cd680a02f804cb387ad2d67f24d7b4d57c0290195dbd436ab31b99ee1dddde9",
+     "tests/coverage/test_core_helpers_coverage.py": "c537b99e01b1723f1856e892e783c5c3ca3730328b125c94d10289f955d50270",
+     "tests/coverage/test_core_hooks_registry_coverage.py": "2c684472c1e0e53dd92c905eb5575b25ff8e445a4135b55b01ed368bf2905ecc",
+     "tests/coverage/test_core_multimodal_coverage.py": "3ca3fd18218be7954ca7585fd856a8cc94e598aba440e8399ead72d97ac2870c",
+     "tests/coverage/test_core_patch_retry_coverage.py": "8749f797d75d2142ee5e00f03e96fc5e95c6603a450bd837cbc9f6243f74b3b9",
+     "tests/coverage/test_core_response_coverage.py": "d86cf38233516af14f4dfa22d29c28ed30137d2ddc975d5176705ecb91977657",
+     "tests/coverage/test_core_schema_coverage.py": "e63bbcc812a0b52577939b13e35a83a047149485652019db6f8fac9ebf88e9a0",
+     "tests/coverage/test_dsl_iter_parallel_coverage.py": "92f230dccc2bfaf50cd73dbffa38b7cf6550e8fe5213d23c3bdab852acd7723a",
+     "tests/coverage/test_dsl_partial_coverage.py": "9e5a24a55a1189a2f839031a4ba76523a08857d3c703ddb389d236581ba58e64",
+     "tests/coverage/test_dsl_small_coverage.py": "d2b304ebc2403eab9c6e4dcef7fa86d4c1f360ab1d363e698fb1c8696f28c1d1",
+     "tests/coverage/test_gemini_coverage.py": "14409e5e6dd6bff00d7cb4b1403a7c782f74b47b60bee436ad04e0f07ee32780",
+     "tests/coverage/test_genai_coverage.py": "eb80e57b60f6b3c4e940d2dad0c5f7b4e403f4f93a87bc1ef98f6b782e67aee9",
+     "tests/coverage/test_legacy_distil_coverage.py": "cff0871e188eeb6ea297f38d08f46b5b8b8f2196b748b4093ae66c3399250368",
+     "tests/coverage/test_mistral_coverage.py": "da27328bc95a9ec3fe206f3c8f1aded9874370c438a88d7b06f4c77662122b71",
+     "tests/coverage/test_openai_handlers_coverage.py": "fb7b7424317d1a464500adc4f3719008df77c37522b4f363e9008a372d624349",
+     "tests/coverage/test_openai_support_coverage.py": "f6d61392da7f62f593fe9b6ecc5f263a67670795720a0830dd2a9eeb52ac1028",
+     "tests/coverage/test_provider_clients_coverage.py": "ad47e4483459313d2b9d428e29e871137a4c15b0569db4f819f9a5e14e82c857",
+     "tests/coverage/test_validation_coverage.py": "1543876bda8695bae6ae39fa49381b8450413abfb6befd8c08dbe97f0c588299",
+     "tests/coverage/test_vertexai_coverage.py": "aca28b913f0dfdd38104c26c84dd28ac4a0669a2bb5e8e06b9378cb46a547e74",
+     "tests/coverage/test_xai_client_coverage.py": "caff0d0d2cda6a8a65eace32209ee59ba44f39e948ebc6fe9eebed0a2fa32d42",
+     "tests/coverage/test_xai_handlers_coverage.py": "95d79b70642a0a0b6d64d7deab601ecc96538386a8a0a54f08f89535a780d0e9",
+     "tests/docs/_concept_groups.py": "9de0a9595983b1a9375399304ebc23e8cc8d6966dfacbf67ecb262f3f35ce806",
+     "tests/docs/_example_groups.py": "5624ae9496a07dabcb83667dfb1a8eb5986d6e65b480c818eabbaa7e06170e28",
+     "tests/docs/conftest.py": "2f459bbb9ecc299fe86f41eca5033153444524aeb26f4cbd7c706b345b220d68",
+     "tests/docs/test_concepts.py": "9e2c00f10b463ee1dcaf8f70d077110b7a643e4877e40a41212bfd1b6d34a736",
+     "tests/docs/test_concepts_advanced.py": "e42758002fb1b9a63343ed057763abbcc7db770096e60a9ecc2d9e3de3a87bde",
+     "tests/docs/test_concepts_operations.py": "8533387dca4c8f9ee3b6690a1575e0a9b5b5305d4b64dda0b3840efe54305591",
+     "tests/docs/test_concepts_providers.py": "e002a48cb0a74f179b91aab7dfbe5a20acdf6cd66e96a00b4ee8fd6c0951f520",
+     "tests/docs/test_current_provider_guides.py": "5ff5f32ca578b28d069248b3aa16880e188a10a0836fcf58d5401b5d2594e4cf",
+     "tests/docs/test_docs.py": "6519c1e1a1914e945c38a6ae4ea3e643ad05aab74a7705021cb66bcbf17178d0",
+     "tests/docs/test_examples.py": "6d776153bfa79b57470bdf9cc6dd90e7b680ff456d7fe2a08f16a870f92d8315",
+     "tests/docs/test_examples_batch.py": "a87ff94136090cb1b17b339b0db1e81d5b49f7531e4fa0c192965b39885625db",
+     "tests/docs/test_examples_integrations.py": "39ceb0bce0f406602d0608bd365981e4b51493925ed60e550dd7f7d7cd6ccf05",
+     "tests/docs/test_examples_multimodal.py": "472a4423a2b51e431856e9da58a8ada30236e459ffccc3bdfa0f54adfb08284c",
+     "tests/docs/test_examples_providers.py": "11aac983e60a686cc1456e8b3534c0ca66f087273440a8f7027c83f5cc495177",
+     "tests/docs/test_hub.py": "2a38b73b7ec5e6085cd6d0ac8a2049f2b560dd3d5b6cc77d106c65f2091f7291",
+     "tests/docs/test_mkdocs.py": "01b86df381edb27f76d529458ffa449f90b0ff5de34459d565bfb4ec7f69155c",
+     "tests/docs/test_posts.py": "0d96a91e052fd94761e949e28ccb980fd757c372f563aee3434c0bed36c2d599",
+     "tests/docs/test_prompt_tips.py": "ff20a38896064ae26d5c3be66426159bc49a5448856fa040f307be077499ac76",
+     "tests/dsl/test_gemini_tools_async_streaming.py": "e34b44456f48ae7a36d4e1c975de9adf36df26da36f228bcb91d5c0dbe970fbe",
+     "tests/dsl/test_partial.py": "688faac4099aaf251afb271ad7d0e9a2f53c54086549634f6e5c390f18c415f1",
+     "tests/dsl/test_partial_optional_lists.py": "f193039b60143f67999d8e0c4af47465f0fac3867e2b0a64165fa821c3a17199",
+     "tests/dsl/test_simple_types.py": "a59b0b850003b3f99073209ce015ce4b54c022c5e6b893e8ff17726884dd6687",
+     "tests/genai/test_safety_settings.py": "aa0657ac0ff235ef3cc35cb2ff732cccace910372a27650bc40227e4dab2f90e",
+     "tests/llm/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+     "tests/llm/shared_config.py": "3a152409880888ba801c0befb7238d29e88e4335967c77be8a03d7bddb7e1c54",
+     "tests/llm/test_anthropic/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "tests/llm/test_anthropic/conftest.py": "2fb0c51a744d4c6860c4020887c98de901ef5adbf497adfc27c6e9119119c31f",
+     "tests/llm/test_anthropic/test_multimodal.py": "5154f716eded6aa773b04e77408ca71dfcb84b66beb22b001bd7af25b827f854",
+     "tests/llm/test_anthropic/test_reasoning.py": "f92b758e80c6cde817d2930d5f7ea140a8eceb9a829618f01539bfc7b44b87d4",
+     "tests/llm/test_anthropic/test_system.py": "46d22de8b9c554bf3f188ef8c3af48115d1b82a21879b92d7f9a6ae0ea7e5bc7",
+     "tests/llm/test_anthropic/util.py": "6e4a8dc7613cdeb62c00016da70f46c002c442a1c9dbab964db1f8a6e8f0b69f",
+     "tests/llm/test_bedrock/conftest.py": "980812b7a2b573e1c88b8b73268e49fe40cad9d4c71109930f7a64d74631f700",
+     "tests/llm/test_bedrock/test_bedrock_native_passthrough.py": "443ac993e1b95416c335f4f028a8c5abcc2141ef5ee6d5879b09d3031950efcb",
+     "tests/llm/test_bedrock/test_normalize.py": "2d014d4c026cd684300620835b68827bbe6e2e55fa4b1ad7c6266efb754b5ec0",
+     "tests/llm/test_bedrock/test_openai_image_conversion.py": "9582a6e02a7c99e7327e258966d6d42a47913e33d7691931511788de7545dc78",
+     "tests/llm/test_bedrock/test_prepare_kwargs.py": "0cd3e2118e66616b7df1a79652ee8f705c0ba0d32ffa5f9564a0ddcfa159ea73",
+     "tests/llm/test_core_providers/README.md": "6769f92f01e30e39bce9b967cf1c4b78d8398341ff561dc55f7a67ceebb7039e",
+     "tests/llm/test_core_providers/__init__.py": "4202ed78c8c78f8163f3ca58c2602bda5dea241443e2d0b9d0c8b7b3b1470cf7",
+     "tests/llm/test_core_providers/capabilities.py": "7d8f486234c9499924c659c7386db4a5a1352e5b6b4f3032b17b16184b446939",
+     "tests/llm/test_core_providers/conftest.py": "ab7e95deabafe8d1ec869b7c8ea14b9ccaff3fba9191af8a8bad0cd20fdd47ea",
+     "tests/llm/test_core_providers/test_basic_extraction.py": "634e56b02db7d8aa5631ae6bd2e94b99046d107b82aff6227c61a4631444bd7f",
+     "tests/llm/test_core_providers/test_response_modes.py": "4cec843561042e5cacb728e6b3a55a1f4dd3acf914277521d1aada4287db681e",
+     "tests/llm/test_core_providers/test_retries.py": "33a5eb414fd20aede7155ce61e0543428a1b02ddc109588247f63ffea3f4d249",
+     "tests/llm/test_core_providers/test_simple_types.py": "de16eaa58ea0653917f218c1760d06c96d1e622df214f656791881e5dedc55fa",
+     "tests/llm/test_core_providers/test_streaming.py": "084c942c7415d41864b333232baa5b143f25a22841625cacb26d057d43bde651",
+     "tests/llm/test_core_providers/test_validation.py": "72cb7c023f6aab3944fc610d5fb3effea960c1225958843e0ef296ab1c5da845",
+     "tests/llm/test_current_doc_models.py": "8e5d3f4e6f8aeb7f0e15b242986dd60a09d0c6a166600e3855e9074b19a5ef85",
+     "tests/llm/test_decisions/conftest.py": "a7792514c68d0fbb4cc05e181ae7c6509f69a47bef4e6d78093d9efb59657df1",
+     "tests/llm/test_decisions/test_live_decisions.py": "de8c26d5e321babc16f09a7bfc802b83219c45490dedfc0c86d45aaaa4b9e5c1",
+     "tests/llm/test_gemini/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "tests/llm/test_gemini/conftest.py": "ce356776f3f79a1499648d7963d06024e4e8649e2fc64217e9e7203c28dcde1a",
+     "tests/llm/test_gemini/evals/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "tests/llm/test_gemini/evals/test_extract_users.py": "109eec9d209436b5c385ec3182463baff185089a4a08c8957a49dae93ab5499c",
+     "tests/llm/test_gemini/test_files/sample.mp3": "60a8e27a46f2d86e0dcd0e97edb76e79768cc463caf6e2647cd41a0b69382cdc",
+     "tests/llm/test_gemini/test_list_content.py": "387c1c56d774d57006453949892d6175e0362c93658960b7b1ee9da3b4fee743",
+     "tests/llm/test_gemini/test_multimodal_content.py": "6da7fbf8a75668b6f79e005ed1212c8e7d95fc657f67ea3f5e5523c3a62fd8db",
+     "tests/llm/test_gemini/util.py": "f30af183e9d033d56f7561eabbebcc500b021235ce87469efd31b093bae14b2a",
+     "tests/llm/test_genai/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "tests/llm/test_genai/conftest.py": "bdd58488b1de1f338cfa396fa323ba1bd2daa61acf323bf54ea10c91d618150d",
+     "tests/llm/test_genai/test_decimal.py": "4357236e8e38cb34ba23997f3ca741bfbcc55b633e9a58c388685f67480b892f",
+     "tests/llm/test_genai/test_format.py": "b0102651ac01ded351f27db4abb3b6f98537f09d81f44cc41c1768a9ca1acb79",
+     "tests/llm/test_genai/test_invalid_schema.py": "60ed80aaf91432ee8d1916b31c1a9db0faebbf361848621f96d854942a28aeaf",
+     "tests/llm/test_genai/test_reask.py": "73d783d1e5c5a24eb127b91cd74dd499adcc1617e87750f84016157e1fa97e59",
+     "tests/llm/test_genai/test_schema_conversion.py": "d9a1c6ce7f6a71fe9479090e4dc5c4f1005bca3ff85cf93d5834704a40252f5b",
+     "tests/llm/test_genai/test_utils.py": "b42a61962b48510d86741129e35d2069b3b0222bfd5ac4c63e6c24216519717e",
+     "tests/llm/test_genai/util.py": "4902d0667ecd8f453379aba642b76f0149d7aacef4b31f6c57599fc6a97fa318",
+     "tests/llm/test_litellm.py": "696dc81a9d154a19d4145eb678b90c12740cd9edbed29b86e82124f3570cca56",
+     "tests/llm/test_new_client.py": "ed87eb36fcdeabcd9fafca9e9198b61a838444b0954171678ec9494ed64cd7da",
+     "tests/llm/test_openai/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "tests/llm/test_openai/conftest.py": "f52a04f5d9f493d6f933bef355251b702ceb5c5df267783de65f85887b834b9c",
+     "tests/llm/test_openai/slow/test_response.py": "8ff1880ba3a3b449b9482bab83576b4970d639b7f3bc34784025c7d707516bd0",
+     "tests/llm/test_openai/test_attr.py": "aca8bf7582c33073f50106887b58e73779d0ba798bcf2694f9c55e37dc077b1c",
+     "tests/llm/test_openai/test_cache_namespace_release.py": "e125d5f472682e2417e906121087747d95c87ee1079ff002e3ec6d8560cf2114",
+     "tests/llm/test_openai/test_hooks.py": "1f29479ea7fc890963bb727111598b9025eab3c01e8242fc4f3816645aedd744",
+     "tests/llm/test_openai/test_multimodal.py": "653b830303d1193ad415b58026e016f9dfaccf5d74457429967ed762be864705",
+     "tests/llm/test_openai/test_multitask.py": "b4b20193ca37331c7a2390c1ff58a8b89a6086e6746ce7fb94bf044619d6f547",
+     "tests/llm/test_openai/test_patch.py": "2e480e23502cbdab53135dc7fcb3fae0ab6b3cea2478cc29c02f50403763c773",
+     "tests/llm/test_openai/test_validation_context.py": "59a0cae96195f99a8775d4777a377630c793fcf57e44fe6524d74f1e67628648",
+     "tests/llm/test_openai/test_validators.py": "b001ab71d1756941a7808928bfcbe05190357ecce1a25bc446dedd33d946c830",
+     "tests/llm/test_openai/util.py": "01ed09076ca6e30701fa1d51d094e8c90b5f3039c7a81ceb96364ba6785cd37f",
+     "tests/llm/test_vertexai/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "tests/llm/test_vertexai/conftest.py": "d28e7f132efb312ee615ba486d7c82a112d0f1298c97853b6930fee40f88142a",
+     "tests/llm/test_vertexai/test_deprecated_async.py": "ae0f8d7c8eb7cf316958d44d36a2298c65fd1df6816381f8370952632d11214d",
+     "tests/llm/test_vertexai/test_format.py": "43b4cef6a4d7c4b245b0f984d802763185d95633706a00fa5bb283a6893c5eaa",
+     "tests/llm/test_vertexai/test_message_parser.py": "f8ebfe6c86236de64324ccd9e254cccbfaf30a5f6df9f544c4eb3debd1882136",
+     "tests/llm/test_vertexai/test_modes.py": "c32dd7007cdfeb0d9e1625bcf67b23c2436a739d8e0a28ed038df2e3e1327e43",
+     "tests/llm/test_vertexai/util.py": "1c7daf354555473d3738554fd62c6d75ebbd75882dfc9b6d2fe628cf2953645c",
+     "tests/llm/test_writer/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "tests/llm/test_writer/conftest.py": "75245fb0d99f7cce2c5f464d734bb5dee7329b95bf88fbc37f363e7b7e9ec37c",
+     "tests/llm/test_writer/evals/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "tests/llm/test_writer/evals/test_classification_enums.py": "4e21ffd85237b0fc767f04fa3222b5d8e1bc1d3776a4a73757d2f5fea5519a40",
+     "tests/llm/test_writer/evals/test_classification_literals.py": "8c0d302df126da069542b0ffa59fd2703b2cd9e6d8ccb6b090be474998b4d227",
+     "tests/llm/test_writer/evals/test_entities.py": "6726602ef2d161c0619a4b5bd2c6600b00c296f5f25956a0387ec078b6921228",
+     "tests/llm/test_writer/evals/test_extract_users.py": "c18f4cad7426998db0ffaadf48123016fdc3c541d5146837b0cf67c7719fd4ce",
+     "tests/llm/test_writer/evals/test_sentiment_analysis.py": "e2396cd4a0a995793e019dd66cd5c216254f61da2b5a77c8a1710a5f7318ae2e",
+     "tests/llm/test_writer/test_format_common_models.py": "4fe0568c1a94fc940374080f7f8785f8e44d259fd2d640a698dadb8f9b03a329",
+     "tests/llm/test_writer/test_format_difficult_models.py": "7be58d9e7c3963aeee7d7d21f33ed220b4bc8d10c1c26a57430091f74a15dbf8",
+     "tests/llm/test_writer/util.py": "fff1099edcb9848932981c26f5ca3d17bca664eb88df1f276bd98ce61df27b9c",
+     "tests/multimodal/test_multimodal.py": "aa6f133e59d1450c15bd7229b2fb96511e18a77bee22ea7bb0ffb60fc620b40d",
+     "tests/packaging/check_package.sh": "da3b32e1b4ca3623df252c6b41a8bbf91b21b06c6c8f1be56821237fb2153090",
+     "tests/packaging/contract.py": "cc9f887e49b6f834d968d45e5059b9b433456131a06d4439e862727995e446a5",
+     "tests/processing/test_anthropic_json.py": "d70ae3b1fb5999a94912ff4727c41606526ac793b1bcfaa216f910ad2fbae4aa",
+     "tests/processing/test_dict_operations.py": "365458b0f09487945677949ad91825d418c7eaa498281dda7f520cd2335bb78c",
+     "tests/processing/test_dict_operations_validation.py": "65b52cc1b177e46526e09226cfa144e38d18205d82a28060fc97201269ab6fae",
+     "tests/processing/test_dynamic_model_creation.py": "c89231c4dd68bf5c68f3e391fea6db13a4fe93f1988de8d70a734f84a2fcbdc4",
+     "tests/processing/test_formatting.py": "fd2c8949ed4a1cbaeafb61d7f060f691851848f47815344048db1c7edf4ca862",
+     "tests/processing/test_function_calls.py": "be549c4610e4aca0dcbeb91318934de33f4e510cc34d1a0780c580f4bde20c82",
+     "tests/processing/test_json_extraction.py": "7223106b9c496f2e0f8d5496b5255aeb7b988f0355e51b9f656e098ad5d99d2a",
+     "tests/processing/test_json_extraction_edge_cases.py": "c378b6714a94a14c466d58bb73de898a5f669a8dd0c623633ae8683b24206819",
+     "tests/processing/test_list_response_wrapper.py": "d93df7cf29708ce08999b1443875c887c62f64cfa30f1f525566bcc61ea1c709",
+     "tests/processing/test_message_processing.py": "18a5de51f49092e38541a81f061360468ab48e4823c01a2765620fbd18ca61d3",
+     "tests/processing/test_process_response.py": "d263daafb0852392596734c86f38506ad80994a290283892e10a536370951651",
+     "tests/processing/test_response_model_conversion.py": "609f46cc7b12239ebd52215c318d293597af0f9e846e19ec5af39c251f016e7f",
+     "tests/processing/test_utils.py": "20b6fee1c20da057a655d2c101ab011ae20e41eb4b2028b8e4cad2ed3141bf35",
+     "tests/providers/test_auto_client.py": "027991b8c49dca1c9c6cc6fe6e49290a123a952ec14c9d30bcdbb64a79ab4f40",
+     "tests/providers/test_logging.py": "ef314cf74b9c18331670f2c02f88b02224122cf11c4cc56f28b8de6d74465e0a",
+     "tests/scripts/test_provider_test_evidence.py": "5099768d81e79183bf41264ed970db1df02b2196571ccac8de3d7a1550276068",
+     "tests/test_anthropic_batch_errors.py": "b3faa6b9a28f6384f62aa15c0a398174ce3a38eb28aceaba64d329e4dcc4bd03",
+     "tests/test_anthropic_bedrock_caller.py": "e3d5e5f175e3ae961720eb179d868fdb9748869aec1489d5724b483c6b762081",
+     "tests/test_batch_in_memory.py": "cce544fe3f469ef9996ce9d5a3382ce7076205ecca8a9b6d394232e778ba1fc4",
+     "tests/test_batch_processor_coverage.py": "24ab5ca8b73c068f08aa0acb44aea580322c5ad50d83ff35f28932cb0dbd2771",
+     "tests/test_batch_root_model.py": "a70efeee7147f9b5e4924d0ccfc63b504df594c4039f649ef5b763ec9122879b",
+     "tests/test_genai_config_merging.py": "85c3ead96775afa602b0a84f0ca3ebf3be65621211848b35e1dcfd0e8f26381e",
+     "tests/test_genai_reask.py": "c959750a16dd82819ac831abfc05faf97e3f3d563e27d466a86ac9dd98c974e5",
+     "tests/test_genai_truncation.py": "382088c3338df797a3abc10e9d7a5630eceb1cdf8a6b593c3c901b0cc4cae871",
+     "tests/test_import_lazy_openai.py": "f7fb4895cf7d32b8bc129ea672b0b56a87e6988828ffd671f23c2abea7b0242d",
+     "tests/test_incomplete_output_exception.py": "6103006eb300ec935232a7d0f3a42b19cffb5ef391d8d89a69b11b6a920a89cc",
+     "tests/test_lazy_imports.py": "ee624de486dfd38a6eea6f9c60af22fac3eaca9a063c41d4ea27518ca3fcfcf2",
+     "tests/test_llm_validator_allow_override.py": "095d52847b8269df9ece31701acd90bc7cbba7a41dd42af536418d8c432ac969",
+     "tests/test_openai_responses_tools.py": "639df2b549a766a3991f7ebaae92db23f5256e09bf69d1a5bc5c754a341c2d1e",
+     "tests/test_parallel_schema_names.py": "c5d8d5fdcde9d583c3b7b53b925adf498d8ce4fafaf448f824fac6e8f805ffcf",
+     "tests/test_prepare_release.py": "2958f26f9bece4392716192a7a69c13cc3437cf98b7b1c2d72de6c8de29bf641",
+     "tests/test_streaming_reask_bug.py": "b3de2d38e03d1f1f7632caa881a5a90f1d85aa4efa5df1382fdb8f06dcc8a5cb",
+     "tests/test_streaming_reasoning_events.py": "614c1c65a043123f5569d3112fe5bb96718a51bd77a39fd7c001b68d93d8d849",
+     "tests/test_update_total_usage.py": "c3d7aeb9d9a6b0cb20d3c65b787c5dd0980cd524f43c89b7c1e7f7349c034eea",
+     "tests/test_usage_accounting_audit.py": "62fcb2c7373b2c1d1a25d22963142f7167be75fcc2faba0fb8e509caebbdbbf9",
+     "tests/test_usage_accounting_contracts.py": "2d0aaae777598e447bc3450db6572bbb1a7c82d51d4955b699c48bb8f37bff06",
+     "tests/test_utils.py": "67535308cec670616ea24130cf41e27e0d05906cf1f33984476dc6ae893c6ea4",
+     "tests/test_xai_optional_dependency.py": "8acc5bf6a4207acafd8a68aaa3c2c4185f0ae06bd54b7b7579396b2774bc9ecb",
+     "tests/typing/check_installed_package.sh": "e2370cfd6f94a1fa7bf615a31fd2f8ff5a654992da30b446710d5cdf39fab06c",
+     "tests/typing/test_installed_package.py": "542a3d29a51717109f0aa2cde36641af5cf976995bb04abe5c186ad8c8c2dab3",
+     "tests/typing/test_public_surface.py": "7939b5293117ba906ac4868f0b72f5f8c148056b2c4ff864ad5ee460667928a4",
+     "tests/v2/README.md": "c603393f5ff42137f2b469389fa1db496c4537fcbdc51836a9bf928f6467c564",
+     "tests/v2/UNIFICATION_OPPORTUNITIES.md": "6df6d9d4c30c7a7fc8c1ff32374996714077e49dc464db65f6957c9a1ef66e57",
+     "tests/v2/_fake_genai.py": "f209848eae31dc43420f05ead023ae8b720a8d159bcd810d9ca4d800d8e12233",
+     "tests/v2/conftest.py": "333ac71a078c28104e4ea05aa7089c71c6e201ea04d87e9ebb98a82bfd36b140",
+     "tests/v2/decisions/conftest.py": "9d28e1cd7068790d3a72b7869fa278d896474d18e14cb52f14737a6443b7feba",
+     "tests/v2/decisions/test_client_configuration.py": "5d313e1d0cd016027176533518f6345b2410d6caaaa113dfe75f1910ca23cd7a",
+     "tests/v2/decisions/test_decisions.py": "fd028e1c5af5cdf90755152ec487dbdcea6e0b77f7c9d829cc60607e1cb91b08",
+     "tests/v2/decisions/test_decisions_schema.py": "6217aff42cceb4161b5132b99e8570623fac54d5206f71d06d9812b4d2495cb6",
+     "tests/v2/decisions/test_openai_decisions.py": "79e3599daf4f31e43a067f37a929bcee211a4a9c437394ab589df78cdcfa6ba5",
+     "tests/v2/decisions/test_provider_contracts.py": "192fe57682b62877c39915d10e5e7cbcf1692d007d1d0d13b48b3a162d3a9221",
+     "tests/v2/provider_matrix.py": "3c2dfbfc99d018a7ddcb3b6960544753179381f7d72bf5cd730852d72f58d14a",
+     "tests/v2/test_anthropic_handlers.py": "74ee15c0745b53d1cef3fc4b2209b7af648244b532adff1a1e6978cdf3f6cfed",
+     "tests/v2/test_async_validator_contracts.py": "202cbba3b018a59f0db86376c015bcdb3f4dee5d8753c2fa65e625ddb23720e7",
+     "tests/v2/test_async_validators_execution.py": "4128a37b24fc3d732cdf402cc145a86d2a48ccec1eb8673b5090397f68d141da",
+     "tests/v2/test_auto_client_deterministic.py": "9e5552c08ac3a0626efff8955e6f352cafc5280d2184d75f0a201e2b55a9fbd3",
+     "tests/v2/test_batch_result_retrieval.py": "12aa499c5da5ebf8237483f7dd194d5899a29b4d745a537208d30fe220507373",
+     "tests/v2/test_batch_strict_schema.py": "6e5aec337f1f4a049b6a2ab838f2071e5d20793fad569c348c9514f8a88da80b",
+     "tests/v2/test_bedrock_client.py": "0e3db830b7ce88d310ae8f17aade89ca43f2fdf0b2ad668a6eaadcfd844e02fe",
+     "tests/v2/test_bedrock_handlers.py": "f84ed31c9297d7cc79783790317ecf656746184ecdac4e0d602b5c9411f7af31",
+     "tests/v2/test_cache_identity_contracts.py": "3cd577bbf8c69fe70e1a2b787cd990b96c1e579db17a43ffbed16ab7e5f0d85d",
+     "tests/v2/test_citation.py": "8827c562ed106293c52a0f9fe6b1d633272b215036446ef0e47ff4a527a98ca6",
+     "tests/v2/test_client_unified.py": "34cc2a973a41ff84a63e1f2db35ba7a8407096fce4436c997013ec388feb2708",
+     "tests/v2/test_cohere_handlers.py": "a9e231d8b3c7a4779438800d66e5262ae1c75c224af4938023bad964050e668d",
+     "tests/v2/test_core_multimodal_runtime.py": "9627cb5ca450b681f6933819eab368abf095c77bc6ca8f9faea427661b8c528e",
+     "tests/v2/test_core_provider_dispatch.py": "4cee3f156615b63a31eb29c338e36e131ed1df35fe15f5830158bd472f7109e8",
+     "tests/v2/test_gemini_json_messages.py": "23e23b8edf0c243f3873685521c3f556ba863373a757cea08049f6505a8621f4",
+     "tests/v2/test_gemini_utils_deterministic.py": "8389fae82ccd4585289ede3327d08a5a5b10c30b03f00ae9a80ef620df1c6afc",
+     "tests/v2/test_genai_cached_content_release.py": "6aa2b9b3d7dc2e065f83ff357668c113fcae4183db2dbdbdf426f19554dd1da6",
+     "tests/v2/test_genai_config_reuse.py": "92752ed72cc2d3ec604e5b811947be0e3cac84a8d43cfd53818dfc7ac7f03014",
+     "tests/v2/test_genai_handlers_deterministic.py": "b44cee5b57affbc199c0fc217780fb086728c5d9f38bab74c77e4b2cc72e6f14",
+     "tests/v2/test_genai_integration.py": "50959b26f0741e9785bd47bd1351803b6c23062481a9f9282b977e0828780d8c",
+     "tests/v2/test_genai_multimodal_runtime.py": "b5563effee9519c54173af5eaadf581cde7194634d4b155b2d79807d6704a453",
+     "tests/v2/test_genai_request_imports.py": "1605903c661678aeba5966faa9cfa6c9373eccb7e759f34c714872102bee174b",
+     "tests/v2/test_handler_registration_unified.py": "2a8945137780f5a6f2f73f43579d18536fe660f5e44842138375b842f3ef50f7",
+     "tests/v2/test_handlers_parametrized.py": "93e9490f41decb27bbae52414133c03dd92a38bf4322f7b8d66b0adcabd3f713",
+     "tests/v2/test_issue_2374.py": "7d57de916d574234fcadc719c84468121e9b77b5ed371ea2f7180792318283a7",
+     "tests/v2/test_iterable_streaming.py": "a238249c333c99450e1197d57db74e8bded4e6ac38c0317847f8db0e212d4413",
+     "tests/v2/test_json_helpers.py": "5eb0a60360b4abd603e805820f1352f3dcba8cdfcdb1c51ce2551ecbca7855e6",
+     "tests/v2/test_json_stream_bounds.py": "c1f640f064c0faa523c7e984360b948ddbbbbbd4da7e85cdcc995afdac801b1e",
+     "tests/v2/test_legacy_provider_compat.py": "4befa52efa6c2354dac6a4e10386a42b10a86c763bcc837d94f855600043e3f7",
+     "tests/v2/test_merge_boundary_contracts.py": "6735af97a6f1efc739610adb64dc2e784de5c42dd64763368e087c11fc65f72a",
+     "tests/v2/test_messages_not_mutated.py": "df7fb1106ca481d6df2be237d7da23c02f263426b9ce19f0a32ea85db7c5828a",
+     "tests/v2/test_mistral_handlers.py": "647f959250878513e31611aab9c81a9467cfaba731b709b62255ed36805a42c4",
+     "tests/v2/test_mode_normalization.py": "bcbaebd6871047b167d42cd2252c4254657b51c17f28a02cc1f702a482bc14bd",
+     "tests/v2/test_openai_compat_handlers.py": "2e85cf42a66ac7fc64a902e049821dfda8f4ae1acb1f0662bb4248d2390bc50d",
+     "tests/v2/test_openai_responses_client.py": "1415be544ecebb6921bea9fe9caa7ecf178e5e6bc3ea09964134e694c80bada4",
+     "tests/v2/test_openai_streaming.py": "c31e10ad56a3003cd05470b880626fc35cf6db80de07f8a31a0855a0c040ef29",
+     "tests/v2/test_optional_dependency_imports.py": "8167b66826bbb09c0f9f16fd950b8d729da1988e6f0686fca5ae10cd18e1cdb4",
+     "tests/v2/test_parallel_contracts.py": "8becad8874fc232ac65f4c2d090a9bf867180abe576372d4c99d4408b5869357",
+     "tests/v2/test_parallel_tools_wrapper.py": "c3826d2455f31e03a0991308093cceaa744d4721167fbb4ba3d037b09fb5ad9c",
+     "tests/v2/test_provider_modes.py": "c5a04da40a1ba866a74dd3d3dfc947f83d28ee7bad61527eb6afe09eee08d9e2",
+     "tests/v2/test_provider_result_finalization.py": "a2ba8e848375838c1e2053c3ad892939f10b76fd0de8dcae591c54efba16ccd3",
+     "tests/v2/test_provider_specs.py": "1280f20afa1515b5cddbd1b29a04ca75023f606331d9cd45414b94ed43816094",
+     "tests/v2/test_registry.py": "9385b234ed0048ae34a0ca53e1674c7d4f67b71fd2c742cb6085af46e52373a4",
+     "tests/v2/test_remote_fetch.py": "4443732b8017e7d2dbbf04d97b38e4e0ad71279d8cd1dc7b4d957fc2d2fd260c",
+     "tests/v2/test_request_local_streaming.py": "22460f69bc56bed1e8045ef42c512d8878945d586b6a2082529db513be7750d1",
+     "tests/v2/test_response_model_allocations.py": "159b737e098cfb8750fad9fc24fe650a749e11ea0c587859a616f3028222c46a",
+     "tests/v2/test_response_schema_compat.py": "e7b737a93fa093027c4b4eec8e936737af3ea5d0b622c080e5a25b93d8e7ac19",
+     "tests/v2/test_responses_sdk_contract.py": "7dddc04ff00ad50bfc83767819a39d8dc2581c25554588ee0df5124465e93435",
+     "tests/v2/test_retry_budget.py": "727b41821b64b9cd41263d19f0a8e57df730f22c0d5357ba6736ec12d58ccb99",
+     "tests/v2/test_retry_isolation_contract.py": "f5039fb73975b913cf612b62f553c9e3c808952f09c673723e2af0ea8b96ebc2",
+     "tests/v2/test_retry_runtime.py": "bfc0517c1a4ea69d7017da7e9db3e38a791236f853c6062265a639fb26d2e794",
+     "tests/v2/test_routing.py": "086fe277a64674444f520ead7fd8aaed26b0f0644b224bc5f965b4aafa819659",
+     "tests/v2/test_security_regressions.py": "1382d2a5693c50ee6d43e06cb51ec02de090f949e33711a81ccf543010e0cecc",
+     "tests/v2/test_vertexai_runtime.py": "09fb0acb633e69baddc710fd9629ce358bce1ab977f3d9840e898178caf16844",
+     "tests/v2/test_writer_client.py": "1443e5de601fd31467e957b091a1126fdde071a0afe877515df4135565c2519d",
+     "tests/v2/test_writer_handlers.py": "32694785a05bf2f4babf10897faccbef1554b6500de04b42fe5d7057975d93be",
+     "tests/v2/test_xai_client.py": "2bab6f0e576da7c55f40df64bb0fe9735abbfd2081405e74d67445cf239a23da",
+     "tests/v2/test_xai_handlers.py": "659591abcc5b22ea4a1e7b3bf3315f7c7dd022e94f54fb184f126cc9e2190276"
+    },
+    "sha256": "e2421d4b8af2e15073a19e80f49401123ad9a6c13103bfb58d88c8fcef0b59d1"
+   },
+   "github": "567-labs/instructor",
+   "helper_package": "instructor",
+   "image": {
+    "tag": "mmd-instructor:6cd771c5254a",
+    "uuid": "a1d1862b-3dc0-45ac-a92d-4cecfedbfe8e"
+   },
+   "install": [
+    "pytest<9.0.0,>=8.3.3",
+    "pytest-asyncio>=0.24.0,<2.0.0",
+    "python-dotenv>=1.0.1",
+    "jsonref>=1.1.0,<2.0.0"
+   ],
+   "license": "MIT (LICENSE at the pinned commit)",
+   "node_args": [
+    "--asyncio-mode=auto",
+    "-q",
+    "-rs"
+   ],
+   "pytest_args": [
+    "tests/llm/test_core_providers",
+    "tests/llm/test_openai",
+    "-k",
+    "openai",
+    "--ignore=tests/llm/test_openai/test_attr.py",
+    "--ignore=tests/llm/test_openai/slow/test_response.py",
+    "--ignore=tests/llm/test_openai/test_multimodal.py",
+    "--deselect=tests/llm/test_openai/test_validators.py::test_patch_completes_successfully",
+    "--asyncio-mode=auto",
+    "-q",
+    "-rs"
+   ],
+   "scope_decisions": [
+    {
+     "commit": "be1e926",
+     "local_commit_time_utc": "2026-10-23T16:28:41Z",
+     "order": "before the first instructor sandbox run (image prepared 16:28:51Z)",
+     "what": "test selection (tests/llm/test_core_providers and tests/llm/test_openai, -k openai) and exclusions: embeddings (test_attr.py), image/audio input (test_multimodal.py), moderation endpoint (test_patch_completes_successfully)"
+    },
+    {
+     "commit": "e73fdac",
+     "local_commit_time_utc": "2026-10-23T16:32:57Z",
+     "order": "after control attempt 1 (runs from 16:29:09Z), where all 20 failed with HTTP 501 because the proxy does not route /v1/responses; attempt 1 is kept in evidence/census/instructor/attempt1/",
+     "what": "excluded tests/llm/test_openai/slow/test_response.py (Responses API, 20 tests)"
+    },
+    {
+     "commit": "census/MANIFEST.json",
+     "local_commit_time_utc": "2026-10-24",
+     "order": "after the controls, before any ladder job",
+     "what": "client.py:23 and :29 listed as 'found, not measured' (decision 2026-10-24 not to proxy /v1/responses in this phase); retry.py:483 stays 'traced, not covered' (its one test passes on an empty answer)"
+    }
+   ],
+   "site_flags": {
+    "instructor/v2/core/retry.py:224": {
+     "cassette_only": false,
+     "good_side": "forward",
+     "isolated": true,
+     "wrong_control": false
+    },
+    "instructor/v2/core/retry.py:523": {
+     "cassette_only": false,
+     "good_side": "forward",
+     "isolated": true,
+     "wrong_control": false
+    },
+    "instructor/v2/validation/llm_validators.py:34": {
+     "cassette_only": false,
+     "good_side": "forward",
+     "isolated": true,
+     "wrong_control": false
+    }
+   },
+   "traced_not_covered": [
+    "instructor/v2/core/retry.py:483"
+   ]
+  },
+  "llm": {
+   "ast_sites_not_reached": [
+    "llm/default_plugins/openai_models.py:1559",
+    "llm/default_plugins/openai_models.py:1610",
+    "llm/default_plugins/openai_models.py:2998",
+    "llm/default_plugins/openai_models.py:3017",
+    "llm/default_plugins/openai_models.py:519"
+   ],
+   "baseline_evidence": "Cassette replay 6/6 at aebaca2 (control-baseline, one run, recorded answers of gpt-4o-mini and gpt-4.1-mini); the ladder still uses the assumed 1.0.",
+   "commit": "aebaca27f9acb6cc56ba4b33ab81e08d6dcb3bc3",
+   "env": {},
+   "evidence_sha256": {
+    "control-baseline.json": "6e91dcf97cfb642b1611e5f6d6dbe3105416c09dc5a79d3a894ffad481ea1d5d",
+    "control-broken.json": "73496ed3c5d699b7ba04055570c54773f55dc7084288d99fdf5f36bf13b380d2",
+    "control-forward.json": "2f174e77020d085966e2be32444351fd9b7a8355cde483b5e5a6928b083c3726",
+    "coverage.json": "bc8e5a935964ef5e0714db2b20d3053fd31e93cc18074c614459bb3fd742046e",
+    "image.json": "a8c07b2b746363891e8eb6547b7b0714cf49d9d37a0fb6da4a473d6685dd5cda"
+   },
+   "excluded_sites": {
+    "llm/default_plugins/openai_models.py:1441": "not testable live: its 5 flip tests assert wording recorded from the old model (tests/test_tools.py:226, gpt-4o-mini's exact sentence) or the recorded tool output '0.fixed-version' (tests/test_tools_streaming.py :18, :28, :40, :53; a live run returns the installed llm version), and the variants expect different sentences, so no live model, the old one included, can pass them",
+    "llm/default_plugins/openai_models.py:2552": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+    "llm/default_plugins/openai_models.py:2677": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+    "llm/default_plugins/openai_models.py:2799": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+    "llm/default_plugins/openai_models.py:2926": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured"
+   },
+   "excluded_tests": {
+    "tests/test_openai_responses.py": "Responses API (/v1/responses); the proxy routes chat completions only"
+   },
+   "flip_tests": {
+    "llm/default_plugins/openai_models.py:1494": [
+     "tests/test_tools.py::test_tool_use_chain_of_two_calls"
+    ]
+   },
+   "frozen": {
+    "commit": "aebaca27f9acb6cc56ba4b33ab81e08d6dcb3bc3",
+    "extra_paths": [],
+    "files": 51,
+    "hashes": {
+     "docs/plugins/llm-markov/pyproject.toml": "15ef0e69dcdea5b86f4a351807ad138979b9068689932e6fe8a54c7330ee2140",
+     "pyproject.toml": "f7a4cfc7ab4c5f6f85748a8619816bddd89724a9c77cf7a26c9b042eabab587a",
+     "pytest.ini": "f81e77f64971bae443e3367d6c9216aee0d8f2a4f03fd5db5137d22ee7b85b52",
+     "tests/cassettes/test_openai_responses/test_responses_basic_non_streaming.yaml": "24b699d746f786a72773a3cd1b04dbf780cace72dd9dec1f2a271301db00a7eb",
+     "tests/cassettes/test_openai_responses/test_responses_basic_streaming.yaml": "963b5d83aedf9fd26927b7584d46ac73002027482f6803076a2d19290175be1b",
+     "tests/cassettes/test_openai_responses/test_responses_interleaved_reasoning_between_tool_calls.yaml": "0a6703960facbdbe47ce14cfc68c74c94c4f2b93b31e3acff54d072ec02166f8",
+     "tests/cassettes/test_openai_responses/test_responses_round_trips_encrypted_reasoning.yaml": "2d92a51de801563c97d49469209a275a887c69bd8cd59b17570e7baa18ee024b",
+     "tests/cassettes/test_openai_responses/test_responses_tool_use.yaml": "b2436dfcedcec6bdcec1f33cd7dcb75a5a8fe41f2be9df76b88ffb8bb3c2f1e9",
+     "tests/cassettes/test_openai_responses/test_responses_tool_use_streaming.yaml": "6d813ebb57976a88ffd892cbd526f21ee98fa8ca4d22d2c816572fd3bafc76a7",
+     "tests/cassettes/test_tools/test_tool_use_basic.yaml": "d85ea3f108ad76ec2e69c9f2ec589527017dc797fad21119d099d9d9d459d01d",
+     "tests/cassettes/test_tools/test_tool_use_chain_of_two_calls.yaml": "59da6aed52c0cfbb06bc0b187912d1fb519400169cacf8956f6fa18763470298",
+     "tests/cassettes/test_tools_streaming/test_tools_streaming_variant_a.yaml": "3a9ac72d09dfc00a0d8978477668482aa5d7d5818b4f1da0a935f2ffc0289472",
+     "tests/cassettes/test_tools_streaming/test_tools_streaming_variant_b.yaml": "520a1b9406be670e4326adb64336e7d5020446717cece8bbefef2957a9627fc9",
+     "tests/cassettes/test_tools_streaming/test_tools_streaming_variant_c.yaml": "1ccc2bbaeb9fd6b383d7bfd06eab901ec48ba95cbc7dc827e366334696eb8fc6",
+     "tests/cassettes/test_tools_streaming/test_tools_streaming_variant_d.yaml": "db8af798956ba9035a457ad4ce601977bb19971f42d8b07783901dae05aed0fc",
+     "tests/conftest.py": "9c5636c7fb23b0dcf68102ed2cee0c9ea5ccb19b86dc2b98fc6f026e3c962f8c",
+     "tests/test-llm-load-plugins.sh": "79abc41cfc8917094f117a3b0d350dc22bd156409a4e237ab2a22230c53a1c7a",
+     "tests/test_aliases.py": "c91f56e72a49d7fc07cf25dc72885495ad15772843ede8465498332f2e5fd00e",
+     "tests/test_async.py": "2dd64a965981d3eeae1355633b0403f654c550277836540854b285084dbb027f",
+     "tests/test_async_parity.py": "c440e65849758f118c210ee19c89d1758e1bec5516314694f978d840d3b05685",
+     "tests/test_attachments.py": "62f9e5678e7479d3bb88eb0fc0af4208ad287ec3b4aae53748580dda662fefa0",
+     "tests/test_chain_callbacks.py": "a9e917eafe80a31c611a32949017b3eb17e9e6aac0f0355ae34f98c5dd90f986",
+     "tests/test_chat.py": "ead1737d7f7b68042a69dc7a6f841e136e463cf9fbab4b2e48528035d98139b3",
+     "tests/test_chat_templates.py": "6b3e98f663ee63076015f7cac12ae37a0b4a4ab64611f140224aa1f3f2b8ddcf",
+     "tests/test_cli_openai_models.py": "8964ce72b2aab0ecb8a19f682f82b5d35a0c0538f782c0a732f0866b65b8762d",
+     "tests/test_cli_options.py": "f4c1368eb5a80efe0a3454e0a9746b93abab981fed924b0a9f6b18e6f7139ce5",
+     "tests/test_cli_streaming.py": "fb9158a8e7649c744cad723c3ea7b338257ae8cec269e3c5fbd731dc0a0bf003",
+     "tests/test_connection_cleanup.py": "e2f13e38e884b098534c5f1d13b1199d625dd9f9cb111f3717db26bdfac7f3ab",
+     "tests/test_embed.py": "574f75d64a7d1d7af89e636141f93a8101e2d3f006cc60344d9886dfef1302ca",
+     "tests/test_embed_cli.py": "194ed0abef0edafbd00cce12c8d845932b7caec3911c5f3137184ca08a37ab42",
+     "tests/test_encode_decode.py": "e58ddf81693245422a58900ef6ebd1b02bc539ae2975eac43af4d2012a6ac034",
+     "tests/test_fragments_cli.py": "a6e6182fafe1009275f76b70c034010117a8c04581696e1ab350328090d2448d",
+     "tests/test_incremental_logging.py": "4b239c00703178967dccd1ec9d2cdc1c0acb4b77ac4225378243c648eacebc01",
+     "tests/test_keys.py": "59ec7f9532c544d352cb536c41b5d670b37d50666cd3bfb47d010d403d704b45",
+     "tests/test_llm.py": "325ca377f11af477ca101b869bae05a7af1d47945bd3ca38ac8555a090c0b58e",
+     "tests/test_llm_logs.py": "5a38ffee957e517940e0fcbc5b3148c3572ea12b2cbf9d5ccdb7ddb8062cad94",
+     "tests/test_logs_store.py": "6b773c7f2d78d9d75480db743114457b8e8ef1abbfde2e3c823913aa47bb31bf",
+     "tests/test_migrate.py": "0594564986dfe7445f30ba1419f8c9b9536ea6fca50e2dbda5791d7919712a8c",
+     "tests/test_openai_endpoint.py": "6d727092585a8d7a525f0dcdbf886b0eaf2f4ac635584e1901f293f067ea5b57",
+     "tests/test_openai_messages.py": "1ef268b7a0daf686241e2b10f87931d24cf84d1f726dd3c4ba2c0cce1a322b4c",
+     "tests/test_openai_responses.py": "b7568ea54f48b91c0eeca4367dab58b61ce240c214d869227c3dda9afb4cad84",
+     "tests/test_options_parameter.py": "15f4210dd6b58a9224551f0c5539f6e360707be365e64e7f9810c337e1b9db95",
+     "tests/test_parts.py": "8fdc2a0c0e7ccbf8a6225757c9e739c510bbf74293a46e4e22f280cee4d0b6ee",
+     "tests/test_pause_resume.py": "a2376fabbd4b2643c5b6b22aa4eaef3e46c4b6a25f2c44b0a15910ab680cc08b",
+     "tests/test_plugins.py": "1eac6d9ea567e4e6e4e01cb905ba631c5716ac3acdcfe9b8c67a330a9d877a0b",
+     "tests/test_serialization.py": "92ce6ecf23fff9cb0ebff76ab1a0068cacf0c77850fbe535cb9834cf0ce779b2",
+     "tests/test_supports_conversation.py": "c5dae39165d38f3167592e37dc585523f41a8acc32107aff672ac8ad8efc54c5",
+     "tests/test_templates.py": "57d5fd8780f87d8965aa86af517b8bdf27bd0ba802fb621746451b01ee168eb0",
+     "tests/test_tools.py": "0941af60dd3dc4515456afc9f8bf3da7742d38fa175b5b0da3f40640a3606d38",
+     "tests/test_tools_streaming.py": "ad929bbfce5a4db3ab2c6da744a7fee72991a7cad4bfe43a4d9e31cd819e1120",
+     "tests/test_utils.py": "0de7603e9edda32caf772e4079977d00080919c66a641d2319c9a39e5dacfdbc"
+    },
+    "sha256": "479b7ffa2880864b021ece815375d3fac68066b8f3e469d385526b3953109967"
+   },
+   "github": "simonw/llm",
+   "helper_package": "llm",
+   "image": {
+    "tag": "mmd-llm:aebaca27f9ac",
+    "uuid": "aacc4e57-1f66-4324-9835-c2bd07721c44"
+   },
+   "install": [
+    "pytest",
+    "pytest-asyncio",
+    "pytest-recording",
+    "httpx2-pytest>=2",
+    "syrupy",
+    "llm-echo==0.3a3",
+    "numpy",
+    "cogapp"
+   ],
+   "license": "Apache-2.0 (LICENSE at the pinned commit)",
+   "node_args": [
+    "-q",
+    "-rs",
+    "--disable-recording"
+   ],
+   "pytest_args": [
+    "tests/test_tools.py::test_tool_use_basic",
+    "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+    "tests/test_tools_streaming.py",
+    "-q",
+    "-rs"
+   ],
+   "scope_decisions": [
+    {
+     "commit": "be1e926",
+     "local_commit_time_utc": "2026-10-23T16:28:41Z",
+     "order": "before the first llm sandbox run (image prepared 16:34:23Z)",
+     "what": "3 test nodes chosen (test_tool_use_basic, test_tool_use_chain_of_two_calls, tests/test_tools_streaming.py), Responses tests excluded"
+    },
+    {
+     "commit": "census/MANIFEST.json",
+     "local_commit_time_utc": "2026-10-24",
+     "order": "after the controls (Super live 0/6), before any ladder job",
+     "what": "openai_models.py:1441 excluded from the ladder as not testable live (acceptance 2026-10-24, MF2); :1494 stays, flagged cassette-only (live forward and live broken both fail; only the recorded answer passes)"
+    }
+   ],
+   "site_flags": {
+    "llm/default_plugins/openai_models.py:1494": {
+     "cassette_only": true,
+     "good_side": "baseline",
+     "isolated": true,
+     "wrong_control": false
+    }
+   },
+   "traced_not_covered": []
+  }
+ },
+ "written_utc": "2026-10-24T10:47:17Z"
+}
