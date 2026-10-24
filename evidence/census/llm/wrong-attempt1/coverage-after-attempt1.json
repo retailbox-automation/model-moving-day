@@ -1,0 +1,203 @@
+{
+ "target": "llm",
+ "ast_sites": [
+  {
+   "id": "llm/default_plugins/openai_models.py:519",
+   "func": "OpenAIEmbeddingModel.embed_batch",
+   "sdk": "openai",
+   "api": "embeddings.create",
+   "kind": "embedding",
+   "model_expr": null,
+   "model_literal": null
+  },
+  {
+   "id": "llm/default_plugins/openai_models.py:1441",
+   "func": "Chat.execute",
+   "sdk": "openai",
+   "api": "chat.completions.create",
+   "kind": "chat",
+   "model_expr": "self.model_name or self.model_id",
+   "model_literal": null
+  },
+  {
+   "id": "llm/default_plugins/openai_models.py:1494",
+   "func": "Chat.execute",
+   "sdk": "openai",
+   "api": "chat.completions.create",
+   "kind": "chat",
+   "model_expr": "self.model_name or self.model_id",
+   "model_literal": null
+  },
+  {
+   "id": "llm/default_plugins/openai_models.py:1559",
+   "func": "AsyncChat.execute",
+   "sdk": "openai",
+   "api": "chat.completions.create",
+   "kind": "chat",
+   "model_expr": "self.model_name or self.model_id",
+   "model_literal": null
+  },
+  {
+   "id": "llm/default_plugins/openai_models.py:1610",
+   "func": "AsyncChat.execute",
+   "sdk": "openai",
+   "api": "chat.completions.create",
+   "kind": "chat",
+   "model_expr": "self.model_name or self.model_id",
+   "model_literal": null
+  },
+  {
+   "id": "llm/default_plugins/openai_models.py:2552",
+   "func": "Responses.execute",
+   "sdk": "openai",
+   "api": "responses.create",
+   "kind": "responses",
+   "model_expr": "self.model_name or self.model_id",
+   "model_literal": null
+  },
+  {
+   "id": "llm/default_plugins/openai_models.py:2677",
+   "func": "Responses.execute",
+   "sdk": "openai",
+   "api": "responses.create",
+   "kind": "responses",
+   "model_expr": "self.model_name or self.model_id",
+   "model_literal": null
+  },
+  {
+   "id": "llm/default_plugins/openai_models.py:2799",
+   "func": "AsyncResponses.execute",
+   "sdk": "openai",
+   "api": "responses.create",
+   "kind": "responses",
+   "model_expr": "self.model_name or self.model_id",
+   "model_literal": null
+  },
+  {
+   "id": "llm/default_plugins/openai_models.py:2926",
+   "func": "AsyncResponses.execute",
+   "sdk": "openai",
+   "api": "responses.create",
+   "kind": "responses",
+   "model_expr": "self.model_name or self.model_id",
+   "model_literal": null
+  },
+  {
+   "id": "llm/default_plugins/openai_models.py:2998",
+   "func": "Completion.execute",
+   "sdk": "openai",
+   "api": "completions.create",
+   "kind": "completion",
+   "model_expr": "self.model_name or self.model_id",
+   "model_literal": null
+  },
+  {
+   "id": "llm/default_plugins/openai_models.py:3017",
+   "func": "Completion.execute",
+   "sdk": "openai",
+   "api": "completions.create",
+   "kind": "completion",
+   "model_expr": "self.model_name or self.model_id",
+   "model_literal": null
+  }
+ ],
+ "ast_parse_errors": [],
+ "traced_sites": [
+  {
+   "site": "llm/default_plugins/openai_models.py:1441",
+   "tests": 5,
+   "flip_tests": [],
+   "covered": false,
+   "isolated": true,
+   "good_side": "baseline",
+   "cassette_only": false,
+   "wrong_control": true,
+   "details": [
+    {
+     "test": "tests/test_tools.py::test_tool_use_basic",
+     "baseline": "passed",
+     "broken": "failed",
+     "forward": "failed",
+     "wrong": null
+    },
+    {
+     "test": "tests/test_tools_streaming.py::test_tools_streaming_variant_a",
+     "baseline": "passed",
+     "broken": "failed",
+     "forward": "failed",
+     "wrong": null
+    },
+    {
+     "test": "tests/test_tools_streaming.py::test_tools_streaming_variant_b",
+     "baseline": "passed",
+     "broken": "failed",
+     "forward": "failed",
+     "wrong": null
+    },
+    {
+     "test": "tests/test_tools_streaming.py::test_tools_streaming_variant_c",
+     "baseline": "passed",
+     "broken": "failed",
+     "forward": "failed",
+     "wrong": null
+    },
+    {
+     "test": "tests/test_tools_streaming.py::test_tools_streaming_variant_d",
+     "baseline": "passed",
+     "broken": "failed",
+     "forward": "failed",
+     "wrong": null
+    }
+   ],
+   "flip_tests_empty_only": [
+    "tests/test_tools.py::test_tool_use_basic",
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_a",
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_b",
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_c",
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_d"
+   ],
+   "excluded": "not testable live: its 5 flip tests assert wording recorded from the old model (tests/test_tools.py:226, gpt-4o-mini's exact sentence) or the recorded tool output '0.fixed-version' (tests/test_tools_streaming.py :18, :28, :40, :53; a live run returns the installed llm version), and the variants expect different sentences, so no live model, the old one included, can pass them"
+  },
+  {
+   "site": "llm/default_plugins/openai_models.py:1494",
+   "tests": 1,
+   "flip_tests": [],
+   "covered": false,
+   "isolated": true,
+   "good_side": "baseline",
+   "cassette_only": false,
+   "wrong_control": true,
+   "details": [
+    {
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "baseline": "passed",
+     "broken": "failed",
+     "forward": "failed",
+     "wrong": null
+    }
+   ],
+   "flip_tests_empty_only": [
+    "tests/test_tools.py::test_tool_use_chain_of_two_calls"
+   ]
+  }
+ ],
+ "ast_sites_not_reached": [
+  "llm/default_plugins/openai_models.py:1559",
+  "llm/default_plugins/openai_models.py:1610",
+  "llm/default_plugins/openai_models.py:2552",
+  "llm/default_plugins/openai_models.py:2677",
+  "llm/default_plugins/openai_models.py:2799",
+  "llm/default_plugins/openai_models.py:2926",
+  "llm/default_plugins/openai_models.py:2998",
+  "llm/default_plugins/openai_models.py:3017",
+  "llm/default_plugins/openai_models.py:519"
+ ],
+ "excluded_sites": {
+  "llm/default_plugins/openai_models.py:1441": "not testable live: its 5 flip tests assert wording recorded from the old model (tests/test_tools.py:226, gpt-4o-mini's exact sentence) or the recorded tool output '0.fixed-version' (tests/test_tools_streaming.py :18, :28, :40, :53; a live run returns the installed llm version), and the variants expect different sentences, so no live model, the old one included, can pass them",
+  "llm/default_plugins/openai_models.py:2552": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+  "llm/default_plugins/openai_models.py:2677": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+  "llm/default_plugins/openai_models.py:2799": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+  "llm/default_plugins/openai_models.py:2926": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured"
+ },
+ "covered_sites": []
+}
