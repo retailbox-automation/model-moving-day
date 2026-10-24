@@ -53,13 +53,17 @@ def test_site_cells_infra_rules():
     assert [o.passed for o in census.site_cells(s, SITE, [T1], k)] == [True, False, None]     # timeout is infra
     s = job_summary(["failed", "failed", "passed"], errors_by_run={"1": {"402": 1}, "2": {"502": 3}})
     outs = census.site_cells(s, SITE, [T1], k)
-    assert [o.passed for o in outs] == [False, None, True]  # 402 on a failing run -> infra; a clean pass stays a pass
-    assert "402" in outs[1].failure
+    # an infra status sets the run aside whatever its outcome (acceptance recheck: no outcome-dependent culling)
+    assert [o.passed for o in outs] == [False, None, None] and [o.underlying for o in outs] == [None, False, True]
+    assert "402" in outs[1].failure and "(passed)" in outs[2].failure
     s = job_summary(["failed", "failed", "failed"], errors_by_run={"?": {"None": 1}, "0": {"400": 2}})
     assert [o.passed for o in census.site_cells(s, SITE, [T1], k)] == [None] * 3              # unattributed infra: all
     s = job_summary(["failed"], errors_by_run={}, tests_reach={T1: [SITE, "pkg/b.py:9"]})
     s["calls"]["sites"]["pkg/b.py:9"] = {"errors_by_run": {"0": {"500": 1}}}
     assert census.site_cells(s, SITE, [T1], 1)[0].passed is None  # infra at another site the failing test reaches
+    s = job_summary(["passed"], errors_by_run={}, tests_reach={T1: [SITE, "pkg/b.py:9"]})
+    s["calls"]["sites"]["pkg/b.py:9"] = {"errors_by_run": {"0": {"429": 1}}}
+    assert census.site_cells(s, SITE, [T1], 1)[0].passed is None  # ... and a passing one: set aside all the same
     s = job_summary(["passed"])
     del s["runs"][0][T1]
     assert census.site_cells(s, SITE, [T1], 1)[0].passed is None  # flip test missing from the report
@@ -284,7 +288,11 @@ def test_the_ladder_refuses_an_unpushed_manifest_and_an_undeclared_smoke(monkeyp
     monkeypatch.setattr(mf, "pushed", not_pushed)
     with pytest.raises(mf.ManifestMismatch, match="not on origin"):
         census.cmd_ladder("instructor")
-    monkeypatch.setattr(mf, "pushed", lambda: {"commit": "abc"})
+    monkeypatch.setattr(mf, "pushed", lambda: {"commit": "abc", "branch": "lane-c1"})
+    monkeypatch.setattr(mf, "push_time", lambda commit, branch: None)
+    with pytest.raises(mf.ManifestMismatch, match="no push time"):  # MF8: the push time is required
+        census.cmd_ladder("instructor")
+    monkeypatch.setattr(mf, "push_time", lambda commit, branch: "2026-10-24T12:00:00Z")
     with pytest.raises(mf.ManifestMismatch, match="not declared"):
         census.cmd_ladder("instructor", smoke_id="S-undeclared")
 
@@ -331,3 +339,111 @@ def test_a_wrong_control_without_an_outcome_keeps_the_empty_flip_and_says_so():
     lost = {"runs": [{"__run__": {"outcome": "infra", "message": "no junit for run 0"}}]}
     row = census.controls_table(fwd, brk, None, lost)[0]
     assert row["covered"] and row["flip_tests"] == ["t1"] and row["wrong_control_missing"] == ["t1"]
+
+
+def test_three_of_five_with_a_retried_429_in_every_run_is_not_chosen(tmp_path):
+    """Acceptance recheck (MF1(a), N4): a model passing 3 of 5 runs, with a 429 the SDK retried in every run, must not
+    come out 'chosen' by culling only the failing runs as infra. Each run is set aside whatever its outcome."""
+    def script(model, routes, k, i):
+        outcomes = (["passed"] * 3 + ["failed"] * 2)[:k]  # the model passes 3 of 5; every run saw a retried 429
+        return job_summary(outcomes, errors_by_run={str(j): {"429": 1} for j in range(k)})
+    run, rj = make_ladder(tmp_path, script, k=5)
+    doc = run.run()
+    site = doc["sites"][SITE]
+    assert site["status"] != "chosen" and site["chosen"] is None
+    cell = site["cells"][0]
+    assert cell["valid_runs"] == 0 and cell["runs_with_retried_infra"]["pass"] > 0 and cell["runs_with_retried_infra"]["fail"] > 0
+
+
+def test_retried_infra_runs_are_counted_by_the_outcome_they_had(tmp_path):
+    def script(model, routes, k, i):
+        if i == 0:
+            return job_summary(["passed", "failed", "passed"], errors_by_run={"0": {"502": 1}, "1": {"429": 1}})
+        return job_summary(["passed"] * k)
+    run, _ = make_ladder(tmp_path, script, k=3)
+    cell = run.run()["sites"][SITE]["cells"][0]
+    assert cell["runs_with_retried_infra"] == {"pass": 1, "fail": 1} and cell["infra_runs"] == 2 and cell["passes"]
+
+
+@pytest.mark.parametrize("arguments", ["{not json", "[1, 2]"], ids=["invalid-json", "not-a-dict"])
+def test_a_diagnosis_with_broken_tool_arguments_is_infra_not_an_abort(tmp_path, arguments):
+    class BadArgs:
+        def chat(self, model, messages, **params):
+            tc = [{"id": "1", "type": "function", "function": {"name": "propose_fix", "arguments": arguments}}]
+            return tf.Reply(model, "", "", "", False, tc, "tool_calls", {"prompt_tokens": 1, "completion_tokens": 1}, 0.0, 0.1, {})
+    brain = agent.Brain(BadArgs(), agent.SUPER, tmp_path / "steps.jsonl", log=lambda m: None)
+
+    def script(model, routes, k, i):
+        s = job_summary(["failed"] * k)
+        s["calls"]["sites"][SITE]["diagnoses"] = {"empty_content": 1}
+        return s
+    run, rj = make_ladder(tmp_path, script, brain=brain)
+    doc = run.run()
+    site = doc["sites"][SITE]
+    assert doc["status"] == "complete" and site["status"] == "infra" and site["reason"].startswith("diagnosis failed")
+    assert site["cells"][0]["brain_error"] and {c["model"] for c in rj.calls} == {ladder.NANO}
+
+
+@pytest.mark.parametrize("code", ["401", "403"])
+def test_a_refused_key_stops_the_ladder_and_keeps_the_checkpoint(tmp_path, code):
+    def script(model, routes, k, i):
+        s = job_summary(["failed"] * k)
+        s["calls"]["sites"][SITE]["errors"] = {code: 3}
+        return s
+    run, _ = make_ladder(tmp_path, script)
+    with pytest.raises(census.IntegrityError, match="refused the key"):
+        run.run()
+    doc = json.loads(run.path.read_text())
+    assert doc["status"] == "aborted" and len(doc["jobs"]) == 1 and doc["sites"][SITE]["cells"] == []
+
+
+def test_a_rung_model_that_is_not_served_is_infra_model_not_served_and_does_not_climb(tmp_path):
+    run, rj = make_ladder(tmp_path, lambda m, r, k, i: job_summary(["failed"] * k, errors_by_run={str(j): {"404": 2} for j in range(k)}))
+    site = run.run()["sites"][SITE]
+    assert site["status"] == "infra" and site["reason"].startswith("model not served (HTTP 404) at Nano")
+    assert {c["model"] for c in rj.calls} == {ladder.NANO}
+
+
+def test_an_exception_from_run_job_is_an_infra_cell_not_an_abort(tmp_path):
+    def script(model, routes, k, i):
+        if i == 0:
+            raise ConnectionError("sandbox API unreachable")
+        return job_summary(["passed"] * k)
+    run, rj = make_ladder(tmp_path, script)
+    doc = run.run()
+    cell = doc["sites"][SITE]["cells"][0]
+    assert doc["status"] == "complete" and cell["infra_runs"] == 3 and cell["passes"] and doc["jobs"][0]["error"].startswith("ConnectionError")
+
+
+def test_a_changed_frozen_file_before_the_run_stops_the_ladder(tmp_path):
+    run, _ = make_ladder(tmp_path, lambda m, r, k, i: job_summary(["passed"] * k, freeze_before=["changed tests/test_a.py"]))
+    with pytest.raises(census.IntegrityError, match="frozen checks differ"):
+        run.run()
+
+
+def test_cmd_ladder_hands_the_manifest_k_kind_and_sha_to_the_ladder(monkeypatch):
+    man = {"targets": {"instructor": {"x": 1}}, "rules": {"k": 5, "margin": 0.2},
+           "smoke": [{"id": "S-instructor-super-k5", "target": "instructor", "rungs": ["Super"], "k": 5}],
+           "budgets": {"cap_usd_per_job": 1.0}}
+    monkeypatch.setattr(mf, "load", lambda path=mf.PATH: (man, "sha-of-manifest"))
+    monkeypatch.setattr(mf, "verify", lambda m, name, clones: [])
+    monkeypatch.setattr(mf, "pushed", lambda: {"commit": "abc", "branch": "lane-c1", "remote_head": "abc"})
+    monkeypatch.setattr(mf, "push_time", lambda commit, branch: "2026-10-24T12:00:00Z")
+    monkeypatch.setattr(census.sb, "Sandbox", lambda *a, **k: object())
+    monkeypatch.setattr(census.tf, "Ledger", lambda *a, **k: None)
+    monkeypatch.setattr(census, "ast_sites", lambda name: type("S", (), {"sites": []})())
+    seen = []
+
+    class Capture:
+        def __init__(self, name, entry, rules, k, rungs, kind, out, run_job, **kw):
+            seen.append({"k": k, "rungs": [r for r, _ in rungs], "kind": kind, **kw})
+
+        def run(self):
+            return {"sites": {}}
+    monkeypatch.setattr(census, "Ladder", Capture)
+    census.cmd_ladder("instructor", use_brain=False)
+    census.cmd_ladder("instructor", smoke_id="S-instructor-super-k5", use_brain=False)
+    assert seen[0]["k"] == 5 and seen[0]["kind"] == "decision" and seen[0]["rungs"] == ["Nano", "Lightning", "Super", "Ultra"]
+    assert seen[0]["manifest"] == {"sha256": "sha-of-manifest", "pushed_at": "2026-10-24T12:00:00Z", "commit": "abc",
+                                   "branch": "lane-c1", "remote_head": "abc"}
+    assert seen[1]["kind"] == "smoke" and seen[1]["k"] == 5 and seen[1]["rungs"] == ["Super"]

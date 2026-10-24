@@ -8,7 +8,8 @@ spec: {"repo_dir", "routes", "k", "pytest_args": [...], "env": {...}, "cap_usd",
 
 The K pytest runs go in parallel by default (each with its own junit file, basetemp and HOME, and MMD_RUN=i so the
 proxy can attribute every call to its run); `timeout_s` bounds the whole batch. The Token Factory key arrives as a
-file, is deleted at once and is handed to the proxy on stdin, so no process environment holds it. When the job runs
+file, which the job deletes inside the sandbox at once and hands to the proxy on stdin, so no process environment
+holds it (the uploaded copy stays in the Sandboxes file store: revoke the key after the event). When the job runs
 as root and `test_uid` is set, the tests run under that uid: they cannot read the proxy's memory or environment.
 """
 import argparse, json, os, signal, subprocess, sys, time

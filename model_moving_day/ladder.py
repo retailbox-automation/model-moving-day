@@ -18,12 +18,15 @@ K, MARGIN, BASELINE = 5, 0.2, 1.0
 MAX_INFRA_RETRIES = 2  # re-runs of the same rung for runs lost to infrastructure; then the site's status is "infra"
 
 
+AUTH_STATUSES = {"401", "403"}  # the platform refused the key: nothing measured can be trusted, the ladder stops
+
+
 def is_infra_status(code):
-    """Proxy-logged statuses that say nothing about the model: budget (402), rate limit (429), any 5xx (502 from
-    upstream, 500 from the proxy itself, 501 for an endpoint the proxy does not route) and None (timeout or a
-    connection that failed after retries)."""
+    """Proxy-logged statuses that say nothing about the model: budget (402), the rung's model not served (404), rate
+    limit (429), any 5xx (502 from upstream, 500 from the proxy itself, 501 for an endpoint the proxy does not
+    route) and None (timeout or a connection that failed after retries)."""
     code = str(code)
-    return code in ("402", "429", "None") or (code.isdigit() and 500 <= int(code) <= 599)
+    return code in ("402", "404", "429", "None") or (code.isdigit() and 500 <= int(code) <= 599)
 
 
 def required_passes(k, baseline, margin):
@@ -58,6 +61,7 @@ class RunOutcome:
     cost: float = 0.0
     seconds: float = 0.0
     tests: dict = field(default_factory=dict)  # test node id -> passed
+    underlying: bool | None = None  # for a run set aside because of infra statuses: did its flip tests pass?
 
 
 @dataclass

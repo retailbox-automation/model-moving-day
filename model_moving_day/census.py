@@ -188,8 +188,9 @@ def _utc(ts=None):
 def site_cells(summary, site, flip_tests, k):
     """One RunOutcome per run i: passed iff every flip test of the site passed in run i. A run is infrastructure
     (passed=None) when the job left no summary or failed, the run timed out, a flip test is missing from its junit,
-    or a flip test failed while the run logged an infra status (ladder.is_infra_status) at a site the failing tests
-    reach. Calls logged without a run index count against every failing run."""
+    or the run logged an infra status (ladder.is_infra_status) at the site or at any site its flip tests reach,
+    whatever the run's outcome: setting runs aside must not depend on whether they passed. Calls logged without a
+    run index count against every run. `underlying` keeps the outcome such a run had."""
     s = summary or {}
     if not s:
         return [ladder.RunOutcome(None, failure="no job summary (sandbox run lost)") for _ in range(k)]
@@ -210,10 +211,7 @@ def site_cells(summary, site, flip_tests, k):
             continue
         bad = [(t, res[t].get("message", "")) for t in flip_tests if res[t]["outcome"] != "passed"]
         tests = {t: res[t]["outcome"] for t in flip_tests}
-        if not bad:
-            outs.append(ladder.RunOutcome(True, tests=tests))
-            continue
-        touched = {site} | {x for t, _ in bad for x in reach.get(t, [])}
+        touched = {site} | {x for t in flip_tests for x in reach.get(t, [])}
         infra = {}
         for x in touched:
             by_run = (sites.get(x) or {}).get("errors_by_run") or {}
@@ -221,8 +219,12 @@ def site_cells(summary, site, flip_tests, k):
                 if ladder.is_infra_status(code):
                     infra[code] = infra.get(code, 0) + n
         if infra:
-            outs.append(ladder.RunOutcome(None, failure=f"run {i}: failed with infra statuses {infra}; "
-                                                        f"{bad[0][0]}: {bad[0][1][:200]}", tests=tests))
+            cause = "the rung's model is not served (HTTP 404)" if "404" in infra else f"infra statuses {infra}"
+            outs.append(ladder.RunOutcome(None, failure=f"run {i}: {cause}; set aside whatever its outcome "
+                                                        f"({'failed' if bad else 'passed'})", tests=tests,
+                                          underlying=not bad))
+        elif not bad:
+            outs.append(ladder.RunOutcome(True, tests=tests))
         else:
             outs.append(ladder.RunOutcome(False, failure=f"{bad[0][0]}: {bad[0][1][:300]}", tests=tests))
     return outs
@@ -256,6 +258,8 @@ def cell_record(cell, stats, model, k, baseline, margin, flip_tests):
     runs_seen = len(cell.runs)
     return {"rung": cell.rung, "model": model, "params": cell.params, "k": k, "valid_runs": cell.n, "passed_runs": cell.k,
             "infra_runs": cell.infra, "status": status, "passes": passes,
+            "runs_with_retried_infra": {"pass": sum(1 for r in cell.runs if r.passed is None and r.underlying is True),
+                                        "fail": sum(1 for r in cell.runs if r.passed is None and r.underlying is False)},
             "rate": None if cell.n == 0 else round(cell.rate, 4), "wilson95": [round(lo, 4), round(hi, 4)],
             "fail_rate_upper_rule_of_three": round(ladder.rule_of_three(cell.n), 4) if cell.n and cell.k == cell.n else None,
             "calls": calls, "calls_per_test_run": round(calls / (len(flip_tests) * runs_seen), 3) if runs_seen and flip_tests else None,
@@ -269,6 +273,12 @@ def cell_record(cell, stats, model, k, baseline, margin, flip_tests):
             "first_failure": next((r.failure for r in cell.runs if r.passed is False), ""),
             "infra_failures": [r.failure for r in cell.runs if r.passed is None][:5],
             "per_test_passed": per_test, "per_run": [{"passed": r.passed, "tests": r.tests} for r in cell.runs]}
+
+
+def _infra_reason(rec, rung):
+    if any("not served (HTTP 404)" in f for f in rec["infra_failures"]):
+        return f"model not served (HTTP 404) at {rung}; not climbed"
+    return f"infrastructure errors persisted at {rung} after {ladder.MAX_INFRA_RETRIES} re-runs; not climbed"
 
 
 class Ladder:
@@ -338,6 +348,13 @@ class Ladder:
             raise IntegrityError("spend envelope broke: " + s["envelope_error"])
         if rec["untraced"]:
             raise IntegrityError(f"{rec['untraced']} calls were not tagged by the tracer")
+        auth = {}
+        for v in (((s.get("calls") or {}).get("sites")) or {}).values():
+            for code, n in (v.get("errors") or {}).items():
+                if code in ladder.AUTH_STATUSES:
+                    auth[code] = auth.get(code, 0) + n
+        if auth:
+            raise IntegrityError(f"Token Factory refused the key {auth}: no cell may be read as a model failure")
         return summary
 
     def measure(self, rung, model, sites, params, note, **job_kw):
@@ -393,9 +410,12 @@ class Ladder:
                 "first_failure": rec["first_failure"], "diagnoses": stats.get("diagnoses"), "finish": stats.get("finish"),
                 "max_tokens": stats.get("max_tokens"), "calls": stats.get("calls"),
                 "reasoning_tokens": stats.get("reasoning_tokens"), "completion_tokens": stats.get("completion_tokens")})
-        except tf.TFError as e:  # the brain could not be asked: the site must not climb because of that
-            rec["brain_error"] = str(e)[:300]
-            self.settle(site, status="infra", reason=f"diagnosis call failed at {rung}: {str(e)[:200]}")
+        except tf.BudgetExceeded:
+            raise
+        except Exception as e:  # the brain could not answer (API error, broken tool-call arguments): do not climb
+            rec["brain_error"] = f"{type(e).__name__}: {e}"[:300]
+            self.checkpoint()
+            self.settle(site, status="infra", reason=f"diagnosis failed at {rung}: {rec['brain_error'][:200]}")
             return None
 
     def run(self):
@@ -412,8 +432,7 @@ class Ladder:
                     if rec["passes"]:
                         self.settle(s, status="chosen", chosen=rung, model=model, reason=f"{rung} passed {rec['passed_runs']}/{rec['valid_runs']}")
                     elif rec["status"] == "infra":
-                        self.settle(s, status="infra", reason=f"infrastructure errors persisted at {rung} after "
-                                                              f"{ladder.MAX_INFRA_RETRIES} re-runs; not climbed")
+                        self.settle(s, status="infra", reason=_infra_reason(rec, rung))
                     elif self.brain and stats.get("diagnoses"):
                         fix = self.diagnose(s, rung, model, rec, stats)
                         if fix:
@@ -426,7 +445,7 @@ class Ladder:
                             self.settle(s, status="chosen", chosen=rung, model=model, fix=rec["fix"],
                                         reason=f"{rung} passed {rec['passed_runs']}/{rec['valid_runs']} after {needs_fix[s].kind}")
                         elif rec["status"] == "infra":
-                            self.settle(s, status="infra", reason=f"infrastructure errors persisted at {rung} + fix; not climbed")
+                            self.settle(s, status="infra", reason=_infra_reason(rec, rung + " + fix"))
             for s, v in self.state.items():
                 if v["status"] == "pending":
                     if self.kind == "smoke":
@@ -472,6 +491,10 @@ def cmd_ladder(name, smoke_id=None, pushed_at=None, use_brain=True):
     if problems:
         raise mf.ManifestMismatch(problems)
     push = mf.pushed()
+    pushed_at = pushed_at or mf.push_time(push["commit"], push["branch"])
+    if not pushed_at:
+        raise mf.ManifestMismatch(["no push time for the manifest commit: GitHub activity did not show it; pass "
+                                   "--pushed-at from the repository's activity page"])
     entry, rules = man["targets"][name], man["rules"]
     if smoke_id:
         smoke = next((x for x in man["smoke"] if x["id"] == smoke_id and x["target"] == name), None)
@@ -508,7 +531,8 @@ def cmd_manifest(names, reason):
         "logged_when_written": logged, "planned_phase_b": 48,
         "plan": "instructor ladder <= 8, llm ladder <= 8, third repo prepare + controls + ladder <= 13, patch confirm 3, "
                 "fallback cells, smoke 1-2",
-        "limit": "MMD_SANDBOX_MAX_RUNS, set by the orchestrator before the first ladder job (default in code 40)"},
+        "limit": "MMD_SANDBOX_MAX_RUNS=80 for every phase-B command (orchestrator decision 2026-10-24 11:15; "
+                 "default in code 40)"},
         previous)
     sha = mf.write(man)
     print(json.dumps({"manifest": str(mf.PATH.relative_to(ROOT)), "sha256": sha, "targets": names}))

@@ -35,3 +35,12 @@ def test_commit_goes_to_a_local_branch_only(tmp_path):
     out = subprocess.run(["git", "branch", "--show-current"], cwd=repo, capture_output=True, text=True).stdout.strip()
     assert out == "mmd/move" and len(sha) == 40
     assert subprocess.run(["git", "remote"], cwd=repo, capture_output=True, text=True).stdout.strip() == ""
+
+
+def test_a_cassette_only_site_is_marked_in_the_pr():
+    v = {"status": "chosen", "chosen": "Nano", "model": "m", "fix": None, "fallback": None, "reason": "", "flip_tests": ["t"],
+         "flags": {"cassette_only": True}, "cells": []}
+    lo = {"sites": {"llm/x.py:1": v}, "rungs": ["Nano"], "k": 5, "margin": 0.2}
+    text = pr.render({"name": "llm", "github": "o/r", "commit": "0" * 40, "license": "Apache-2.0"}, lo, {},
+                     {"model": "gpt-6-luna", "price": (0.1, 0.5), "source": "s", "retiring_model": "gpt-4o-mini"})
+    assert "good side = recorded cassette" in text

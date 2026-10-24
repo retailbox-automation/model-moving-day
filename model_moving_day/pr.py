@@ -110,6 +110,8 @@ def render(target, ladder_out, coverage, baseline, manifest_sha=None, changes_by
         pb = baseline_usd_per_passed_run(chosen, baseline["price"]) if chosen else None
         per_run = f"{pa:.5f} / {pb:.5f}" if pa is not None and pb is not None else "-"
         ch = ", ".join(sorted((changes_by_site or {}).get(s, []))) or "model"
+        if (v.get("flags") or {}).get("cassette_only"):
+            ch += "; good side = recorded cassette: live forward did not pass before the ladder"
         lines.append(f"| `{s}` | {len(v['flip_tests'])} | " + " | ".join(cells) +
                      f" | {_outcome(v)} | {_fallback(v)} | {after} | {before} | {per_run} | {ch} |")
     for s, why in excluded.items():

@@ -57,8 +57,10 @@ def rules():
                 "the job left no summary (sandbox run lost) or the summary has an error",
                 "the pytest run timed out (exit code 'timeout')",
                 "a flip test of the site is missing from the run's junit report",
-                "a flip test failed and the run logged a proxy status " + "/".join(["402", "429", "5xx", "None"]) +
-                " at a call site the failing tests reach (a run whose flip tests all passed stays a valid pass)"],
+                "the run logged a proxy status 402, 404 (the rung's model not served), 429, 5xx or None at the "
+                "site or at any site its flip tests reach (or without a run index), whatever the run's outcome; "
+                "each cell counts such runs by the outcome they had (runs_with_retried_infra)"],
+            "stop": "a 401 or 403 anywhere stops the ladder (the key was refused), with everything so far saved",
             "retries": ladder.MAX_INFRA_RETRIES,
             "retry_rule": "re-run only the missing valid runs of the same rung and parameters; a cell already "
                           "holding more failures than a passing cell may have is not re-run",
@@ -110,10 +112,15 @@ NOT_CLAIMED = [
     "separately without normalization",
     "per-call $ is priced on Nemotron's token counts; the baseline uses the same counts (another tokenizer differs)",
     "test traffic, not production traffic",
+    "runs are set aside as infrastructure whenever the proxy logged 402/404/429/5xx/None at the site or at a site its "
+    "flip tests reach, whatever their outcome, and re-run at most twice; each cell lists how many set-aside runs "
+    "had passed and how many had failed (runs_with_retried_infra)",
+    "after a run the hash check catches changed or missing frozen files; new files in test directories are recorded "
+    "but do not stop the ladder",
 ]
-SMOKE = [{"id": "S-instructor-super-k1", "target": "instructor", "rungs": ["Super"], "k": 1,
-          "purpose": "wiring check of the phase-B job (parallel runs, run tags, key file, test uid, frozen hashes, "
-                     "infra accounting) before the first decision run; published; not for decision"}]
+SMOKE = [{"id": "S-instructor-super-k5", "target": "instructor", "rungs": ["Super"], "k": 5,
+          "purpose": "wiring check of the phase-B job with K=5 parallel runs (run tags, key file, test uid, frozen "
+                     "hashes, infra accounting, timings) before the first decision run; published; not for decision"}]
 
 
 def _evidence_sha(name):
@@ -212,6 +219,23 @@ def verify(man, name, clones):
     if dirty:
         problems.append(f"{name} clone has local changes: {dirty.splitlines()[:3]}")
     return problems
+
+
+def push_time(commit, branch, remote="origin"):
+    """UTC time of the earliest GitHub push to `branch` that carried `commit` (repository activity API), or None."""
+    url = git("remote", "get-url", remote)
+    slug = url.split("github.com")[-1].lstrip(":/").removesuffix(".git")
+    r = subprocess.run(["gh", "api", f"repos/{slug}/activity?ref=refs/heads/{branch}&per_page=100"],
+                       capture_output=True, text=True)
+    if r.returncode != 0:
+        return None
+    times = []
+    for ev in json.loads(r.stdout or "[]"):
+        after = ev.get("after") or ""
+        if after and subprocess.run(["git", "merge-base", "--is-ancestor", commit, after], cwd=ROOT,
+                                    capture_output=True).returncode == 0:
+            times.append(ev.get("timestamp"))
+    return min(times) if times else None
 
 
 def pushed(path=PATH, remote="origin"):

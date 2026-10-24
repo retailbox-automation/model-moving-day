@@ -51,7 +51,8 @@ def test_a_fresh_manifest_verifies_and_holds_flips_frozen_hashes_and_rules(world
     r = man["rules"]
     assert (r["k"], r["margin"], r["required_passes"]) == (5, 0.2, 4)
     assert [x["model"] for x in r["rungs"]] == [m for _, m in ladder.RUNGS]
-    assert man["smoke"][0]["k"] == 1 and "not for decision" in man["smoke"][0]["purpose"]
+    assert man["smoke"][0]["id"] == "S-instructor-super-k5" and man["smoke"][0]["k"] == 5
+    assert "not for decision" in man["smoke"][0]["purpose"]
 
 
 @pytest.mark.parametrize("tamper, expected", [
