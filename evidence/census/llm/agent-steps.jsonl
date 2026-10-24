@@ -1,0 +1,1 @@
+{"ts": 1792843208.498, "step": "diagnose llm/default_plugins/openai_models.py:1494 @ Nano", "model": "nvidia/nemotron-3-super-120b-a12b", "seconds": 2.039, "prompt_tokens": 723, "completion_tokens": 182, "reasoning_tokens": 111, "cost": 0.00038070000000000004, "finish": "tool_calls", "tool_calls": ["propose_fix"]}

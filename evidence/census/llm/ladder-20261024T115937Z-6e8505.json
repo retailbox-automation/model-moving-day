@@ -1,0 +1,460 @@
+{
+ "target": "llm",
+ "run_id": "20261024T115937Z-6e8505",
+ "kind": "decision",
+ "smoke": null,
+ "status": "complete",
+ "started_utc": "2026-10-24T11:59:37Z",
+ "commit": "aebaca27f9acb6cc56ba4b33ab81e08d6dcb3bc3",
+ "manifest": {
+  "sha256": "35365b0c8c68fe8a06270f9dbf6bd0715023effaaa66df047f7d125f2542e312",
+  "pushed_at": "2026-10-24T11:47:38Z",
+  "commit": "4f78a82efd14ce157fca2d5a4fcc7c3b0f44bd2d",
+  "branch": "lane-c1",
+  "remote_head": "4f78a82efd14ce157fca2d5a4fcc7c3b0f44bd2d"
+ },
+ "k": 5,
+ "margin": 0.2,
+ "baseline": 1.0,
+ "baseline_note": "pass rate assumed 1.0 (strictest), not measured by us. Cassette replay 6/6 at aebaca2 (control-baseline, one run, recorded answers of gpt-4o-mini and gpt-4.1-mini); the ladder still uses the assumed 1.0.",
+ "rungs": [
+  "Nano",
+  "Lightning",
+  "Super",
+  "Ultra"
+ ],
+ "excluded_sites": {
+  "llm/default_plugins/openai_models.py:1441": "not testable live: its 5 flip tests assert wording recorded from the old model (tests/test_tools.py:226, gpt-4o-mini's exact sentence) or the recorded tool output '0.fixed-version' (tests/test_tools_streaming.py :18, :28, :40, :53; a live run returns the installed llm version), and the variants expect different sentences, so no live model, the old one included, can pass them",
+  "llm/default_plugins/openai_models.py:2552": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+  "llm/default_plugins/openai_models.py:2677": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+  "llm/default_plugins/openai_models.py:2799": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+  "llm/default_plugins/openai_models.py:2926": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured"
+ },
+ "brain": "nvidia/nemotron-3-super-120b-a12b",
+ "frozen_sha256": "479b7ffa2880864b021ece815375d3fac68066b8f3e469d385526b3953109967",
+ "sandbox_max_runs": 80,
+ "sites": {
+  "llm/default_plugins/openai_models.py:1494": {
+   "status": "chosen",
+   "chosen": "Nano",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "fix": {
+    "kind": "reasoning_off",
+    "why": "The leading newline appears because reasoning is on by default and can cause content to start with a newline, as seen in the assertion failure where the output began with '\\nYES'.",
+    "by": "nvidia/nemotron-3-super-120b-a12b",
+    "expected_change": [
+     "reasoning:enable_thinking"
+    ],
+    "applied": true,
+    "applied_calls": 15
+   },
+   "fallback": {
+    "rung": "Lightning",
+    "model": "nvidia/Nemotron-3_5-Lightning",
+    "passes": true,
+    "status": "pass"
+   },
+   "reason": "Nano passed 5/5 after reasoning_off",
+   "flip_tests": [
+    "tests/test_tools.py::test_tool_use_chain_of_two_calls"
+   ],
+   "flags": {
+    "cassette_only": true,
+    "flip_tests_empty_only": [],
+    "good_side": "baseline",
+    "isolated": true,
+    "wrong_control": true,
+    "wrong_control_missing": []
+   },
+   "cells": [
+    {
+     "rung": "Nano",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "params": {},
+     "k": 5,
+     "valid_runs": 5,
+     "passed_runs": 0,
+     "infra_runs": 0,
+     "status": "fail",
+     "passes": false,
+     "runs_with_retried_infra": {
+      "pass": 0,
+      "fail": 0
+     },
+     "rate": 0.0,
+     "wilson95": [
+      0.0,
+      0.4345
+     ],
+     "fail_rate_upper_rule_of_three": null,
+     "calls": 15,
+     "calls_per_test_run": 3.0,
+     "tokens_per_call": [
+      409.3,
+      462.3
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": 0.1355,
+     "model_cost": 0.002033,
+     "usd_per_passed_run": null,
+     "diagnoses": {
+      "leading_whitespace": 5
+     },
+     "finish": {
+      "tool_calls": 10,
+      "stop": 5
+     },
+     "changes": {
+      "model:model": 15
+     },
+     "errors": {},
+     "repaired_empty_args": 0,
+     "first_failure": "tests/test_tools.py::test_tool_use_chain_of_two_calls: AssertionError: assert '\\nYES' == 'YES'\n  \n  + \n    YES",
+     "infra_failures": [],
+     "per_test_passed": {
+      "tests/test_tools.py::test_tool_use_chain_of_two_calls": [
+       0,
+       5
+      ]
+     },
+     "per_run": [
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "failed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "failed"
+       }
+      }
+     ],
+     "role": "ladder"
+    },
+    {
+     "rung": "Nano",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "params": {
+      "reasoning": "off"
+     },
+     "k": 5,
+     "valid_runs": 5,
+     "passed_runs": 5,
+     "infra_runs": 0,
+     "status": "pass",
+     "passes": true,
+     "runs_with_retried_infra": {
+      "pass": 0,
+      "fail": 0
+     },
+     "rate": 1.0,
+     "wilson95": [
+      0.5655,
+      1.0
+     ],
+     "fail_rate_upper_rule_of_three": 0.6,
+     "calls": 15,
+     "calls_per_test_run": 3.0,
+     "tokens_per_call": [
+      409.3,
+      21.3
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": 0.0297,
+     "model_cost": 0.000445,
+     "usd_per_passed_run": 8.9e-05,
+     "diagnoses": {},
+     "finish": {
+      "tool_calls": 10,
+      "stop": 5
+     },
+     "changes": {
+      "model:model": 15,
+      "reasoning:enable_thinking": 15
+     },
+     "errors": {},
+     "repaired_empty_args": 0,
+     "first_failure": "",
+     "infra_failures": [],
+     "per_test_passed": {
+      "tests/test_tools.py::test_tool_use_chain_of_two_calls": [
+       5,
+       5
+      ]
+     },
+     "per_run": [
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      }
+     ],
+     "role": "ladder",
+     "fix": {
+      "kind": "reasoning_off",
+      "why": "The leading newline appears because reasoning is on by default and can cause content to start with a newline, as seen in the assertion failure where the output began with '\\nYES'.",
+      "by": "nvidia/nemotron-3-super-120b-a12b",
+      "expected_change": [
+       "reasoning:enable_thinking"
+      ],
+      "applied": true,
+      "applied_calls": 15
+     }
+    },
+    {
+     "rung": "Lightning",
+     "model": "nvidia/Nemotron-3_5-Lightning",
+     "params": {},
+     "k": 5,
+     "valid_runs": 5,
+     "passed_runs": 5,
+     "infra_runs": 0,
+     "status": "pass",
+     "passes": true,
+     "runs_with_retried_infra": {
+      "pass": 0,
+      "fail": 0
+     },
+     "rate": 1.0,
+     "wilson95": [
+      0.5655,
+      1.0
+     ],
+     "fail_rate_upper_rule_of_three": 0.6,
+     "calls": 15,
+     "calls_per_test_run": 3.0,
+     "tokens_per_call": [
+      545.3,
+      21.3
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": 0.0378,
+     "model_cost": 0.000568,
+     "usd_per_passed_run": 0.000114,
+     "diagnoses": {},
+     "finish": {
+      "tool_calls": 10,
+      "stop": 5
+     },
+     "changes": {
+      "model:model": 15
+     },
+     "errors": {},
+     "repaired_empty_args": 0,
+     "first_failure": "",
+     "infra_failures": [],
+     "per_test_passed": {
+      "tests/test_tools.py::test_tool_use_chain_of_two_calls": [
+       5,
+       5
+      ]
+     },
+     "per_run": [
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      }
+     ],
+     "role": "fallback"
+    }
+   ]
+  }
+ },
+ "jobs": [
+  {
+   "utc": "2026-10-24T12:00:06Z",
+   "note": "Nano",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "sites": [
+    "llm/default_plugins/openai_models.py:1494"
+   ],
+   "k": 5,
+   "tests": 1,
+   "sandbox_cost_diagnostic": 0.12219141,
+   "cpu_s": 12.171465,
+   "wall_s": 28.748,
+   "exit_code": 0,
+   "model_spend": 0.00203256,
+   "error": null,
+   "envelope_error": null,
+   "exit_codes": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "durations_s": [
+    22.0,
+    14.4,
+    22.8,
+    19.2,
+    26.0
+   ],
+   "freeze_before": [],
+   "freeze_after": [],
+   "isolation": {
+    "28/environ": "PermissionError",
+    "28/mem": "PermissionError",
+    "29/environ": "PermissionError",
+    "29/mem": "PermissionError"
+   },
+   "test_uid": 10001,
+   "untraced": 0
+  },
+  {
+   "utc": "2026-10-24T12:00:19Z",
+   "note": "Nano + fix",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "sites": [
+    "llm/default_plugins/openai_models.py:1494"
+   ],
+   "k": 5,
+   "tests": 1,
+   "sandbox_cost_diagnostic": 0.1190666,
+   "cpu_s": 11.860994,
+   "wall_s": 11.369,
+   "exit_code": 0,
+   "model_spend": 0.0004452,
+   "error": null,
+   "envelope_error": null,
+   "exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "durations_s": [
+    8.4,
+    8.8,
+    6.0,
+    5.8,
+    6.2
+   ],
+   "freeze_before": [],
+   "freeze_after": [],
+   "isolation": {
+    "27/environ": "PermissionError",
+    "27/mem": "PermissionError",
+    "28/environ": "PermissionError",
+    "28/mem": "PermissionError"
+   },
+   "test_uid": 10001,
+   "untraced": 0
+  },
+  {
+   "utc": "2026-10-24T12:00:26Z",
+   "note": "Lightning fallback",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "sites": [
+    "llm/default_plugins/openai_models.py:1494"
+   ],
+   "k": 5,
+   "tests": 1,
+   "sandbox_cost_diagnostic": 0.12017532,
+   "cpu_s": 11.971872,
+   "wall_s": 6.926,
+   "exit_code": 0,
+   "model_spend": 0.0005676,
+   "error": null,
+   "envelope_error": null,
+   "exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "durations_s": [
+    4.8,
+    4.8,
+    4.8,
+    4.8,
+    4.8
+   ],
+   "freeze_before": [],
+   "freeze_after": [],
+   "isolation": {
+    "27/environ": "PermissionError",
+    "27/mem": "PermissionError",
+    "28/environ": "PermissionError",
+    "28/mem": "PermissionError"
+   },
+   "test_uid": 10001,
+   "untraced": 0
+  }
+ ],
+ "ended_utc": "2026-10-24T12:00:26Z"
+}
