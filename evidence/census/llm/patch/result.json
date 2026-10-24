@@ -1,0 +1,13 @@
+{
+ "ladder_run": "20261024T115937Z-6e8505",
+ "moved": [
+  "llm/default_plugins/openai_models.py:1494"
+ ],
+ "kept": {},
+ "branch": "mmd/move-to-nemotron",
+ "commit": "a90319e522c078ea2f0b0dd7c85c20984d6d424b",
+ "pr": "evidence/census/llm/patch/PR.md",
+ "confirm": {
+  "llm/default_plugins/openai_models.py:1494": "pass"
+ }
+}
