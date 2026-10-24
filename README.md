@@ -174,7 +174,11 @@ over the decision runs) is a diagnostic, not spend.
 
 Requirements: Python 3.12, `pip install -e '.[dev,sandbox]'`, a Token Factory key in `NEBIUS_API_KEY` and a
 Sandboxes project in `NEBIUS_PROJECT_ID`. Offline tests: `python -m pytest -q`. CENSUS.md:
-`python census/report.py`.
+`python census/report.py`. To run the census yourself, use your own key and project with the commands above.
+
+Demo (replay of this census, no key, no model calls): `python -m demo.build` writes `demo/data/census.json` from the
+same data as CENSUS.md, and `python -m demo.server` serves it (`GET /`, `/api/census`, `/api/site/<site>`,
+`/api/run/<run_id>`, `/api/patch/<repo>`). The `Dockerfile` runs the same server.
 
 ## Limits
 
