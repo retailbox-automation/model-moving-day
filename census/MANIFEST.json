@@ -1,5 +1,11 @@
 {
- "amendments": [],
+ "amendments": [
+  {
+   "previous_sha256": "efa8a7adb1842755da0cddb1464abdc2c5f61233d54c47b237b7f7672e0df1b2",
+   "reason": "Code change before any ladder run: the patch step accepts ladder runs made under an earlier manifest version listed in the amendments (needed when paper-qa is added later)",
+   "utc": "2026-10-24T10:50:08Z"
+  }
+ ],
  "baseline_before": {
   "method": "priced on the Nemotron cell's measured prompt tokens and visible output tokens per call (reasoning tokens excluded), i.e. as if the old app made the same calls; per passed run as well as per 1,000 calls",
   "model": "gpt-6-luna",
@@ -33,7 +39,7 @@
    "model_moving_day/ladder.py": "4f3afad51e534b389929eccc9324cf6eefc2bba9d1064f656650ad5a8a683aab",
    "model_moving_day/manifest.py": "23fc7cd151932a2c036a2af1b457b0f6fb85001da3c02085ae393a3690302898",
    "model_moving_day/normalize.py": "a035f94e364f826be9c76b58e9a988f2d1adcea5425fee0a98e770dd98b289b4",
-   "model_moving_day/patch.py": "f05bf3868c3cf9b4b697e47a7388a9ec549611a7f227dd3e0613004e97f05eff",
+   "model_moving_day/patch.py": "8df296668252de4ee84e59d97b2fc2e02a1d380841cefc91827601e2ac663ea5",
    "model_moving_day/pr.py": "3752f9d7f5386f8081136a74873ab0226812af00a4d33b5cbd4de918128f932f",
    "model_moving_day/proxy.py": "8c129e98b75cf525cce818d7928e0b886b9fb0890e7f366fb4fd29e6f02b93a6",
    "model_moving_day/runner.py": "3119e28ca1cbfdb0ff1c8dde36c78e69c994d34e95c174ce7c471315d5ca9d49",
@@ -43,7 +49,7 @@
    "model_moving_day/tf_client.py": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b",
    "model_moving_day/tracer/sitecustomize.py": "e17fe6b1d7988aaf3d5cdc2d1f8581d0666759a62e5832c9a131ab3fb39c2b4d"
   },
-  "git_head_when_written": "9ae2f384e21919fbfefc3a1322f3ba2d02186dfe",
+  "git_head_when_written": "0e24735e840980d6068c56747e360bcb3023b597",
   "tf_client_sha256": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b"
  },
  "first_written_utc": "2026-10-24T10:47:17Z",
@@ -57,7 +63,7 @@
   "test traffic, not production traffic"
  ],
  "publication": "every cell is published, including red cells, infra cells, cells of an aborted ladder, smoke runs and the 'old model stays' outcome; every job and cell is also appended to evidence/census/<target>/ladder-log.jsonl, and each ladder run writes its own ladder-<run_id>.json (never overwritten)",
- "reason": "First version, phase B stage 1 (acceptance 2026-10-24 MF1-MF8): instructor and llm; paper-qa is added by amendment after its controls, before its ladder",
+ "reason": "Code change before any ladder run: the patch step accepts ladder runs made under an earlier manifest version listed in the amendments (needed when paper-qa is added later)",
  "rules": {
   "baseline_pass_rate": 1.0,
   "brain": {
@@ -756,5 +762,5 @@
    "traced_not_covered": []
   }
  },
- "written_utc": "2026-10-24T10:47:17Z"
+ "written_utc": "2026-10-24T10:50:08Z"
 }
