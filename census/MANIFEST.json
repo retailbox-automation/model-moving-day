@@ -24,6 +24,11 @@
    "previous_sha256": "fee85e44a3c3a658f4519ea66833af5cb735bceadae20468efb5bb5c0baa48c9",
    "reason": "Amendment 5: code only (patch step: exact helper import line and strict check, src-layout import path, brain retries); rules and target entries unchanged",
    "utc": "2026-10-24T12:44:48Z"
+  },
+  {
+   "previous_sha256": "41ea5072d69c76fc3a9c7d552d8e039bbd67f0101f43168a11d7beb2e3fb67e1",
+   "reason": "Amendment 6: code only (patch result path relative to the repository); rules and target entries unchanged",
+   "utc": "2026-10-24T12:45:50Z"
   }
  ],
  "baseline_before": {
@@ -59,7 +64,7 @@
    "model_moving_day/ladder.py": "cd64b81af53439247ae2d54932c21ef0d6de6b706c659ff1230393ae969cc3fe",
    "model_moving_day/manifest.py": "35a5ab095352e120126b8417d5e2b97e814997c45dd794eebc1e8654412f32a0",
    "model_moving_day/normalize.py": "a035f94e364f826be9c76b58e9a988f2d1adcea5425fee0a98e770dd98b289b4",
-   "model_moving_day/patch.py": "df072b16854ea2bb57fd0a6c89c7a05226ac302b2c6142f271f3d14b4ff99825",
+   "model_moving_day/patch.py": "08d5f307315c1b056d6ed806a0d7ac91e75c3a5406055296ee22c8fa4e36084f",
    "model_moving_day/pr.py": "250b010a58d16d1c82d59074cfa7d5ba2642f8ab345706ab351c77861e9a265b",
    "model_moving_day/proxy.py": "4cf0d73b9acef638a0caee715148b098d24ce084f2f31e39896916122eecd69c",
    "model_moving_day/runner.py": "bfe980a61b35d3459c221f13584a8285d6d383ec10720c761464a3d6c27d3b6e",
@@ -69,7 +74,7 @@
    "model_moving_day/tf_client.py": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b",
    "model_moving_day/tracer/sitecustomize.py": "97348cfb1f875bc7c035c201dd648efcd411738689193419f03d40246a175c0b"
   },
-  "git_head_when_written": "5d4c63aae3d6e8047e5e40420c1ba9ea8d67274d",
+  "git_head_when_written": "bb7b0153abd375807f01e8b5113d6bd49caca60f",
   "tf_client_sha256": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b"
  },
  "first_written_utc": "2026-10-24T10:47:17Z",
@@ -85,7 +90,7 @@
   "after a run the hash check catches changed or missing frozen files; new files in test directories are recorded but do not stop the ladder"
  ],
  "publication": "every cell is published, including red cells, infra cells, cells of an aborted ladder, smoke runs and the 'old model stays' outcome; every job and cell is also appended to evidence/census/<target>/ladder-log.jsonl, and each ladder run writes its own ladder-<run_id>.json (never overwritten)",
- "reason": "Amendment 5: code only (patch step: exact helper import line and strict check, src-layout import path, brain retries); rules and target entries unchanged",
+ "reason": "Amendment 6: code only (patch result path relative to the repository); rules and target entries unchanged",
  "rules": {
   "baseline_pass_rate": 1.0,
   "brain": {
@@ -1073,5 +1078,5 @@
    ]
   }
  },
- "written_utc": "2026-10-24T12:44:48Z"
+ "written_utc": "2026-10-24T12:45:50Z"
 }
