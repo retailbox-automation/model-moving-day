@@ -87,3 +87,19 @@ def test_an_envelope_overrun_keeps_the_summary_and_the_reservation(tmp_path, mon
     _, summary = runner.run_job(box, "img", T, {}, k=1, cap_usd=0.5, ledger=led)
     assert summary["runs"] == [{}] and "exceeds the envelope" in summary["envelope_error"]
     assert led.spent()[1]["c1"] == pytest.approx(0.5)
+
+
+def test_import_stubs_are_uploaded_and_any_use_fails(tmp_path, monkeypatch):
+    """paper-qa's test module imports optional readers at the top (one is AGPL and is not installed)."""
+    monkeypatch.setenv("NEBIUS_API_KEY", "k")
+    led = tf.Ledger(tmp_path / "l.jsonl", caps={"total": 1.0, "c1": 1.0})
+    t = runner.Target("demo", "o/d", "a" * 40, [], ["tests"], import_stubs={"agpl_reader": "AGPL-3.0, not installed"})
+    box = FakeBox(sb.JSON_MARK + json.dumps({"envelope_spent": 0.0, "runs": []}) + "\n")
+    runner.run_job(box, "img", t, {}, k=1, cap_usd=0.1, ledger=led)
+    _, _, kw = box.calls[0]
+    src = kw["files"]["/mmd/stubs/agpl_reader/__init__.py"].decode()
+    assert json.loads(kw["files"]["/mmd/spec.json"])["stub_path"] == runner.STUB_DIR
+    ns = {}
+    exec(src, ns)
+    with pytest.raises(RuntimeError, match="AGPL-3.0, not installed"):
+        ns["__getattr__"]("parse_pdf_to_pages")("x.pdf")

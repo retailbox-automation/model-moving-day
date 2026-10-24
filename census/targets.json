@@ -192,8 +192,19 @@
     "local_commit_time_utc": "2026-10-24",
     "what": "install pinned to paper-qa's own uv.lock versions (vcrpy 8.1.1, fhlmi 0.45.0, litellm 1.82.4, openai 2.29.0, ...)",
     "order": "after attempt 1 (unpinned install: conftest import failed on vcrpy 8.3.0, no test ran, no model call), kept in evidence/census/paper-qa/attempt1/"
+   },
+   {
+    "commit": "census/targets.json",
+    "local_commit_time_utc": "2026-10-24",
+    "what": "tests/test_paperqa.py imports paperqa_pymupdf (AGPL), paperqa_docling and paperqa_nemotron at module level; they get import stubs (importing works, any use raises), and none of the 8 selected tests uses them (checked in the source before the run)",
+    "order": "after attempt 2 (pinned install: collection failed on 'No module named paperqa_docling', no test ran, no model call)"
    }
   ],
-  "baseline_evidence": "Not measured by us; the ladder uses the assumed 1.0."
+  "baseline_evidence": "Not measured by us; the ladder uses the assumed 1.0.",
+  "import_stubs": {
+   "paperqa_pymupdf": "AGPL-3.0 sub-package, not installed by decision 2026-10-24",
+   "paperqa_docling": "optional reader with a heavy ML stack, not installed",
+   "paperqa_nemotron": "optional reader (NVIDIA hosted parse model), not installed"
+  }
  }
 }

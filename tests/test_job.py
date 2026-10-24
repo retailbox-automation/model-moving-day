@@ -266,3 +266,9 @@ def test_confirm_end_to_end_the_helper_routes_through_the_moved_path_and_the_tra
     assert upstream_bodies == [{"model": "nvidia/Nemotron-3_5-Lightning", "messages": [{"role": "user", "content": "x"}]}]
     sites = summary["calls"]["tests"]["tests/test_app.py::test_moved"]
     assert sites == ["pkg/core.py:6"]  # the funnel line; the helper's own frame is skipped by the tracer
+
+
+def test_import_stubs_come_last_on_the_tests_path(monkeypatch):
+    env = job.build_env({"repo_dir": "/r", "stub_path": "/mmd/stubs"}, 8765, "/mmd")
+    assert env["PYTHONPATH"].split(":") == ["/mmd/model_moving_day/tracer", "/r", "/mmd/stubs"]
+    assert "/mmd/stubs" not in job.build_env({"repo_dir": "/r"}, 8765, "/mmd")["PYTHONPATH"]

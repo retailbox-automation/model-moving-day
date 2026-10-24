@@ -153,8 +153,9 @@ def check_hashes(repo_dir, hashes, extra_paths=()):
 def build_env(spec, port, mmd_root):
     """Environment for the target's tests: SDKs point at the proxy (unless proxy_env is false, for cassette
     baselines), a dummy OpenAI key, the tracer on PYTHONPATH, and never the real Token Factory key."""
+    paths = [str(Path(mmd_root) / "model_moving_day" / "tracer"), spec["repo_dir"]] + ([spec["stub_path"]] if spec.get("stub_path") else [])
     env = dict(os.environ, OPENAI_API_KEY="mmd-proxy", MMD_REPO_ROOT=spec["repo_dir"], PYTHONDONTWRITEBYTECODE="1",
-               PYTHONPATH=os.pathsep.join([str(Path(mmd_root) / "model_moving_day" / "tracer"), spec["repo_dir"]]))
+               PYTHONPATH=os.pathsep.join(paths))  # import stubs come last: an installed module always wins
     if spec.get("proxy_env", True):
         env.update(OPENAI_BASE_URL=f"http://127.0.0.1:{port}/v1", OPENAI_API_BASE=f"http://127.0.0.1:{port}/v1")
     env.pop("NEBIUS_API_KEY", None)  # the tests never see the real key; only the proxy does
@@ -319,6 +320,8 @@ def main():
         if uid is not None:
             _chown_tree(spec["repo_dir"], uid)
             _readable_tree(Path(mmd_root) / "model_moving_day")
+            if spec.get("stub_path") and Path(spec["stub_path"]).is_dir():
+                _readable_tree(Path(spec["stub_path"]))
         summary["test_uid"] = uid if uid is not None else os.geteuid()
         summary["isolation"] = isolation_probe([os.getpid(), proxy.pid], _demote(uid) if uid is not None else None, env)
         summary["exit_codes"], summary["durations_s"] = run_pytests(spec, env, OUT, uid)

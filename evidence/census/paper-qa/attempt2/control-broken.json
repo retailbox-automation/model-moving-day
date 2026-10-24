@@ -1,0 +1,47 @@
+{
+ "label": "control-broken",
+ "ts": 1792843887.64,
+ "exit_code": 0,
+ "elapsed_s": 6.44773,
+ "wall_s": 9.411,
+ "sandbox_cost": 0.06554662,
+ "summary": {
+  "runs": [
+   {
+    ".py::tests.test_paperqa": {
+     "outcome": "error",
+     "message": "collection failure"
+    }
+   }
+  ],
+  "durations_s": [
+   7.0
+  ],
+  "exit_codes": [
+   4
+  ],
+  "parallel": true,
+  "freeze_before": [],
+  "test_uid": 10001,
+  "isolation": {
+   "28/environ": "PermissionError",
+   "28/mem": "PermissionError",
+   "29/environ": "PermissionError",
+   "29/mem": "PermissionError"
+  },
+  "freeze_after": [],
+  "pytest_tail": "ound no collectors for /work/repo/tests/test_paperqa.py::test_aquery_groups_contexts_by_question\n\nERROR: found no collectors for /work/repo/tests/test_paperqa.py::test_evidence\n\n\n==================================== ERRORS ====================================\n____________________ ERROR collecting tests/test_paperqa.py ____________________\nImportError while importing test module '/work/repo/tests/test_paperqa.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/usr/local/lib/python3.12/importlib/__init__.py:90: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_paperqa.py:43: in <module>\n    from paperqa_docling import parse_pdf_to_pages as docling_parse_pdf_to_pages\nE   ModuleNotFoundError: No module named 'paperqa_docling'\n____________________ ERROR collecting tests/test_paperqa.py ____________________\nImportError while importing test module '/work/repo/tests/test_paperqa.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/usr/local/lib/python3.12/importlib/__init__.py:90: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests/test_paperqa.py:43: in <module>\n    from paperqa_docling import parse_pdf_to_pages as docling_parse_pdf_to_pages\nE   ModuleNotFoundError: No module named 'paperqa_docling'\n2 errors in 0.83s\n",
+  "calls": {
+   "tests": {},
+   "sites": {},
+   "cost": 0.0,
+   "models_listings": 0,
+   "untraced": {},
+   "by_test": {}
+  },
+  "envelope_spent": 0.0,
+  "proxy_log_tail": "[mmd-proxy] listening on 127.0.0.1:8765\n"
+ },
+ "stdout_tail": "",
+ "stderr_tail": ""
+}

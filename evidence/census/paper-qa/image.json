@@ -1,0 +1,16 @@
+{
+ "target": "paper-qa",
+ "commit": "57e89f7223b0960d5ee5ea048c69e3c47e088572",
+ "image_uuid": "b7a61779-7283-4526-b819-3f002f8ad574",
+ "tag": "mmd-paper-qa:57e89f7223b0",
+ "exit_code": 0,
+ "elapsed_s": 5.308421,
+ "wall_s": 16.779,
+ "sandbox_cost": 0.05416255,
+ "info": {
+  "prepared": "paper-qa",
+  "packages": 90
+ },
+ "stdout_tail": "<<<MMD-JSON>>>{\"prepared\": \"paper-qa\", \"packages\": 90}\n",
+ "stderr_tail": "WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.\n"
+}

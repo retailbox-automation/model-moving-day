@@ -28,7 +28,7 @@ FAILED = {"failed", "error"}
 def load_target(name):
     d = json.loads(TARGETS.read_text())[name]
     return runner.Target(name, d["github"], d["commit"], d["install"], d["pytest_args"], d.get("env", {}),
-                         d.get("exclusions", {}), d.get("prepare_env", {})), d
+                         d.get("exclusions", {}), d.get("prepare_env", {}), d.get("import_stubs", {})), d
 
 
 def out_dir(name):
@@ -327,7 +327,8 @@ class Ladder:
         if self.entry.get("embedding_model"):
             routes = dict(routes, embedding_model=self.entry["embedding_model"])
         e = self.entry
-        t = runner.Target(self.name, e["github"], e["commit"], e["install"], tests + e["node_args"], e.get("env", {}))
+        t = runner.Target(self.name, e["github"], e["commit"], e["install"], tests + e["node_args"], e.get("env", {}),
+                          import_stubs=e.get("import_stubs", {}))
         r, summary, error = None, None, None
         try:
             r, summary = self.run_job(self.box, e["image"]["uuid"], t, routes, k=k, cap_usd=self.cap, ledger=self.ledger,

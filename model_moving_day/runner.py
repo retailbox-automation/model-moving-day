@@ -15,6 +15,22 @@ BASE_IMAGE = "python:3.12-slim"
 SANDBOX_MAX_S, JOB_OVERHEAD_S = 3600, 300  # Sandboxes stop a run at 3600 s; upload, proxy start and summary margin
 TEST_UID = 10001  # the target's tests run under this uid inside the sandbox, apart from the proxy that holds the key
 KEY_FILE = "/mmd/secret/tf.key"
+STUB_DIR = "/mmd/stubs"
+STUB = '''"""Import stub written by Model Moving Day: {mod} is not installed in this census run ({why}).
+Importing it works so that test modules importing it at the top can be collected; any use raises."""
+
+
+def __getattr__(attr):
+    def missing(*args, **kwargs):
+        raise RuntimeError("{mod} is not installed in this census run ({why})")
+    return missing
+'''
+
+
+def stub_files(stubs):
+    """Sandbox upload specs for import stubs: /mmd/stubs/<module>/__init__.py."""
+    return {f"{STUB_DIR}/{mod}/__init__.py": STUB.format(mod=mod, why=why.replace('"', "'")).encode()
+            for mod, why in sorted((stubs or {}).items())}
 
 
 @dataclass
@@ -27,6 +43,7 @@ class Target:
     env: dict = field(default_factory=dict)
     exclusions: dict = field(default_factory=dict)  # path or node id -> reason
     prepare_env: dict = field(default_factory=dict)  # environment for the install only (e.g. a version for setuptools_scm)
+    import_stubs: dict = field(default_factory=dict)  # module -> why it is not installed (imports work, any use fails)
 
 
 def package_files():
@@ -76,10 +93,12 @@ def run_job(box, image, t, routes, k, cap_usd, ledger, extra_files=None, frozen_
     spec = {"repo_dir": "/work/repo", "routes": routes, "k": k, "pytest_args": [*t.pytest_args, *extra_args],
             "env": dict(t.env, **(env or {})), "cap_usd": cap_usd, "timeout_s": run_s, "port": 8765,
             "frozen_hashes": frozen_hashes or {}, "frozen_extra": list(frozen_extra), "require_frozen": require_frozen,
-            "proxy_env": proxy_env, "parallel": parallel, "test_uid": TEST_UID, "key_file": KEY_FILE}
+            "proxy_env": proxy_env, "parallel": parallel, "test_uid": TEST_UID, "key_file": KEY_FILE,
+            "stub_path": STUB_DIR if t.import_stubs else None}
     files = dict(package_files(), **{"/mmd/spec.json": json.dumps(spec).encode(),
                                      KEY_FILE: os.environ["NEBIUS_API_KEY"].encode()})  # a file, not the run's env
     files.update({f"/work/repo/{rel}": src for rel, src in (extra_files or {}).items()})
+    files.update(stub_files(t.import_stubs))
     env_box = sb.Envelope(ledger, box.tag, cap_usd, f"{t.name} job {note}")
     r = box.run(image, "cd /mmd && python -m model_moving_day.job --spec /mmd/spec.json", timeout=box_s,
                 env={"MMD_OUT": "/mmd/out"}, files=files)
