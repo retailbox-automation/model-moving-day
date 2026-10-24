@@ -1,0 +1,124 @@
+{
+ "label": "control-wrong",
+ "ts": 1792841878.049,
+ "exit_code": 0,
+ "elapsed_s": 2.926467,
+ "wall_s": 6.008,
+ "sandbox_cost": 0.029747410000000002,
+ "summary": {
+  "runs": [
+   {
+    "tests/test_tools.py::test_tool_use_basic": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong: t...rately wrong.' == 'The result o...,869,461 \\\\).'\n  \n  - The result of \\( 1231 \\times 2331 \\) is \\( 2,869,461 \\).\n  + mmd-wrong: this answer is deliberately wrong."
+    },
+    "tests/test_tools.py::test_tool_use_chain_of_two_calls": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong: t...rately wrong.' == 'YES'\n  \n  - YES\n  + mmd-wrong: this answer is deliberately wrong."
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_a": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong: t...rately wrong.' == 'The current ...ed-version**.'\n  \n  - The current version of *llm* is **0.fixed-version**.\n  + mmd-wrong: this answer is deliberately wrong."
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_b": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong: t...rately wrong.' == 'The current ...ed-version**.'\n  \n  - The current version of *llm* is **0.fixed-version**.\n  + mmd-wrong: this answer is deliberately wrong."
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_c": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong: t...rately wrong.' == 'The installe...ixed-version.'\n  \n  - The installed version of LLM on this system is 0.fixed-version.\n  + mmd-wrong: this answer is deliberately wrong."
+    },
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_d": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong: t...rately wrong.' == 'The current ...ed-version**.'\n  \n  - The current version of *llm* is **0.fixed-version**.\n  + mmd-wrong: this answer is deliberately wrong."
+    }
+   }
+  ],
+  "durations_s": [
+   3.0
+  ],
+  "exit_codes": [
+   1
+  ],
+  "parallel": true,
+  "freeze_before": [],
+  "test_uid": 10001,
+  "isolation": {
+   "28/environ": "PermissionError",
+   "28/mem": "PermissionError",
+   "29/environ": "PermissionError",
+   "29/mem": "PermissionError"
+  },
+  "freeze_after": [],
+  "pytest_tail": "ing.py:28: AssertionError\n________________________ test_tools_streaming_variant_c ________________________\n\n    @pytest.mark.vcr(record_mode=\"none\")\n    def test_tools_streaming_variant_c():\n        model = llm.get_model(\"gpt-4.1-mini\")\n        chain = model.chain(\n            \"What is the current llm version?\", tools=[llm_version], key=API_KEY\n        )\n>       assert (\n            \"\".join(chain)\n            == \"The installed version of LLM on this system is 0.fixed-version.\"\n        )\nE       AssertionError: assert 'mmd-wrong: t...rately wrong.' == 'The installe...ixed-version.'\nE         \nE         - The installed version of LLM on this system is 0.fixed-version.\nE         + mmd-wrong: this answer is deliberately wrong.\n\ntests/test_tools_streaming.py:38: AssertionError\n________________________ test_tools_streaming_variant_d ________________________\n\n    @pytest.mark.vcr(record_mode=\"none\")\n    def test_tools_streaming_variant_d():\n        model = llm.get_model(\"gpt-4.1-mini\")\n        chain = model.chain(\n            \"What is the current llm version?\", tools=[llm_version], key=API_KEY\n        )\n>       assert \"\".join(chain) == \"The current version of *llm* is **0.fixed-version**.\"\nE       AssertionError: assert 'mmd-wrong: t...rately wrong.' == 'The current ...ed-version**.'\nE         \nE         - The current version of *llm* is **0.fixed-version**.\nE         + mmd-wrong: this answer is deliberately wrong.\n\ntests/test_tools_streaming.py:53: AssertionError\n6 failed in 1.09s\n",
+  "calls": {
+   "tests": {
+    "tests/test_tools.py::test_tool_use_basic": [
+     "llm/default_plugins/openai_models.py:1441"
+    ],
+    "tests/test_tools.py::test_tool_use_chain_of_two_calls": [
+     "llm/default_plugins/openai_models.py:1494"
+    ],
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_a": [
+     "llm/default_plugins/openai_models.py:1441"
+    ],
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_b": [
+     "llm/default_plugins/openai_models.py:1441"
+    ],
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_c": [
+     "llm/default_plugins/openai_models.py:1441"
+    ],
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_d": [
+     "llm/default_plugins/openai_models.py:1441"
+    ]
+   },
+   "sites": {
+    "llm/default_plugins/openai_models.py:1441": {
+     "calls": 10,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.001,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 10
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0
+    },
+    "llm/default_plugins/openai_models.py:1494": {
+     "calls": 2,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.0,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 2
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0
+    }
+   },
+   "cost": 0.0,
+   "models_listings": 0,
+   "untraced": {}
+  },
+  "envelope_spent": 0.0,
+  "proxy_log_tail": "[mmd-proxy] listening on 127.0.0.1:8765\n"
+ },
+ "stdout_tail": "",
+ "stderr_tail": ""
+}

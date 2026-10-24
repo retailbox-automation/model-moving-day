@@ -105,7 +105,8 @@
      "wrong": "failed"
     }
    ],
-   "flip_tests_empty_only": []
+   "flip_tests_empty_only": [],
+   "wrong_control_missing": []
   },
   {
    "site": "instructor/v2/core/retry.py:483",
@@ -124,7 +125,8 @@
      "wrong": "passed"
     }
    ],
-   "flip_tests_empty_only": []
+   "flip_tests_empty_only": [],
+   "wrong_control_missing": []
   },
   {
    "site": "instructor/v2/core/retry.py:523",
@@ -342,7 +344,8 @@
     "tests/llm/test_core_providers/test_simple_types.py::test_int[openai]",
     "tests/llm/test_core_providers/test_simple_types.py::test_literal[openai]",
     "tests/llm/test_core_providers/test_simple_types.py::test_str[openai]"
-   ]
+   ],
+   "wrong_control_missing": []
   },
   {
    "site": "instructor/v2/validation/llm_validators.py:34",
@@ -370,7 +373,8 @@
      "wrong": "failed"
     }
    ],
-   "flip_tests_empty_only": []
+   "flip_tests_empty_only": [],
+   "wrong_control_missing": []
   }
  ],
  "ast_sites_not_reached": [

@@ -106,11 +106,17 @@
   {
    "site": "llm/default_plugins/openai_models.py:1441",
    "tests": 5,
-   "flip_tests": [],
+   "flip_tests": [
+    "tests/test_tools.py::test_tool_use_basic",
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_a",
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_b",
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_c",
+    "tests/test_tools_streaming.py::test_tools_streaming_variant_d"
+   ],
    "covered": false,
    "isolated": true,
    "good_side": "baseline",
-   "cassette_only": false,
+   "cassette_only": true,
    "wrong_control": true,
    "details": [
     {
@@ -118,54 +124,51 @@
      "baseline": "passed",
      "broken": "failed",
      "forward": "failed",
-     "wrong": null
+     "wrong": "failed"
     },
     {
      "test": "tests/test_tools_streaming.py::test_tools_streaming_variant_a",
      "baseline": "passed",
      "broken": "failed",
      "forward": "failed",
-     "wrong": null
+     "wrong": "failed"
     },
     {
      "test": "tests/test_tools_streaming.py::test_tools_streaming_variant_b",
      "baseline": "passed",
      "broken": "failed",
      "forward": "failed",
-     "wrong": null
+     "wrong": "failed"
     },
     {
      "test": "tests/test_tools_streaming.py::test_tools_streaming_variant_c",
      "baseline": "passed",
      "broken": "failed",
      "forward": "failed",
-     "wrong": null
+     "wrong": "failed"
     },
     {
      "test": "tests/test_tools_streaming.py::test_tools_streaming_variant_d",
      "baseline": "passed",
      "broken": "failed",
      "forward": "failed",
-     "wrong": null
+     "wrong": "failed"
     }
    ],
-   "flip_tests_empty_only": [
-    "tests/test_tools.py::test_tool_use_basic",
-    "tests/test_tools_streaming.py::test_tools_streaming_variant_a",
-    "tests/test_tools_streaming.py::test_tools_streaming_variant_b",
-    "tests/test_tools_streaming.py::test_tools_streaming_variant_c",
-    "tests/test_tools_streaming.py::test_tools_streaming_variant_d"
-   ],
+   "flip_tests_empty_only": [],
+   "wrong_control_missing": [],
    "excluded": "not testable live: its 5 flip tests assert wording recorded from the old model (tests/test_tools.py:226, gpt-4o-mini's exact sentence) or the recorded tool output '0.fixed-version' (tests/test_tools_streaming.py :18, :28, :40, :53; a live run returns the installed llm version), and the variants expect different sentences, so no live model, the old one included, can pass them"
   },
   {
    "site": "llm/default_plugins/openai_models.py:1494",
    "tests": 1,
-   "flip_tests": [],
-   "covered": false,
+   "flip_tests": [
+    "tests/test_tools.py::test_tool_use_chain_of_two_calls"
+   ],
+   "covered": true,
    "isolated": true,
    "good_side": "baseline",
-   "cassette_only": false,
+   "cassette_only": true,
    "wrong_control": true,
    "details": [
     {
@@ -173,12 +176,11 @@
      "baseline": "passed",
      "broken": "failed",
      "forward": "failed",
-     "wrong": null
+     "wrong": "failed"
     }
    ],
-   "flip_tests_empty_only": [
-    "tests/test_tools.py::test_tool_use_chain_of_two_calls"
-   ]
+   "flip_tests_empty_only": [],
+   "wrong_control_missing": []
   }
  ],
  "ast_sites_not_reached": [
@@ -199,5 +201,7 @@
   "llm/default_plugins/openai_models.py:2799": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
   "llm/default_plugins/openai_models.py:2926": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured"
  },
- "covered_sites": []
+ "covered_sites": [
+  "llm/default_plugins/openai_models.py:1494"
+ ]
 }
