@@ -169,3 +169,18 @@ def test_a_fallback_cell_that_did_not_pass_gives_no_fallback(tmp_path):
     assert p["sites"][0]["config"]["fallback"] is None and p["sites"][0]["fallback"] is None
     doc["sites"][SITE]["cells"][1] = dict(failed_fb, passes=True)
     assert patch.plan(doc, tmp_path)["sites"][0]["config"]["fallback"]["model"] == ladder.SUPER
+
+
+def test_a_ladder_run_under_an_unknown_manifest_is_refused_but_an_amended_one_is_accepted(world, monkeypatch):
+    clones, repo, out = world
+    man, _ = mf.load()
+    doc, path = census.latest_ladder("demo")
+    doc["manifest"]["sha256"] = "older"
+    with pytest.raises(patch.PatchError, match="neither"):
+        patch.cmd_patch("demo", clones=clones, brain=None, run_job=passing_job([]), box=object(), ledger=None,
+                        check_pushed=False)
+    man["amendments"] = [{"previous_sha256": "older", "reason": "added another target"}]
+    brain = agent.Brain(FakeClient(WRAP), agent.SUPER, out / "steps.jsonl", log=lambda m: None)
+    res = patch.cmd_patch("demo", clones=clones, brain=brain, run_job=passing_job([]), box=object(), ledger=None,
+                          check_pushed=False)
+    assert res["confirm"] == {SITE: "pass"}

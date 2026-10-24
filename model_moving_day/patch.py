@@ -153,8 +153,10 @@ def cmd_patch(name, clones=None, brain=None, run_job=None, box=None, ledger=None
     push = mf.pushed() if check_pushed else {}
     entry, targets = man["targets"][name], json.loads(mf.TARGETS.read_text())[name]
     doc, doc_path = census.latest_ladder(name)
-    if doc["manifest"].get("sha256") != sha:
-        raise PatchError(f"the ladder run {doc['run_id']} used manifest {doc['manifest'].get('sha256')}, not {sha}")
+    earlier = {a.get("previous_sha256") for a in man.get("amendments", [])}
+    if doc["manifest"].get("sha256") not in earlier | {sha}:  # an amendment (e.g. a new target) keeps earlier runs valid
+        raise PatchError(f"the ladder run {doc['run_id']} used manifest {doc['manifest'].get('sha256')}, which is neither "
+                         f"the current one ({sha}) nor an earlier version listed in its amendments")
     clone = clones / name
     the_plan = plan(doc, clone)
     out = census.out_dir(name) / "patch"
