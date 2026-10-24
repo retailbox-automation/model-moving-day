@@ -1,0 +1,423 @@
+{
+ "what": "Post-hoc read of the two Sandboxes operations that ladder run 20261024T131312Z-8fa47f lost to client timeouts. NOT counted: by the pre-registered infra rule a job whose summary was lost is infra, and this file was fetched after the run ended. Kept for spend accounting and for audit.",
+ "fetched_utc": "2026-10-24T14:10Z",
+ "ladder_run": "20261024T131312Z-8fa47f",
+ "operations": [
+  {
+   "job": "Nano",
+   "operation": "01a16e0b-4070-756e-b37a-14bb2a0d1bf9",
+   "status": "CANCELLED",
+   "note": "cancelled when the client's status poll timed out (connect); no summary, model spend unknown (capped by the $1 envelope)"
+  },
+  {
+   "job": "Nano (infra re-run 2)",
+   "operation": "01a16e35-233b-72b6-b1c9-e7aabfc2002a",
+   "status": "SUCCESS",
+   "note": "finished on the Sandboxes side after the client's status poll timed out (read). Run 2 of 3 saw HTTP 500 at src/paperqa/core.py:254, which every flip test reaches, so even if counted the four cells would stay infra (4 valid runs of 5 after 2 re-runs).",
+   "summary": {
+    "runs": [
+     {
+      "tests/test_paperqa.py::test_context_inner_outer_prompt": {
+       "outcome": "passed",
+       "message": ""
+      },
+      "tests/test_paperqa.py::test_custom_prompts": {
+       "outcome": "passed",
+       "message": ""
+      },
+      "tests/test_paperqa.py::test_post_prompt": {
+       "outcome": "passed",
+       "message": ""
+      },
+      "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": {
+       "outcome": "passed",
+       "message": ""
+      },
+      "tests/test_paperqa.py::test_unrelated_context[default-unsure]": {
+       "outcome": "passed",
+       "message": ""
+      }
+     },
+     {
+      "tests/test_paperqa.py::test_context_inner_outer_prompt": {
+       "outcome": "passed",
+       "message": ""
+      },
+      "tests/test_paperqa.py::test_custom_prompts": {
+       "outcome": "passed",
+       "message": ""
+      },
+      "tests/test_paperqa.py::test_post_prompt": {
+       "outcome": "passed",
+       "message": ""
+      },
+      "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": {
+       "outcome": "passed",
+       "message": ""
+      },
+      "tests/test_paperqa.py::test_unrelated_context[default-unsure]": {
+       "outcome": "passed",
+       "message": ""
+      }
+     },
+     {
+      "tests/test_paperqa.py::test_context_inner_outer_prompt": {
+       "outcome": "passed",
+       "message": ""
+      },
+      "tests/test_paperqa.py::test_custom_prompts": {
+       "outcome": "passed",
+       "message": ""
+      },
+      "tests/test_paperqa.py::test_post_prompt": {
+       "outcome": "passed",
+       "message": ""
+      },
+      "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": {
+       "outcome": "passed",
+       "message": ""
+      },
+      "tests/test_paperqa.py::test_unrelated_context[default-unsure]": {
+       "outcome": "passed",
+       "message": ""
+      }
+     }
+    ],
+    "durations_s": [
+     145.3,
+     113.5,
+     199.8
+    ],
+    "exit_codes": [
+     0,
+     0,
+     0
+    ],
+    "parallel": false,
+    "freeze_before": [],
+    "test_uid": 10001,
+    "isolation": {
+     "31/environ": "PermissionError",
+     "31/mem": "PermissionError",
+     "32/environ": "PermissionError",
+     "32/mem": "PermissionError"
+    },
+    "freeze_after": [],
+    "pytest_tail": ".....                                                                    [100%]\n5 passed in 194.12s (0:03:14)\n",
+    "calls": {
+     "tests": {
+      "tests/test_paperqa.py::test_context_inner_outer_prompt": [
+       "src/paperqa/docs.py:234",
+       "src/paperqa/docs.py:374",
+       "src/paperqa/llms.py:251",
+       "src/paperqa/core.py:254",
+       "src/paperqa/docs.py:675"
+      ],
+      "tests/test_paperqa.py::test_custom_prompts": [
+       "src/paperqa/docs.py:234",
+       "src/paperqa/docs.py:374",
+       "src/paperqa/llms.py:251",
+       "src/paperqa/core.py:254",
+       "src/paperqa/docs.py:675"
+      ],
+      "tests/test_paperqa.py::test_post_prompt": [
+       "src/paperqa/docs.py:234",
+       "src/paperqa/docs.py:374",
+       "src/paperqa/llms.py:251",
+       "src/paperqa/core.py:254",
+       "src/paperqa/docs.py:675",
+       "src/paperqa/docs.py:703"
+      ],
+      "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": [
+       "src/paperqa/docs.py:234",
+       "src/paperqa/docs.py:374",
+       "src/paperqa/llms.py:251",
+       "src/paperqa/core.py:254",
+       "src/paperqa/docs.py:675"
+      ],
+      "tests/test_paperqa.py::test_unrelated_context[default-unsure]": [
+       "src/paperqa/docs.py:234",
+       "src/paperqa/docs.py:374",
+       "src/paperqa/llms.py:251",
+       "src/paperqa/core.py:254",
+       "src/paperqa/docs.py:675"
+      ]
+     },
+     "sites": {
+      "src/paperqa/docs.py:234": {
+       "calls": 15,
+       "prompt_tokens": 1260,
+       "completion_tokens": 4284,
+       "reasoning_tokens": 0,
+       "cost": 0.00110376,
+       "seconds": 48.635,
+       "models": {
+        "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": 15
+       },
+       "diagnoses": {
+        "leading_whitespace": 15
+       },
+       "errors": {},
+       "errors_by_run": {},
+       "calls_by_run": {
+        "0": 5,
+        "1": 5,
+        "2": 5
+       },
+       "max_tokens": {},
+       "changes": {
+        "model:model": 15
+       },
+       "finish": {
+        "stop": 15
+       },
+       "repaired_empty_args": 0,
+       "models_requested": {
+        "gpt-4o-2024-11-20": 15
+       }
+      },
+      "src/paperqa/docs.py:374": {
+       "calls": 30,
+       "prompt_tokens": 472215,
+       "completion_tokens": 0,
+       "reasoning_tokens": 0,
+       "cost": 0.00472215,
+       "seconds": 57.981,
+       "models": {
+        "Qwen/Qwen3-Embedding-8B": 30
+       },
+       "diagnoses": {},
+       "errors": {},
+       "errors_by_run": {},
+       "calls_by_run": {
+        "0": 10,
+        "1": 10,
+        "2": 10
+       },
+       "max_tokens": {},
+       "changes": {},
+       "finish": {},
+       "repaired_empty_args": 0,
+       "models_requested": {
+        "text-embedding-3-small": 30
+       }
+      },
+      "src/paperqa/llms.py:251": {
+       "calls": 15,
+       "prompt_tokens": 144,
+       "completion_tokens": 0,
+       "reasoning_tokens": 0,
+       "cost": 1.44e-06,
+       "seconds": 4.338,
+       "models": {
+        "Qwen/Qwen3-Embedding-8B": 15
+       },
+       "diagnoses": {},
+       "errors": {},
+       "errors_by_run": {},
+       "calls_by_run": {
+        "0": 5,
+        "1": 5,
+        "2": 5
+       },
+       "max_tokens": {},
+       "changes": {},
+       "finish": {},
+       "repaired_empty_args": 0,
+       "models_requested": {
+        "text-embedding-3-small": 15
+       }
+      },
+      "src/paperqa/core.py:254": {
+       "calls": 107,
+       "prompt_tokens": 202010,
+       "completion_tokens": 59233,
+       "reasoning_tokens": 0,
+       "cost": 0.02633652,
+       "seconds": 623.455,
+       "models": {
+        "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": 107
+       },
+       "diagnoses": {
+        "leading_whitespace": 105,
+        "empty_content_length": 1
+       },
+       "errors": {
+        "500": 1
+       },
+       "errors_by_run": {
+        "2": {
+         "500": 1
+        }
+       },
+       "calls_by_run": {
+        "0": 35,
+        "1": 35,
+        "2": 37
+       },
+       "max_tokens": {},
+       "changes": {
+        "model:model": 107
+       },
+       "finish": {
+        "stop": 105,
+        "length": 2
+       },
+       "repaired_empty_args": 0,
+       "models_requested": {
+        "gpt-4o-2024-11-20": 107
+       }
+      },
+      "src/paperqa/docs.py:675": {
+       "calls": 15,
+       "prompt_tokens": 7903,
+       "completion_tokens": 10322,
+       "reasoning_tokens": 0,
+       "cost": 0.00295146,
+       "seconds": 108.85,
+       "models": {
+        "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": 15
+       },
+       "diagnoses": {
+        "leading_whitespace": 15
+       },
+       "errors": {},
+       "errors_by_run": {},
+       "calls_by_run": {
+        "0": 5,
+        "1": 5,
+        "2": 5
+       },
+       "max_tokens": {},
+       "changes": {
+        "model:model": 15
+       },
+       "finish": {
+        "stop": 15
+       },
+       "repaired_empty_args": 0,
+       "models_requested": {
+        "gpt-4o-2024-11-20": 15
+       }
+      },
+      "src/paperqa/docs.py:703": {
+       "calls": 3,
+       "prompt_tokens": 162,
+       "completion_tokens": 294,
+       "reasoning_tokens": 0,
+       "cost": 8.028e-05,
+       "seconds": 3.472,
+       "models": {
+        "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": 3
+       },
+       "diagnoses": {
+        "leading_whitespace": 3
+       },
+       "errors": {},
+       "errors_by_run": {},
+       "calls_by_run": {
+        "0": 1,
+        "1": 1,
+        "2": 1
+       },
+       "max_tokens": {},
+       "changes": {
+        "model:model": 3
+       },
+       "finish": {
+        "stop": 3
+       },
+       "repaired_empty_args": 0,
+       "models_requested": {
+        "gpt-4o-2024-11-20": 3
+       }
+      }
+     },
+     "cost": 0.03519561,
+     "models_listings": 0,
+     "untraced": {},
+     "by_test": {
+      "tests/test_paperqa.py::test_context_inner_outer_prompt": {
+       "requested": {
+        "gpt-4o-2024-11-20": 21,
+        "text-embedding-3-small": 9
+       },
+       "modes": {
+        "forward": 21,
+        "embedding": 9
+       },
+       "status": {
+        "200": 30
+       },
+       "moved": 0,
+       "wrong_not_wellformed": 0
+      },
+      "tests/test_paperqa.py::test_custom_prompts": {
+       "requested": {
+        "gpt-4o-2024-11-20": 23,
+        "text-embedding-3-small": 9
+       },
+       "modes": {
+        "forward": 23,
+        "embedding": 9
+       },
+       "status": {
+        "200": 31,
+        "500": 1
+       },
+       "moved": 0,
+       "wrong_not_wellformed": 0
+      },
+      "tests/test_paperqa.py::test_post_prompt": {
+       "requested": {
+        "gpt-4o-2024-11-20": 24,
+        "text-embedding-3-small": 9
+       },
+       "modes": {
+        "forward": 24,
+        "embedding": 9
+       },
+       "status": {
+        "200": 33
+       },
+       "moved": 0,
+       "wrong_not_wellformed": 0
+      },
+      "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": {
+       "requested": {
+        "gpt-4o-2024-11-20": 36,
+        "text-embedding-3-small": 9
+       },
+       "modes": {
+        "forward": 36,
+        "embedding": 9
+       },
+       "status": {
+        "200": 45
+       },
+       "moved": 0,
+       "wrong_not_wellformed": 0
+      },
+      "tests/test_paperqa.py::test_unrelated_context[default-unsure]": {
+       "requested": {
+        "gpt-4o-2024-11-20": 36,
+        "text-embedding-3-small": 9
+       },
+       "modes": {
+        "forward": 36,
+        "embedding": 9
+       },
+       "status": {
+        "200": 45
+       },
+       "moved": 0,
+       "wrong_not_wellformed": 0
+      }
+     }
+    },
+    "envelope_spent": 0.03311589,
+    "proxy_log_tail": "[mmd-proxy] listening on 127.0.0.1:8765\n"
+   }
+  }
+ ]
+}
