@@ -1,29 +1,44 @@
-# Model Moving Day: census of three open-source LLM apps
+# Model Moving Day: census of three open-source LLM libraries and tools
 
 Every number below is recomputed by `census/report.py` from the evidence in this repository (`evidence/census/<repo>/ladder-*.json`, `coverage.json`, `census/MANIFEST.json`). Test traffic, not production traffic.
 
 ## Headline
 
-- Call sites in the ladder: 8 in 3 repositories; decided: 4 (in 2 repositories); moved to Lightning or Nano: 3 of 4 decided.
-- Independent decisions (one funnel's sync and async faces, or sites reached by the same tests, count once; a group counts at its largest chosen model): 3; on Lightning or Nano: 2 (Wilson 95 % [0.21-0.94]).
-- Runs set aside as infrastructure (rate limits, 503, lost runs) and re-run, counted once per group of sites that share the same tests and per rung: 17 in the runs the headline uses, 43 in all decision runs. Sites with no decision because of infrastructure: 4.
-- Coverage gate (at least 3 repositories and 5 independent sites, decided): NOT met (2 repositories with a decision, 3 independent decisions).
-- Model spend for all decision ladder runs: $0.5182 in tokens. The Sandboxes `cost` field summed to $5.33; it is diagnostic (the 2026-10-24 billing check found no Sandboxes charge). 2 sandbox jobs were lost to client timeouts; their token spend is not in this sum (each was capped by a $1 envelope).
+- LLM call sites found: 26 in 3 repositories. Measurable with the repositories' own tests and put into the ladder: 8. Found but not measured: 18, each with its reason under "Found, not measured".
+- Decided: 4 call sites, in 2 repositories (instructor, llm); on Lightning or Nano: 3 of 4. Each decision rests on that site's flip tests: 8 at `instructor/v2/core/retry.py:224`, 23 at `instructor/v2/core/retry.py:523`, 2 at `instructor/v2/validation/llm_validators.py:34`, 1 at `llm/default_plugins/openai_models.py:1494`; the sites that moved to Nano rest on 3 tests between them.
+- Independent decisions: 4 counted per call site (3 on Lightning or Nano); 3 if the sync and async faces of instructor's retry funnel count as one site at the larger of their two models (2 on Lightning or Nano). The two faces share no flip test.
+- Coverage gate (at least 3 repositories and 5 independent decided sites): NOT met: 2 repositories with a decision, 3 or 4 independent decisions. The gate and the rule that a sync/async pair counts once were written on 2026-10-24 in our internal acceptance notes before the ladder runs; they are not in the pushed manifest. Counting a group at its largest model was added to this script after the runs.
+- For reference only, Wilson 95 % intervals of the share on Lightning or Nano, which are not an estimate of any population (three hand-picked repositories): 3/4 per site [0.30-0.95], 2/3 grouped [0.21-0.94].
+- Runs set aside as infrastructure (rate limits, 5xx, lost jobs) and re-run, counted per sandbox test run (sites that share a job share its runs): 22 in the runs the headline uses, 48 in all decision runs. Sites with no decision because of infrastructure: 4.
+- Model tokens for all decision ladder runs: $0.5182. Controls, the smoke run, the brain, confirm runs and spikes are not in this sum, nor 2 sandbox jobs lost to client timeouts (each capped by a $1 envelope). The Sandboxes `cost` field summed to $5.33 over these runs; it is diagnostic: Token Factory billing showed no Sandboxes charge when checked on 2026-10-24 (last check at 13:47 UTC, with Usage data as of 12:11 UTC), so runs after 12:11 UTC are not covered by that check.
 
 ## Which model does what
 
-| Repository | Call site | What the call does | Model after the census | $/1k calls after | $/1k calls before (gpt-6-luna) | $ per passed test run after / before | Calls per test run |
-|---|---|---|---|---|---|---|---|
-| instructor | `instructor/v2/core/retry.py:224` | instructor's sync retry funnel: every structured-output call (tool calls, JSON) of a sync client | **Lightning** | $0.046 | $0.052 | $0.00051 / $0.00057 | 1.375 |
-| instructor | `instructor/v2/core/retry.py:523` | the async twin of the same funnel | **Super** | $0.170 | $0.058 | $0.00974 / $0.00333 | 1.243 |
-| instructor | `instructor/v2/validation/llm_validators.py:34` | llm_validator: an LLM judges a field value (accept or reject with a reason) | **Nano** | $0.101 | $0.199 | $0.00028 / $0.00056 | 1.167 |
-| llm | `llm/default_plugins/openai_models.py:1494` | llm's non-streaming chat call (tools, chains of tool calls) | **Nano** + reasoning_off | $0.030 | $0.052 | $0.00009 / $0.00015 | 3.0 |
-| paper-qa | `src/paperqa/core.py:254` | paper-qa: summarize one evidence chunk for the question (summary_llm, the high-volume step) | infra | - | - | - / - | - |
-| paper-qa | `src/paperqa/docs.py:234` | paper-qa: parse a citation into structured fields | infra | - | - | - / - | - |
-| paper-qa | `src/paperqa/docs.py:675` | paper-qa: write the answer from the evidence | infra | - | - | - / - | - |
-| paper-qa | `src/paperqa/docs.py:703` | paper-qa: post-prompt after the answer | infra | - | - | - / - | - |
+| Repository | Call site | What the call does | Flip tests | Model after the census | $/1k calls after | $/1k calls before (gpt-6-luna, priced) | After / before | Spend per passed run, set-aside re-runs included, after / before | Calls per test run |
+|---|---|---|---|---|---|---|---|---|---|
+| instructor | `instructor/v2/core/retry.py:224` | instructor's sync retry funnel for structured output (its tests have no nested model) | 8 | **Lightning** | $0.046 | $0.052 | 0.89 (about the same: within tokenizer differences) | $0.00051 / $0.00057 | 1.375 |
+| instructor | `instructor/v2/core/retry.py:523` | the async twin of the same funnel (its tests include a nested model) | 23 | **Super** | $0.170 | $0.058 | 2.92 | $0.00974 / $0.00333 | 1.243 |
+| instructor | `instructor/v2/validation/llm_validators.py:34` | llm_validator: an LLM judges a field value (accept or reject with a reason) | 2 | **Nano** | $0.101 | $0.199 | not shown, see note 1 | $0.00028 / $0.00056 | 1.167 |
+| llm | `llm/default_plugins/openai_models.py:1494` | llm's non-streaming chat call (tools, chains of tool calls) | 1 | **Nano** + reasoning_off | $0.030 | $0.052 | 0.58 | $0.00009 / $0.00015 | 3.0 |
+| paper-qa | `src/paperqa/core.py:254` | paper-qa: summarize one evidence chunk for the question (summary_llm, the high-volume step) | 5 | infra | - | - | - | - / - | - |
+| paper-qa | `src/paperqa/docs.py:234` | paper-qa: parse a citation into structured fields | 5 | infra | - | - | - | - / - | - |
+| paper-qa | `src/paperqa/docs.py:675` | paper-qa: write the answer from the evidence | 5 | infra | - | - | - | - / - | - |
+| paper-qa | `src/paperqa/docs.py:703` | paper-qa: post-prompt after the answer | 1 | infra | - | - | - | - / - | - |
 
-"Before" prices the same measured calls (prompt tokens and visible output tokens) at gpt-6-luna ($0.1/$0.5 per 1M tokens), the replacement the vendor recommends for the models these tests name (platform.openai.com/docs/pricing.md and /docs/deprecations.md, read 2026-10-20 (docs/kb/05-c1-domain.md)). Diagnosis and fixes: the brain (Super or Ultra by repo size) is asked only for a red cell whose call log shows a diagnosis; the embedding calls of paper-qa go to Qwen/Qwen3-Embedding-8B on every rung.
+"Before" is a price calculation, not a run: the same calls, at the prompt tokens and visible output tokens Nemotron produced, priced at gpt-6-luna ($0.1/$0.5 per 1M tokens), the model OpenAI names as the replacement for the models these tests name (platform.openai.com/docs/pricing.md and /docs/deprecations.md, read 2026-10-20 (docs/kb/05-c1-domain.md); rechecked against OpenAI's live pages on 2026-10-24, `evidence/platform/openai-pricing-check-2026-10-24.md`). gpt-6-luna was never called, and its pass rate is assumed to be 1.0.
+
+1. `instructor/v2/validation/llm_validators.py:34`: Token Factory reports no reasoning tokens for Nano (none in this cell, and none in 83 of 83 Nano responses of our spikes), so the base $0.199 counts Nano's hidden reasoning as visible output and is too high. Sized by the visible output of Lightning at the same site (77 tokens per call), the base is $0.090-$0.091 per 1,000 successful calls, against Nano's $0.128: on this site Nano is not cheaper than the base, and the measured Lightning fallback cell ($0.073 per 1,000 successful calls) is cheaper than Nano. The "before" spend per passed run in this row is too high for the same reason.
+
+Notes on the dollar columns:
+
+- Nano and Lightning cost the same per token on Token Factory ($0.06 in / $0.24 out per 1M), so a smaller rung is not cheaper by itself: the cost follows the tokens each model produces.
+- Tokenizers differ: at `llm/default_plugins/openai_models.py:1494` (same tests, same number of calls) Nano counted 409 prompt tokens per call and Lightning 545 (+33 %). A difference of 10-15 % against the base is within that.
+- `instructor/v2/core/retry.py:224` Super (fallback): 15 of 110 calls were error responses (503) with no tokens; they are in the denominator of $/1k calls, which lowers both sides alike and leaves after / before unchanged.
+- `instructor/v2/core/retry.py:523` Super (ladder): 34 of 286 calls were error responses (503) with no tokens; they are in the denominator of $/1k calls, which lowers both sides alike and leaves after / before unchanged.
+- `instructor/v2/validation/llm_validators.py:34` Nano (ladder): 3 of 14 calls were error responses (503) with no tokens; they are in the denominator of $/1k calls, which lowers both sides alike and leaves after / before unchanged.
+- "Spend per passed run" divides everything the cell spent, set-aside runs included, by its passed runs; where a batch was set aside it is higher than the cost of one clean run.
+
+Diagnosis and fixes: a proxy rule sets the diagnosis from the call log; the brain (Super or Ultra by repo size) is asked only for a red cell with a diagnosis and picks from the pre-registered fix list; a fix counts only if the request really changed. The embedding calls of paper-qa go to Qwen/Qwen3-Embedding-8B on every rung.
 
 ## Every cell
 
@@ -68,13 +83,14 @@ Decision run `20261024T115937Z-6e8505` (2026-10-24T11:59:37Z to 2026-10-24T12:00
 
 Set aside: runs set aside as infrastructure; in brackets how many of them had passed and how many had failed underneath (runs of a lost job have no outcome).
 
-Fix at `llm/default_plugins/openai_models.py:1494`: **reasoning_off**, proposed by `nvidia/nemotron-3-super-120b-a12b` from the call log ("The leading newline appears because reasoning is on by default and can cause content to start with a newline, as seen in the assertion failure where the output began with '\nYES'."); the request change showed on 15 calls.
+Fix at `llm/default_plugins/openai_models.py:1494`: **reasoning_off**, picked by `nvidia/nemotron-3-super-120b-a12b` ("The leading newline appears because reasoning is on by default and can cause content to start with a newline, as seen in the assertion failure where the output began with '\nYES'."); the request change showed on 15 calls. How much of this the brain found by itself: the diagnosis comes from a proxy rule on the call log, the pre-registered fix list allows only this fix for that diagnosis, the brain chose from three options (reasoning_off, raise_max_tokens, none), and its system prompt states that with reasoning on, content can start with a newline.
 
 ### paper-qa
 
 - Decision run `20261024T122751Z-764b19`: complete, 0 of 4 sites decided, 3 sandbox jobs, $0.1612 in tokens, proxy error statuses logged {'500': 3, '503': 86}
 - Decision run `20261024T124923Z-ef27e9`: complete, 0 of 4 sites decided, 3 sandbox jobs, $0.1195 in tokens, proxy error statuses logged {'500': 3, '503': 133}
-- Decision run `20261024T131312Z-8fa47f`: complete, 0 of 4 sites decided, 3 sandbox jobs (2 lost: no summary came back, all their runs set aside), $0.0514 in tokens, proxy error statuses logged {'500': 1, '503': 20} (the headline uses this run)
+- Decision run `20261024T131312Z-8fa47f`: complete, 0 of 4 sites decided, 3 sandbox jobs (2 lost to client timeouts while polling the Sandboxes API: no summary came back, so their 8 runs were set aside), $0.0514 in tokens, proxy error statuses logged {'500': 1, '503': 20} (the headline uses this run)
+- Run `20261024T124923Z-ef27e9`: a run counted as a model failure at `src/paperqa/core.py:254` failed on an external service the tests call live (`api.semanticscholar.org`), not on the model; the infrastructure rule sees only the proxy's statuses
 - Post-hoc read of lost jobs, not counted (summary lost = infrastructure by the pre-registered rule): `evidence/census/paper-qa/lost-jobs-posthoc-20261024T131312Z-8fa47f.json`
 
 #### Run `20261024T122751Z-764b19`
@@ -143,17 +159,27 @@ Set aside: runs set aside as infrastructure; in brackets how many of them had pa
 
 ## Migration patches
 
-- instructor: ladder run `20261024T114940Z-f6c56a`; moved 3 sites, kept 0; confirm {'instructor/v2/core/retry.py:224': 'pass', 'instructor/v2/core/retry.py:523': 'pass', 'instructor/v2/validation/llm_validators.py:34': 'pass'}; local branch `mmd/move-to-nemotron` commit `2318ca4be9b2`; PR text `evidence/census/instructor/patch/PR.md`
+- instructor: ladder run `20261024T114940Z-f6c56a`; moved 3 sites, kept 0; confirm {'instructor/v2/core/retry.py:224': 'pass', 'instructor/v2/core/retry.py:523': 'pass', 'instructor/v2/validation/llm_validators.py:34': 'pass'}; local branch `mmd/move-to-nemotron` commit `2318ca4be9b2`; PR text `evidence/census/instructor/patch/PR.md`; 3 earlier attempts kept under `instructor/patch-attempt*/` (nothing committed by them)
+  - confirm run `20261024T123251Z-c41f4d`: sites `instructor/v2/core/retry.py:224` confirm 0/0 infra; `instructor/v2/core/retry.py:523` confirm 0/0 infra; `instructor/v2/validation/llm_validators.py:34` confirm 0/0 infra; model calls by the call site the tracer recorded in the patched code: none
+  - confirm run `20261024T124642Z-2a6fd0`: sites `instructor/v2/core/retry.py:224` confirm 5/5 pass; `instructor/v2/core/retry.py:523` confirm 5/5 pass; `instructor/v2/validation/llm_validators.py:34` confirm 5/5 pass; model calls by the call site the tracer recorded in the patched code: {'instructor/v2/core/retry.py:525': {'Super': 130}, 'instructor/v2/core/retry.py:226': {'Lightning': 55, 'Nano': 10}}
 - llm: ladder run `20261024T115937Z-6e8505`; moved 1 sites, kept 0; confirm {'llm/default_plugins/openai_models.py:1494': 'pass'}; local branch `mmd/move-to-nemotron` commit `a90319e522c0`; PR text `evidence/census/llm/patch/PR.md`
+  - confirm run `20261024T130831Z-9d0fdb`: sites `llm/default_plugins/openai_models.py:1494` confirm 5/5 pass; model calls by the call site the tracer recorded in the patched code: {'llm/default_plugins/openai_models.py:1495': {'Nano': 15}}
+
+The "Models requested" column in the PR texts shows the count from one test, not the total; the totals per recorded site are listed above.
 
 ## What is not claimed
 
 - baseline pass rate 1.0 is assumed (strictest), not measured by us
 - K runs of one cell run in one sandbox at the same time, often with temperature 0: they are not independent, so the Wilson interval is optimistic
 - covered = the test fails when the proxy answers with an empty message (must-differ control 1); tests that check only types or shapes pass any well-formed answer; a second control with well-formed wrong answers is run only where the manifest lists control-wrong
+  - Correction: this line dates from the first manifest and is kept so the manifest is not changed after the runs. The wrong-answer control ran in all three repositories (`evidence/census/*/control-wrong.json`).
 - streaming tests get server-sent events re-synthesized by the proxy from a non-streaming upstream call
 - during the ladder the proxy normalizes requests per rung (logged per call); the patched app is confirmed separately without normalization
 - per-call $ is priced on Nemotron's token counts; the baseline uses the same counts (another tokenizer differs)
 - test traffic, not production traffic
 - runs are set aside as infrastructure whenever the proxy logged 402/404/429/5xx/None at the site or at a site its flip tests reach, whatever their outcome, and re-run at most twice; each cell lists how many set-aside runs had passed and how many had failed (runs_with_retried_infra)
 - after a run the hash check catches changed or missing frozen files; new files in test directories are recorded but do not stop the ladder
+
+## Notes on the manifest
+
+- The reason text of the amendment written at 2026-10-24T13:12:39Z reads "/bin/bash.66" where "$0.66" was meant (the shell expanded `$0` when the text was written). The binding field is correct: token_budget_usd {'paper-qa': 0.66}.
