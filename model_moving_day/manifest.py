@@ -155,6 +155,7 @@ def target_entry(name, clones):
         "scope_decisions": d.get("scope_decisions", []),
         "baseline_evidence": d.get("baseline_evidence", ""),
         **({"embedding_model": d["embedding_model"]} if d.get("embedding_model") else {}),
+        **({"prepare_env": d["prepare_env"]} if d.get("prepare_env") else {}),
         "frozen": {"commit": frozen.commit, "extra_paths": frozen.extra_paths, "files": len(frozen.hashes),
                    "sha256": frozen.sha256(), "hashes": frozen.hashes},
     }

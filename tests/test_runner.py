@@ -16,6 +16,14 @@ def test_package_files_ship_the_proxy_job_and_tracer():
 def test_prepare_script_pins_the_commit_tarball():
     s = runner.prepare_script(T)
     assert "codeload.github.com/owner/demo/tar.gz/" + "a" * 40 in s and "'pytest>=8'" in s and "-e /work/repo" in s
+    assert "export " not in s
+
+
+def test_prepare_script_exports_the_install_environment_before_installing():
+    """paper-qa builds with setuptools_scm, which needs a version when the tarball has no git metadata."""
+    t = runner.Target("demo", "owner/demo", "a" * 40, [], [], prepare_env={"SETUPTOOLS_SCM_PRETEND_VERSION": "5.0.0+mmd"})
+    s = runner.prepare_script(t)
+    assert s.index("export SETUPTOOLS_SCM_PRETEND_VERSION='5.0.0+mmd'") < s.index("uv pip install")
 
 
 class FakeBox:

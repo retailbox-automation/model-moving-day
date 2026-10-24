@@ -28,7 +28,7 @@ FAILED = {"failed", "error"}
 def load_target(name):
     d = json.loads(TARGETS.read_text())[name]
     return runner.Target(name, d["github"], d["commit"], d["install"], d["pytest_args"], d.get("env", {}),
-                         d.get("exclusions", {})), d
+                         d.get("exclusions", {}), d.get("prepare_env", {})), d
 
 
 def out_dir(name):

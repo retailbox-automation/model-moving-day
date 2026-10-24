@@ -26,6 +26,7 @@ class Target:
     pytest_args: list
     env: dict = field(default_factory=dict)
     exclusions: dict = field(default_factory=dict)  # path or node id -> reason
+    prepare_env: dict = field(default_factory=dict)  # environment for the install only (e.g. a version for setuptools_scm)
 
 
 def package_files():
@@ -38,8 +39,9 @@ def package_files():
 
 def prepare_script(t):
     reqs = " ".join(f"'{r}'" for r in t.install)
+    exports = "".join(f"export {k}='{v}'\n" for k, v in sorted((t.prepare_env or {}).items()))
     return f"""set -e
-mkdir -p /work
+{exports}mkdir -p /work
 python - <<'PY'
 import io, tarfile, urllib.request
 data = urllib.request.urlopen("https://codeload.github.com/{t.github}/tar.gz/{t.commit}", timeout=300).read()
