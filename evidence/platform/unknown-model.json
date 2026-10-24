@@ -1,0 +1,20 @@
+{
+ "plan": "evidence/platform/PLAN-unknown-model.md",
+ "calls": {
+  "retired_2026_08_31": {
+   "model": "nvidia/Llama-3_1-Nemotron-Ultra-253B-v1",
+   "utc": "2026-10-24T12:02:08Z",
+   "status": 404,
+   "body": "{\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The model `nvidia/Llama-3_1-Nemotron-Ultra-253B-v1` does not exist.\",\"param\":\"model\",\"code\":\"model_not_found\"},\"detail\":\"Invalid request. Please check the parameters and try again. Details: The model `nvidia/Llama-3_1-Nemotron-Ultra-253B-v1` does n"
+  },
+  "never_existed": {
+   "model": "nvidia/mmd-no-such-model-2026",
+   "utc": "2026-10-24T12:02:09Z",
+   "status": 404,
+   "body": "{\"error\":{\"type\":\"invalid_request_error\",\"message\":\"The model `nvidia/mmd-no-such-model-2026` does not exist.\",\"param\":\"model\",\"code\":\"model_not_found\"},\"detail\":\"Invalid request. Please check the parameters and try again. Details: The model `nvidia/mmd-no-such-model-2026` does not exist.\"}"
+  }
+ },
+ "statuses": [
+  404
+ ]
+}
