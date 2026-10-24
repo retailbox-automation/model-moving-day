@@ -38,6 +38,9 @@ MOVED_PREFIX = "/moved"
 # Upstream budget per call must stay below the SDK's own timeout (openai SDK: 600 s, then it retries in parallel):
 # 2 attempts x 270 s + at most 30 s back-off < 600 s, so the SDK never duplicates a call still running upstream.
 UPSTREAM_TIMEOUT_S, UPSTREAM_ATTEMPTS, UPSTREAM_MAX_SLEEP_S = 270, 2, 30
+# Embeddings answer in seconds but the one embedding model returns 503 under bursts (paper-qa embeds chunks in
+# parallel, 2026-10-24): more attempts with back-off, still far below the SDK timeout.
+EMBED_TIMEOUT_S, EMBED_ATTEMPTS = 60, 6
 WRONG_TEXT = "mmd-wrong: this answer is deliberately wrong."
 
 
@@ -296,7 +299,7 @@ class _Handler(BaseHTTPRequestHandler):
         params = {k: v for k, v in body.items() if k not in ("model", "input")}
         rec.update(mode="embedding", model=model)
         try:
-            reply = srv.client.embed(model, body.get("input"), **params)
+            reply = (srv.embed_client or srv.client).embed(model, body.get("input"), **params)
         except tf.BudgetExceeded as e:
             rec.update(status=402, error=f"BudgetExceeded: {e}"[:300], seconds=round(time.time() - t0, 3))
             srv.log(rec)
@@ -313,17 +316,18 @@ class _Handler(BaseHTTPRequestHandler):
 class _Server(ThreadingHTTPServer):
     daemon_threads = True
 
-    def __init__(self, addr, routes, log_path, client):
+    def __init__(self, addr, routes, log_path, client, embed_client=None):
         super().__init__(addr, _Handler)
         self.routes, self.client, self.log_path, self._lock = routes, client, Path(log_path), threading.Lock()
+        self.embed_client = embed_client
 
     def log(self, rec):
         with self._lock, open(self.log_path, "a") as f:
             f.write(json.dumps(rec) + "\n")
 
 
-def make_server(port, routes, log_path, client, host="127.0.0.1"):
-    return _Server((host, port), routes, log_path, client)
+def make_server(port, routes, log_path, client, host="127.0.0.1", embed_client=None):
+    return _Server((host, port), routes, log_path, client, embed_client)
 
 
 def main():
@@ -340,7 +344,9 @@ def main():
     ledger = tf.Ledger(a.ledger, caps={"total": a.cap, a.tag: a.cap})
     client = tf.Client(a.tag, ledger=ledger, key=key, timeout=UPSTREAM_TIMEOUT_S, max_attempts=UPSTREAM_ATTEMPTS,
                        max_sleep=UPSTREAM_MAX_SLEEP_S)
-    srv = make_server(a.port, json.loads(Path(a.routes).read_text()), a.log, client)
+    embed_client = tf.Client(a.tag, ledger=ledger, key=key, timeout=EMBED_TIMEOUT_S, max_attempts=EMBED_ATTEMPTS,
+                             max_sleep=UPSTREAM_MAX_SLEEP_S)
+    srv = make_server(a.port, json.loads(Path(a.routes).read_text()), a.log, client, embed_client=embed_client)
     print(f"[mmd-proxy] listening on 127.0.0.1:{a.port}", flush=True)
     srv.serve_forever()
 

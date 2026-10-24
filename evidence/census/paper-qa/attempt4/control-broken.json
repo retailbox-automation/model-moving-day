@@ -1,0 +1,409 @@
+{
+ "label": "control-broken",
+ "ts": 1792844154.715,
+ "exit_code": 0,
+ "elapsed_s": 15.455286,
+ "wall_s": 92.746,
+ "sandbox_cost": 0.15652233999999998,
+ "summary": {
+  "runs": [
+   {
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'I cannot answer' in ''\n +  where '' = PQASession(id=UUID('6d76ac9f-1e61-498f-84cd-dcc34b135211'), question='What do scientist estimate as the planetary comp...nts={'gpt-4o-2024-11-20': [0, 0]}, config_md5='0fc1c4ad35b11bd4abac5df3da07675c', tool_history=[], used_contexts=set()).answer"
+    },
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'I am unsure' in ''\n +  where '' = PQASession(id=UUID('1ca00d43-4c84-4504-932c-201612dd442e'), question='What do scientist estimate as the planetary comp...nts={'gpt-4o-2024-11-20': [0, 0]}, config_md5='8de402bf22fbdaa51589b89a2e442807', tool_history=[], used_contexts=set()).answer"
+    },
+    "tests/test_paperqa.py::test_pre_prompt": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '212' in 'I cannot answer this question due to insufficient information..'\n +  where 'I cannot answer this question due to insufficient information..' = PQASession(id=UUID('d3a6df96-9b26-4bd1-83ad-2ddeb38eaddb'), question='What is the boiling point of water?', answer='I ...nts={'gpt-4o-2024-11-20': [0, 0]}, config_md5='70cef8003ef63c6f024688c1af523108', tool_history=[], used"
+    },
+    "tests/test_paperqa.py::test_post_prompt": {
+     "outcome": "failed",
+     "message": "litellm.exceptions.ServiceUnavailableError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'error': {'message': 'Token Factory error 503: <html>\\r\\n<head><title>503 Service Temporarily Unavailable</title></head>\\r\\n<body>\\r\\n<center><h1>503 Service Temporarily Unavailable</h1></center>\\r\\n<hr><center>nginx</center>\\r\\n</body>\\r\\n</html>\\r\\n'}} LiteLL"
+    },
+    "tests/test_paperqa.py::test_location_awareness": {
+     "outcome": "failed",
+     "message": "litellm.exceptions.ServiceUnavailableError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'error': {'message': 'Token Factory error 503: <html>\\r\\n<head><title>503 Service Temporarily Unavailable</title></head>\\r\\n<body>\\r\\n<center><h1>503 Service Temporarily Unavailable</h1></center>\\r\\n<hr><center>nginx</center>\\r\\n</body>\\r\\n</html>\\r\\n'}} LiteLL"
+    },
+    "tests/test_paperqa.py::test_custom_prompts": {
+     "outcome": "failed",
+     "message": "litellm.exceptions.ServiceUnavailableError: litellm.ServiceUnavailableError: ServiceUnavailableError: OpenAIException - Error code: 503 - {'error': {'message': 'Token Factory error 503: <html>\\r\\n<head><title>503 Service Temporarily Unavailable</title></head>\\r\\n<body>\\r\\n<center><h1>503 Service Temporarily Unavailable</h1></center>\\r\\n<hr><center>nginx</center>\\r\\n</body>\\r\\n</html>\\r\\n'}} LiteLL"
+    },
+    "tests/test_paperqa.py::test_context_inner_outer_prompt": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '@@@@@' in ''\n +  where '' = PQASession(id=UUID('8cda0592-c2ec-4172-8316-4045954acd8e'), question='What country is Bates from?', answer='I cannot a...nts={'gpt-4o-2024-11-20': [0, 0]}, config_md5='09beace6bab74b3c9610aadc68c8e72e', tool_history=[], used_contexts=set()).context"
+    },
+    "tests/test_paperqa.py::test_aquery_groups_contexts_by_question": {
+     "outcome": "error",
+     "message": "failed on setup with \"ImportError: pillow is required to do image extraction. It can be installed via 'pip install pypdf[image]'\""
+    },
+    "tests/test_paperqa.py::test_evidence": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 0 >= 2\n +  where 0 = len([])\n +  and   2 = AnswerSettings(evidence_k=2, evidence_retrieval=True, evidence_relevance_score_cutoff=1, evidence_summary_length='25 t...ckground=False, get_evidence_if_no_contexts=True, group_contexts_by_question=False, skip_evidence_citation_strip=False).evidence_k\n +    where AnswerSettings(evidence_k=2, evidence_retrieval=True, evidence_relevan"
+    }
+   }
+  ],
+  "durations_s": [
+   89.9
+  ],
+  "exit_codes": [
+   1
+  ],
+  "parallel": true,
+  "freeze_before": [],
+  "test_uid": 10001,
+  "isolation": {
+   "30/environ": "PermissionError",
+   "30/mem": "PermissionError",
+   "31/environ": "PermissionError",
+   "31/mem": "PermissionError"
+  },
+  "freeze_after": [],
+  "pytest_tail": "ployment = self._add_deployment(deployment=deployment)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/litellm/router.py\", line 6874, in _add_deployment\n    ) = litellm.get_llm_provider(\n        ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/litellm/litellm_core_utils/get_llm_provider_logic.py\", line 490, in get_llm_provider\n    raise e\n  File \"/usr/local/lib/python3.12/site-packages/litellm/litellm_core_utils/get_llm_provider_logic.py\", line 471, in get_llm_provider\n    raise litellm.exceptions.BadRequestError(  # type: ignore\nlitellm.exceptions.BadRequestError: litellm.BadRequestError: LLM Provider NOT provided. Pass in the LLM provider you are trying to call. You passed model=claude-3-haiku-20240307\n Pass model as E.g. For 'Huggingface' inference endpoints pass in `completion(model='huggingface/starcoder',..)` Learn more: https://docs.litellm.ai/docs/providers\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/work/repo/src/paperqa/core.py\", line 389, in map_fxn_summary\n    return await _map_fxn_summary(**kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/work/repo/src/paperqa/core.py\", line 300, in _map_fxn_summary\n    raise LLMContextRequestFailedError(\npaperqa.core.LLMContextRequestFailedError: LLM call to create a context failed on text named 'Wellawatte2023 pages 27-29'.\n8 failed, 1 error in 83.64s (0:01:23)\n",
+  "calls": {
+   "tests": {
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]": [
+     "src/paperqa/docs.py:234",
+     "src/paperqa/docs.py:374",
+     "src/paperqa/llms.py:251",
+     "src/paperqa/core.py:254",
+     "src/paperqa/docs.py:675"
+    ],
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": [
+     "src/paperqa/docs.py:234",
+     "src/paperqa/docs.py:374",
+     "src/paperqa/llms.py:251",
+     "src/paperqa/core.py:254",
+     "src/paperqa/docs.py:675"
+    ],
+    "tests/test_paperqa.py::test_pre_prompt": [
+     "src/paperqa/docs.py:234",
+     "src/paperqa/docs.py:374",
+     "src/paperqa/llms.py:251",
+     "src/paperqa/core.py:254",
+     "src/paperqa/docs.py:635"
+    ],
+    "tests/test_paperqa.py::test_post_prompt": [
+     "src/paperqa/docs.py:234",
+     "src/paperqa/docs.py:374"
+    ],
+    "tests/test_paperqa.py::test_location_awareness": [
+     "src/paperqa/docs.py:374"
+    ],
+    "tests/test_paperqa.py::test_custom_prompts": [
+     "src/paperqa/docs.py:234",
+     "src/paperqa/docs.py:374"
+    ],
+    "tests/test_paperqa.py::test_context_inner_outer_prompt": [
+     "src/paperqa/docs.py:234",
+     "src/paperqa/docs.py:374",
+     "src/paperqa/llms.py:251",
+     "src/paperqa/core.py:254"
+    ],
+    "tests/test_paperqa.py::test_evidence": [
+     "src/paperqa/docs.py:446",
+     "src/paperqa/llms.py:251"
+    ]
+   },
+   "sites": {
+    "src/paperqa/docs.py:234": {
+     "calls": 6,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.001,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 6
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "gpt-4o-2024-11-20": 6
+     }
+    },
+    "src/paperqa/docs.py:374": {
+     "calls": 18,
+     "prompt_tokens": 125924,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.00125924,
+     "seconds": 46.14,
+     "models": {
+      "Qwen/Qwen3-Embedding-8B": 18
+     },
+     "diagnoses": {},
+     "errors": {
+      "503": 10
+     },
+     "errors_by_run": {
+      "0": {
+       "503": 10
+      }
+     },
+     "calls_by_run": {
+      "0": 18
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "text-embedding-3-small": 18
+     }
+    },
+    "src/paperqa/llms.py:251": {
+     "calls": 6,
+     "prompt_tokens": 59,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 5.9e-07,
+     "seconds": 12.46,
+     "models": {
+      "Qwen/Qwen3-Embedding-8B": 6
+     },
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 6
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "text-embedding-3-small": 6
+     }
+    },
+    "src/paperqa/core.py:254": {
+     "calls": 80,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.008,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 80
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "gpt-4o-2024-11-20": 80
+     }
+    },
+    "src/paperqa/docs.py:675": {
+     "calls": 2,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.0,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 2
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "gpt-4o-2024-11-20": 2
+     }
+    },
+    "src/paperqa/docs.py:635": {
+     "calls": 1,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.0,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 1
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "gpt-4o-2024-11-20": 1
+     }
+    },
+    "src/paperqa/docs.py:446": {
+     "calls": 1,
+     "prompt_tokens": 20748,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.00020748,
+     "seconds": 5.705,
+     "models": {
+      "Qwen/Qwen3-Embedding-8B": 1
+     },
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 1
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "text-embedding-3-small": 1
+     }
+    }
+   },
+   "cost": 0.00146731,
+   "models_listings": 0,
+   "untraced": {},
+   "by_test": {
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]": {
+     "requested": {
+      "gpt-4o-2024-11-20": 22,
+      "text-embedding-3-small": 3
+     },
+     "modes": {
+      "broken": 22,
+      "embedding": 3
+     },
+     "status": {
+      "200": 25
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    },
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": {
+     "requested": {
+      "gpt-4o-2024-11-20": 22,
+      "text-embedding-3-small": 3
+     },
+     "modes": {
+      "broken": 22,
+      "embedding": 3
+     },
+     "status": {
+      "200": 25
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    },
+    "tests/test_paperqa.py::test_pre_prompt": {
+     "requested": {
+      "gpt-4o-2024-11-20": 32,
+      "text-embedding-3-small": 4
+     },
+     "modes": {
+      "broken": 32,
+      "embedding": 4
+     },
+     "status": {
+      "200": 36
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    },
+    "tests/test_paperqa.py::test_post_prompt": {
+     "requested": {
+      "gpt-4o-2024-11-20": 1,
+      "text-embedding-3-small": 3
+     },
+     "modes": {
+      "broken": 1,
+      "embedding": 3
+     },
+     "status": {
+      "200": 1,
+      "503": 3
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    },
+    "tests/test_paperqa.py::test_location_awareness": {
+     "requested": {
+      "text-embedding-3-small": 3
+     },
+     "modes": {
+      "embedding": 3
+     },
+     "status": {
+      "503": 3
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    },
+    "tests/test_paperqa.py::test_custom_prompts": {
+     "requested": {
+      "gpt-4o-2024-11-20": 1,
+      "text-embedding-3-small": 3
+     },
+     "modes": {
+      "broken": 1,
+      "embedding": 3
+     },
+     "status": {
+      "200": 1,
+      "503": 3
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    },
+    "tests/test_paperqa.py::test_context_inner_outer_prompt": {
+     "requested": {
+      "gpt-4o-2024-11-20": 11,
+      "text-embedding-3-small": 4
+     },
+     "modes": {
+      "broken": 11,
+      "embedding": 4
+     },
+     "status": {
+      "200": 14,
+      "503": 1
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    },
+    "tests/test_paperqa.py::test_evidence": {
+     "requested": {
+      "text-embedding-3-small": 2
+     },
+     "modes": {
+      "embedding": 2
+     },
+     "status": {
+      "200": 2
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    }
+   }
+  },
+  "envelope_spent": 0.00146731,
+  "proxy_log_tail": "[mmd-proxy] listening on 127.0.0.1:8765\n"
+ },
+ "stdout_tail": "",
+ "stderr_tail": ""
+}

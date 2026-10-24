@@ -385,3 +385,28 @@ def test_moved_path_is_served_as_sent_and_the_apps_own_endpoint_is_the_old_model
     recs = calls(tmp_path)
     assert (recs[0]["mode"], recs[0]["moved"]) == ("passthrough", True) and recs[1]["mode"] == "old-model"
     assert recs[1]["requested_model"] == "gpt-4.1-mini" and "moved" not in recs[1]
+
+
+def test_embeddings_use_their_own_client_with_more_attempts(tmp_path, monkeypatch):
+    """A burst of 503s from the one embedding model must not fail a run that chat calls would pass."""
+    import io, email.message
+    seen = []
+
+    def flaky(req, timeout=None):
+        seen.append(req.full_url)
+        if len(seen) < 4:
+            raise urllib.error.HTTPError(req.full_url, 503, "busy", email.message.Message(), io.BytesIO(b"{}"))
+        return io.BytesIO(json.dumps({"data": [{"embedding": [1.0]}], "usage": {"prompt_tokens": 2}}).encode())
+    monkeypatch.setattr(tf.urllib.request, "urlopen", flaky)
+    monkeypatch.setattr(tf.time, "sleep", lambda s: None)
+    ledger = tf.Ledger(tmp_path / "led.jsonl", caps={"total": 0.05, "c1": 0.05})
+    chat_client = tf.Client("c1", ledger=ledger, key="k", max_attempts=proxy.UPSTREAM_ATTEMPTS, log=lambda m: None)
+    embed_client = tf.Client("c1", ledger=ledger, key="k", max_attempts=proxy.EMBED_ATTEMPTS, log=lambda m: None)
+    srv = proxy.make_server(0, {"default": {"mode": "broken"}, "embedding_model": tf.EMBEDDING_MODEL}, tmp_path / "calls.jsonl",
+                            chat_client, embed_client=embed_client)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    try:
+        status, _ = post(f"http://127.0.0.1:{srv.server_address[1]}", {"model": "e", "input": ["a"]}, path="/v1/embeddings")
+    finally:
+        srv.shutdown()
+    assert status == 200 and len(seen) == 4 and proxy.EMBED_ATTEMPTS > proxy.UPSTREAM_ATTEMPTS
