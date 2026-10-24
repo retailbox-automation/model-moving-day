@@ -19,6 +19,11 @@
    "previous_sha256": "2753ed991e7ec4c1ade235b74ba7c89e8d75e2e17332943aeea4c790802176b6",
    "reason": "Amendment 4: adds paper-qa core (third repo; controls done, 4 chat sites covered, embedding sites excluded, import stubs, pinned install) and the code since amendment 3 (install env, import stubs, embedding client); rules and the instructor and llm entries unchanged",
    "utc": "2026-10-24T12:27:01Z"
+  },
+  {
+   "previous_sha256": "fee85e44a3c3a658f4519ea66833af5cb735bceadae20468efb5bb5c0baa48c9",
+   "reason": "Amendment 5: code only (patch step: exact helper import line and strict check, src-layout import path, brain retries); rules and target entries unchanged",
+   "utc": "2026-10-24T12:44:48Z"
   }
  ],
  "baseline_before": {
@@ -36,7 +41,7 @@
   "cap_usd_per_job": 1.0,
   "sandbox_runs": {
    "limit": "MMD_SANDBOX_MAX_RUNS=80 for every phase-B command (orchestrator decision 2026-10-24 11:15; default in code 40)",
-   "logged_when_written": 42,
+   "logged_when_written": 48,
    "plan": "instructor ladder <= 8, llm ladder <= 8, third repo prepare + controls + ladder <= 13, patch confirm 3, fallback cells, smoke 1-2",
    "planned_phase_b": 48
   },
@@ -45,7 +50,7 @@
  "code": {
   "files_sha256": {
    "model_moving_day/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-   "model_moving_day/agent.py": "78801912e52ad9d8cb36170a54e8fa9b42c2024c3dc012eb3292a478dea8ff7b",
+   "model_moving_day/agent.py": "04a2c7a0af2498d237bffc6d3a3564b3026fda1d95c3333ac0d275bb9110b259",
    "model_moving_day/census.py": "92781afec290f4cfbb206f6cb5895b65b1ee2494f5b466362b4caea69a61faf4",
    "model_moving_day/fakes.py": "f208be4bfa5a18a6f643494f70884a725e8bcf95243b5fd1f0a7dc3f7a7de5a2",
    "model_moving_day/find.py": "0ec906cb4de772f9b0fc046ee09ecda8e20722216524e746afd6010c6ca1a568",
@@ -54,7 +59,7 @@
    "model_moving_day/ladder.py": "cd64b81af53439247ae2d54932c21ef0d6de6b706c659ff1230393ae969cc3fe",
    "model_moving_day/manifest.py": "35a5ab095352e120126b8417d5e2b97e814997c45dd794eebc1e8654412f32a0",
    "model_moving_day/normalize.py": "a035f94e364f826be9c76b58e9a988f2d1adcea5425fee0a98e770dd98b289b4",
-   "model_moving_day/patch.py": "48506d4b0a278f311a3608652a8d761f5ee3833e2147155e4f06e534a5fc68ed",
+   "model_moving_day/patch.py": "df072b16854ea2bb57fd0a6c89c7a05226ac302b2c6142f271f3d14b4ff99825",
    "model_moving_day/pr.py": "250b010a58d16d1c82d59074cfa7d5ba2642f8ab345706ab351c77861e9a265b",
    "model_moving_day/proxy.py": "4cf0d73b9acef638a0caee715148b098d24ce084f2f31e39896916122eecd69c",
    "model_moving_day/runner.py": "bfe980a61b35d3459c221f13584a8285d6d383ec10720c761464a3d6c27d3b6e",
@@ -64,7 +69,7 @@
    "model_moving_day/tf_client.py": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b",
    "model_moving_day/tracer/sitecustomize.py": "97348cfb1f875bc7c035c201dd648efcd411738689193419f03d40246a175c0b"
   },
-  "git_head_when_written": "b66679ddf7a3bd7b973c260e7d6ee470bad9ef3b",
+  "git_head_when_written": "5d4c63aae3d6e8047e5e40420c1ba9ea8d67274d",
   "tf_client_sha256": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b"
  },
  "first_written_utc": "2026-10-24T10:47:17Z",
@@ -80,7 +85,7 @@
   "after a run the hash check catches changed or missing frozen files; new files in test directories are recorded but do not stop the ladder"
  ],
  "publication": "every cell is published, including red cells, infra cells, cells of an aborted ladder, smoke runs and the 'old model stays' outcome; every job and cell is also appended to evidence/census/<target>/ladder-log.jsonl, and each ladder run writes its own ladder-<run_id>.json (never overwritten)",
- "reason": "Amendment 4: adds paper-qa core (third repo; controls done, 4 chat sites covered, embedding sites excluded, import stubs, pinned install) and the code since amendment 3 (install env, import stubs, embedding client); rules and the instructor and llm entries unchanged",
+ "reason": "Amendment 5: code only (patch step: exact helper import line and strict check, src-layout import path, brain retries); rules and target entries unchanged",
  "rules": {
   "baseline_pass_rate": 1.0,
   "brain": {
@@ -1068,5 +1073,5 @@
    ]
   }
  },
- "written_utc": "2026-10-24T12:27:01Z"
+ "written_utc": "2026-10-24T12:44:48Z"
 }
