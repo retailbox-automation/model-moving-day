@@ -120,5 +120,68 @@
     "order": "after the controls (Super live 0/6), before any ladder job"
    }
   ]
+ },
+ "paper-qa": {
+  "github": "Future-House/paper-qa",
+  "commit": "57e89f7223b0960d5ee5ea048c69e3c47e088572",
+  "license": "Apache-2.0 (LICENSE at the pinned commit); core install only: the AGPL-3.0 package paper-qa-pymupdf (extras dev, pymupdf, zotero) is not installed",
+  "install": [
+   "pytest>=8",
+   "pytest-asyncio",
+   "pytest-recording",
+   "pytest-timeout",
+   "pytest-rerunfailures",
+   "pytest-subtests",
+   "typeguard",
+   "vcrpy>=8",
+   "python-dotenv",
+   "litellm>=1.81.14"
+  ],
+  "prepare_env": {
+   "SETUPTOOLS_SCM_PRETEND_VERSION": "0.0.0+mmd.57e89f7"
+  },
+  "pytest_args": [
+   "tests/test_paperqa.py::test_unrelated_context",
+   "tests/test_paperqa.py::test_pre_prompt",
+   "tests/test_paperqa.py::test_post_prompt",
+   "tests/test_paperqa.py::test_location_awareness",
+   "tests/test_paperqa.py::test_custom_prompts",
+   "tests/test_paperqa.py::test_context_inner_outer_prompt",
+   "tests/test_paperqa.py::test_aquery_groups_contexts_by_question",
+   "tests/test_paperqa.py::test_evidence",
+   "-q",
+   "-rs"
+  ],
+  "env": {},
+  "live_args": [
+   "--disable-recording"
+  ],
+  "node_args": [
+   "-q",
+   "-rs",
+   "--disable-recording"
+  ],
+  "embedding_model": "Qwen/Qwen3-Embedding-8B",
+  "helper_package": "src/paperqa",
+  "retiring_model": "gpt-4o-2024-11-20 (Settings defaults)",
+  "exclusions": {
+   "tests/test_paperqa.py::test_model_chain": "parametrized over gemini/* and anthropic/* models: gemini calls go to Google, not through the proxy; anthropic needs another SDK",
+   "tests/test_paperqa.py::test_parse_office_doc": "uses gemini/* models, which bypass the proxy",
+   "tests/test_agents.py": "agent loops with a tantivy index; outside the half-day, $1 time box",
+   "tests/test_clinical_trials.py": "calls clinicaltrials.gov live",
+   "tests/test_clients.py": "metadata APIs (Crossref, Semantic Scholar), no LLM",
+   "packages/": "sub-packages; paper-qa-pymupdf is AGPL-3.0 and not installed",
+   "other tests in tests/test_paperqa.py": "recorded (vcr), no LLM call, or outside the time box; the 8 selected tests assert on answers and need only stub_data"
+  },
+  "site_exclusions": {},
+  "scope_decisions": [
+   {
+    "commit": "census/targets.json (this entry)",
+    "local_commit_time_utc": "2026-10-24",
+    "what": "third repo = paper-qa core (decision 2026-10-24 10:02, acceptance lane question b): 8 live tests of tests/test_paperqa.py chosen before any paper-qa run; gemini/* tests excluded; live mode via --disable-recording; embeddings served by one Token Factory model (Qwen3-Embedding-8B) on every rung",
+    "order": "before the first paper-qa sandbox run"
+   }
+  ],
+  "baseline_evidence": "Not measured by us; the ladder uses the assumed 1.0."
  }
 }
