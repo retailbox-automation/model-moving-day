@@ -1,0 +1,1346 @@
+{
+ "target": "paper-qa",
+ "run_id": "20261024T124923Z-ef27e9",
+ "kind": "decision",
+ "smoke": null,
+ "status": "complete",
+ "started_utc": "2026-10-24T12:49:23Z",
+ "commit": "57e89f7223b0960d5ee5ea048c69e3c47e088572",
+ "manifest": {
+  "sha256": "41981436bbd6870906e4aac34b90c627d3dd803d5ae9425d270c394f3b8f73a5",
+  "pushed_at": "2026-10-24T12:45:59Z",
+  "commit": "51618521145d48bf11bae03724a13ccfc424d7a1",
+  "branch": "lane-c1",
+  "remote_head": "51618521145d48bf11bae03724a13ccfc424d7a1"
+ },
+ "k": 5,
+ "margin": 0.2,
+ "baseline": 1.0,
+ "baseline_note": "pass rate assumed 1.0 (strictest), not measured by us. Not measured by us; the ladder uses the assumed 1.0.",
+ "rungs": [
+  "Nano",
+  "Lightning",
+  "Super",
+  "Ultra"
+ ],
+ "excluded_sites": {
+  "src/paperqa/docs.py:374": "embedding call site: served by the one Token Factory embedding model (Qwen3-Embedding-8B) on every rung and in every control, so its model is not a ladder choice; its tests flip only through the chat sites they also reach",
+  "src/paperqa/docs.py:446": "embedding call site: served by the one Token Factory embedding model (Qwen3-Embedding-8B) on every rung and in every control, so its model is not a ladder choice; its tests flip only through the chat sites they also reach",
+  "src/paperqa/llms.py:251": "embedding call site: served by the one Token Factory embedding model (Qwen3-Embedding-8B) on every rung and in every control, so its model is not a ladder choice; its tests flip only through the chat sites they also reach"
+ },
+ "brain": "nvidia/nemotron-3-super-120b-a12b",
+ "frozen_sha256": "870e673b062f05450fad6ad84ee94af7160fec5de2642bb53e82fbc178d3d4e8",
+ "sandbox_max_runs": 80,
+ "sites": {
+  "src/paperqa/core.py:254": {
+   "status": "infra",
+   "chosen": null,
+   "model": null,
+   "fix": null,
+   "fallback": null,
+   "reason": "infrastructure errors persisted at Nano after 2 re-runs; not climbed",
+   "flip_tests": [
+    "tests/test_paperqa.py::test_context_inner_outer_prompt",
+    "tests/test_paperqa.py::test_custom_prompts",
+    "tests/test_paperqa.py::test_post_prompt",
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]"
+   ],
+   "flags": {
+    "cassette_only": false,
+    "flip_tests_empty_only": [],
+    "good_side": "forward",
+    "isolated": false,
+    "wrong_control": true,
+    "wrong_control_missing": []
+   },
+   "cells": [
+    {
+     "rung": "Nano",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "params": {},
+     "k": 5,
+     "valid_runs": 2,
+     "passed_runs": 1,
+     "infra_runs": 11,
+     "status": "infra",
+     "passes": false,
+     "runs_with_retried_infra": {
+      "pass": 3,
+      "fail": 8
+     },
+     "rate": 0.5,
+     "wilson95": [
+      0.0945,
+      0.9055
+     ],
+     "fail_rate_upper_rule_of_three": null,
+     "calls": 422,
+     "calls_per_test_run": 6.492,
+     "tokens_per_call": [
+      1632.7,
+      524.5
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": 0.2238,
+     "model_cost": 0.094463,
+     "usd_per_passed_run": 0.094463,
+     "diagnoses": {
+      "leading_whitespace": 359,
+      "empty_content_length": 3
+     },
+     "finish": {
+      "stop": 359,
+      "length": 6
+     },
+     "changes": {
+      "model:model": 422
+     },
+     "errors": {
+      "503": 57,
+      "500": 3
+     },
+     "repaired_empty_args": 0,
+     "first_failure": "tests/test_paperqa.py::test_unrelated_context[default-unsure]: httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://api.semanticscholar.org/graph/v1/paper/search/match?query=WikiMedia+Foundation&fields=authors%2CcitationCount%2CcitationStyles%2CexternalIds%2CinfluentialCitationCount%2CisOpenAccess%2Cjournal%2CopenAccessPdf%2CpublicationD",
+     "infra_failures": [
+      "run 0: infra statuses {'503': 16, '500': 1}; set aside whatever its outcome (failed)",
+      "run 1: infra statuses {'503': 13}; set aside whatever its outcome (failed)",
+      "run 2: infra statuses {'503': 18, '500': 1}; set aside whatever its outcome (failed)",
+      "run 3: infra statuses {'503': 45}; set aside whatever its outcome (failed)",
+      "run 4: infra statuses {'503': 5}; set aside whatever its outcome (failed)"
+     ],
+     "per_test_passed": {
+      "tests/test_paperqa.py::test_context_inner_outer_prompt": [
+       2,
+       2
+      ],
+      "tests/test_paperqa.py::test_custom_prompts": [
+       2,
+       2
+      ],
+      "tests/test_paperqa.py::test_post_prompt": [
+       2,
+       2
+      ],
+      "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": [
+       2,
+       2
+      ],
+      "tests/test_paperqa.py::test_unrelated_context[default-unsure]": [
+       1,
+       2
+      ]
+     },
+     "per_run": [
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "failed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "failed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "failed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "failed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "failed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      }
+     ],
+     "role": "ladder"
+    }
+   ]
+  },
+  "src/paperqa/docs.py:234": {
+   "status": "infra",
+   "chosen": null,
+   "model": null,
+   "fix": null,
+   "fallback": null,
+   "reason": "infrastructure errors persisted at Nano after 2 re-runs; not climbed",
+   "flip_tests": [
+    "tests/test_paperqa.py::test_context_inner_outer_prompt",
+    "tests/test_paperqa.py::test_custom_prompts",
+    "tests/test_paperqa.py::test_post_prompt",
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]"
+   ],
+   "flags": {
+    "cassette_only": false,
+    "flip_tests_empty_only": [],
+    "good_side": "forward",
+    "isolated": false,
+    "wrong_control": true,
+    "wrong_control_missing": []
+   },
+   "cells": [
+    {
+     "rung": "Nano",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "params": {},
+     "k": 5,
+     "valid_runs": 2,
+     "passed_runs": 1,
+     "infra_runs": 11,
+     "status": "infra",
+     "passes": false,
+     "runs_with_retried_infra": {
+      "pass": 3,
+      "fail": 8
+     },
+     "rate": 0.5,
+     "wilson95": [
+      0.0945,
+      0.9055
+     ],
+     "fail_rate_upper_rule_of_three": null,
+     "calls": 94,
+     "calls_per_test_run": 1.446,
+     "tokens_per_call": [
+      51.8,
+      211.4
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": 0.0538,
+     "model_cost": 0.00506,
+     "usd_per_passed_run": 0.00506,
+     "diagnoses": {
+      "leading_whitespace": 58
+     },
+     "finish": {
+      "stop": 58
+     },
+     "changes": {
+      "model:model": 94
+     },
+     "errors": {
+      "503": 36
+     },
+     "repaired_empty_args": 0,
+     "first_failure": "tests/test_paperqa.py::test_unrelated_context[default-unsure]: httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://api.semanticscholar.org/graph/v1/paper/search/match?query=WikiMedia+Foundation&fields=authors%2CcitationCount%2CcitationStyles%2CexternalIds%2CinfluentialCitationCount%2CisOpenAccess%2Cjournal%2CopenAccessPdf%2CpublicationD",
+     "infra_failures": [
+      "run 0: infra statuses {'503': 16, '500': 1}; set aside whatever its outcome (failed)",
+      "run 1: infra statuses {'503': 13}; set aside whatever its outcome (failed)",
+      "run 2: infra statuses {'503': 18, '500': 1}; set aside whatever its outcome (failed)",
+      "run 3: infra statuses {'503': 45}; set aside whatever its outcome (failed)",
+      "run 4: infra statuses {'503': 5}; set aside whatever its outcome (failed)"
+     ],
+     "per_test_passed": {
+      "tests/test_paperqa.py::test_context_inner_outer_prompt": [
+       2,
+       2
+      ],
+      "tests/test_paperqa.py::test_custom_prompts": [
+       2,
+       2
+      ],
+      "tests/test_paperqa.py::test_post_prompt": [
+       2,
+       2
+      ],
+      "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": [
+       2,
+       2
+      ],
+      "tests/test_paperqa.py::test_unrelated_context[default-unsure]": [
+       1,
+       2
+      ]
+     },
+     "per_run": [
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "failed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "failed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "failed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "failed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "failed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      }
+     ],
+     "role": "ladder"
+    }
+   ]
+  },
+  "src/paperqa/docs.py:675": {
+   "status": "infra",
+   "chosen": null,
+   "model": null,
+   "fix": null,
+   "fallback": null,
+   "reason": "infrastructure errors persisted at Nano after 2 re-runs; not climbed",
+   "flip_tests": [
+    "tests/test_paperqa.py::test_context_inner_outer_prompt",
+    "tests/test_paperqa.py::test_custom_prompts",
+    "tests/test_paperqa.py::test_post_prompt",
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]"
+   ],
+   "flags": {
+    "cassette_only": false,
+    "flip_tests_empty_only": [],
+    "good_side": "forward",
+    "isolated": false,
+    "wrong_control": true,
+    "wrong_control_missing": []
+   },
+   "cells": [
+    {
+     "rung": "Nano",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "params": {},
+     "k": 5,
+     "valid_runs": 2,
+     "passed_runs": 1,
+     "infra_runs": 11,
+     "status": "infra",
+     "passes": false,
+     "runs_with_retried_infra": {
+      "pass": 3,
+      "fail": 8
+     },
+     "rate": 0.5,
+     "wilson95": [
+      0.0945,
+      0.9055
+     ],
+     "fail_rate_upper_rule_of_three": null,
+     "calls": 78,
+     "calls_per_test_run": 1.2,
+     "tokens_per_call": [
+      305.9,
+      374.0
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": 0.1081,
+     "model_cost": 0.008433,
+     "usd_per_passed_run": 0.008433,
+     "diagnoses": {
+      "leading_whitespace": 45
+     },
+     "finish": {
+      "stop": 45
+     },
+     "changes": {
+      "model:model": 78
+     },
+     "errors": {
+      "503": 33
+     },
+     "repaired_empty_args": 0,
+     "first_failure": "tests/test_paperqa.py::test_unrelated_context[default-unsure]: httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://api.semanticscholar.org/graph/v1/paper/search/match?query=WikiMedia+Foundation&fields=authors%2CcitationCount%2CcitationStyles%2CexternalIds%2CinfluentialCitationCount%2CisOpenAccess%2Cjournal%2CopenAccessPdf%2CpublicationD",
+     "infra_failures": [
+      "run 0: infra statuses {'503': 16, '500': 1}; set aside whatever its outcome (failed)",
+      "run 1: infra statuses {'503': 13}; set aside whatever its outcome (failed)",
+      "run 2: infra statuses {'503': 18, '500': 1}; set aside whatever its outcome (failed)",
+      "run 3: infra statuses {'503': 45}; set aside whatever its outcome (failed)",
+      "run 4: infra statuses {'503': 5}; set aside whatever its outcome (failed)"
+     ],
+     "per_test_passed": {
+      "tests/test_paperqa.py::test_context_inner_outer_prompt": [
+       2,
+       2
+      ],
+      "tests/test_paperqa.py::test_custom_prompts": [
+       2,
+       2
+      ],
+      "tests/test_paperqa.py::test_post_prompt": [
+       2,
+       2
+      ],
+      "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": [
+       2,
+       2
+      ],
+      "tests/test_paperqa.py::test_unrelated_context[default-unsure]": [
+       1,
+       2
+      ]
+     },
+     "per_run": [
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "failed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "failed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "failed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "failed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "failed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": false,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_context_inner_outer_prompt": "passed",
+        "tests/test_paperqa.py::test_custom_prompts": "passed",
+        "tests/test_paperqa.py::test_post_prompt": "failed",
+        "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": "passed",
+        "tests/test_paperqa.py::test_unrelated_context[default-unsure]": "failed"
+       }
+      }
+     ],
+     "role": "ladder"
+    }
+   ]
+  },
+  "src/paperqa/docs.py:703": {
+   "status": "infra",
+   "chosen": null,
+   "model": null,
+   "fix": null,
+   "fallback": null,
+   "reason": "infrastructure errors persisted at Nano after 2 re-runs; not climbed",
+   "flip_tests": [
+    "tests/test_paperqa.py::test_post_prompt"
+   ],
+   "flags": {
+    "cassette_only": false,
+    "flip_tests_empty_only": [],
+    "good_side": "forward",
+    "isolated": false,
+    "wrong_control": true,
+    "wrong_control_missing": []
+   },
+   "cells": [
+    {
+     "rung": "Nano",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "params": {},
+     "k": 5,
+     "valid_runs": 2,
+     "passed_runs": 2,
+     "infra_runs": 11,
+     "status": "infra",
+     "passes": false,
+     "runs_with_retried_infra": {
+      "pass": 7,
+      "fail": 4
+     },
+     "rate": 1.0,
+     "wilson95": [
+      0.3424,
+      1.0
+     ],
+     "fail_rate_upper_rule_of_three": 1.0,
+     "calls": 13,
+     "calls_per_test_run": 1.0,
+     "tokens_per_call": [
+      37.4,
+      57.1
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": 0.0159,
+     "model_cost": 0.000207,
+     "usd_per_passed_run": 0.000104,
+     "diagnoses": {
+      "leading_whitespace": 9
+     },
+     "finish": {
+      "stop": 9
+     },
+     "changes": {
+      "model:model": 13
+     },
+     "errors": {
+      "503": 4
+     },
+     "repaired_empty_args": 0,
+     "first_failure": "",
+     "infra_failures": [
+      "run 0: infra statuses {'503': 16, '500': 1}; set aside whatever its outcome (failed)",
+      "run 1: infra statuses {'503': 13}; set aside whatever its outcome (passed)",
+      "run 2: infra statuses {'503': 18, '500': 1}; set aside whatever its outcome (passed)",
+      "run 3: infra statuses {'503': 45}; set aside whatever its outcome (passed)",
+      "run 4: infra statuses {'503': 5}; set aside whatever its outcome (passed)"
+     ],
+     "per_test_passed": {
+      "tests/test_paperqa.py::test_post_prompt": [
+       2,
+       2
+      ]
+     },
+     "per_run": [
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_post_prompt": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_post_prompt": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_post_prompt": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_post_prompt": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_post_prompt": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_post_prompt": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_paperqa.py::test_post_prompt": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_post_prompt": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_post_prompt": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_paperqa.py::test_post_prompt": "passed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_post_prompt": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_post_prompt": "failed"
+       }
+      },
+      {
+       "passed": null,
+       "tests": {
+        "tests/test_paperqa.py::test_post_prompt": "failed"
+       }
+      }
+     ],
+     "role": "ladder"
+    }
+   ]
+  }
+ },
+ "jobs": [
+  {
+   "utc": "2026-10-24T12:55:19Z",
+   "note": "Nano",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "sites": [
+    "src/paperqa/core.py:254",
+    "src/paperqa/docs.py:234",
+    "src/paperqa/docs.py:675",
+    "src/paperqa/docs.py:703"
+   ],
+   "k": 5,
+   "tests": 5,
+   "sandbox_cost_diagnostic": 0.6253977599999999,
+   "cpu_s": 62.375204,
+   "wall_s": 356.28,
+   "exit_code": 0,
+   "model_spend": 0.04271577,
+   "error": null,
+   "envelope_error": null,
+   "exit_codes": [
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "durations_s": [
+    351.9,
+    350.7,
+    349.3,
+    321.6,
+    280.2
+   ],
+   "freeze_before": [],
+   "freeze_after": [],
+   "isolation": {
+    "30/environ": "PermissionError",
+    "30/mem": "PermissionError",
+    "31/environ": "PermissionError",
+    "31/mem": "PermissionError"
+   },
+   "test_uid": 10001,
+   "untraced": 0,
+   "site_runs": {
+    "src/paperqa/docs.py:234": {
+     "calls_by_run": {
+      "1": 8,
+      "0": 9,
+      "2": 11,
+      "3": 8,
+      "4": 8
+     },
+     "errors_by_run": {
+      "2": {
+       "503": 8
+      },
+      "4": {
+       "503": 4
+      },
+      "3": {
+       "503": 3
+      },
+      "0": {
+       "503": 5
+      },
+      "1": {
+       "503": 4
+      }
+     },
+     "models_requested": {
+      "gpt-4o-2024-11-20": 44
+     }
+    },
+    "src/paperqa/docs.py:374": {
+     "calls_by_run": {
+      "4": 9,
+      "3": 10,
+      "2": 6,
+      "0": 8,
+      "1": 8
+     },
+     "errors_by_run": {
+      "4": {
+       "503": 1
+      }
+     },
+     "models_requested": {
+      "text-embedding-3-small": 41
+     }
+    },
+    "src/paperqa/llms.py:251": {
+     "calls_by_run": {
+      "4": 4,
+      "3": 5,
+      "2": 4,
+      "1": 5,
+      "0": 4
+     },
+     "errors_by_run": {
+      "1": {
+       "503": 1
+      },
+      "2": {
+       "503": 1
+      }
+     },
+     "models_requested": {
+      "text-embedding-3-small": 22
+     }
+    },
+    "src/paperqa/core.py:254": {
+     "calls_by_run": {
+      "4": 30,
+      "3": 58,
+      "2": 27,
+      "1": 25,
+      "0": 29
+     },
+     "errors_by_run": {
+      "3": {
+       "503": 38
+      },
+      "2": {
+       "503": 5,
+       "500": 1
+      },
+      "0": {
+       "503": 3,
+       "500": 1
+      }
+     },
+     "models_requested": {
+      "gpt-4o-2024-11-20": 169
+     }
+    },
+    "src/paperqa/docs.py:675": {
+     "calls_by_run": {
+      "2": 6,
+      "4": 4,
+      "3": 6,
+      "0": 9,
+      "1": 10
+     },
+     "errors_by_run": {
+      "3": {
+       "503": 4
+      },
+      "0": {
+       "503": 8
+      },
+      "1": {
+       "503": 8
+      },
+      "2": {
+       "503": 4
+      }
+     },
+     "models_requested": {
+      "gpt-4o-2024-11-20": 35
+     }
+    },
+    "src/paperqa/docs.py:703": {
+     "calls_by_run": {
+      "4": 1,
+      "3": 1,
+      "2": 1,
+      "1": 1
+     },
+     "errors_by_run": {},
+     "models_requested": {
+      "gpt-4o-2024-11-20": 4
+     }
+    }
+   }
+  },
+  {
+   "utc": "2026-10-24T12:58:54Z",
+   "note": "Nano (infra re-run 1)",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "sites": [
+    "src/paperqa/core.py:254",
+    "src/paperqa/docs.py:234",
+    "src/paperqa/docs.py:675",
+    "src/paperqa/docs.py:703"
+   ],
+   "k": 5,
+   "tests": 5,
+   "sandbox_cost_diagnostic": 0.46092204999999997,
+   "cpu_s": 45.949593,
+   "wall_s": 215.212,
+   "exit_code": 0,
+   "model_spend": 0.05106029,
+   "error": null,
+   "envelope_error": null,
+   "exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    1
+   ],
+   "durations_s": [
+    189.2,
+    157.6,
+    157.8,
+    212.3,
+    144.0
+   ],
+   "freeze_before": [],
+   "freeze_after": [],
+   "isolation": {
+    "29/environ": "PermissionError",
+    "29/mem": "PermissionError",
+    "30/environ": "PermissionError",
+    "30/mem": "PermissionError"
+   },
+   "test_uid": 10001,
+   "untraced": 0,
+   "site_runs": {
+    "src/paperqa/docs.py:234": {
+     "calls_by_run": {
+      "0": 6,
+      "1": 5,
+      "4": 5,
+      "3": 5,
+      "2": 5
+     },
+     "errors_by_run": {
+      "0": {
+       "503": 1
+      }
+     },
+     "models_requested": {
+      "gpt-4o-2024-11-20": 26
+     }
+    },
+    "src/paperqa/docs.py:374": {
+     "calls_by_run": {
+      "4": 8,
+      "1": 10,
+      "3": 10,
+      "2": 10,
+      "0": 10
+     },
+     "errors_by_run": {},
+     "models_requested": {
+      "text-embedding-3-small": 48
+     }
+    },
+    "src/paperqa/llms.py:251": {
+     "calls_by_run": {
+      "4": 4,
+      "1": 5,
+      "3": 5,
+      "2": 5,
+      "0": 5
+     },
+     "errors_by_run": {},
+     "models_requested": {
+      "text-embedding-3-small": 24
+     }
+    },
+    "src/paperqa/core.py:254": {
+     "calls_by_run": {
+      "4": 25,
+      "1": 35,
+      "3": 37,
+      "2": 40,
+      "0": 36
+     },
+     "errors_by_run": {
+      "3": {
+       "500": 1
+      },
+      "2": {
+       "503": 5
+      },
+      "0": {
+       "503": 1
+      }
+     },
+     "models_requested": {
+      "gpt-4o-2024-11-20": 173
+     }
+    },
+    "src/paperqa/docs.py:675": {
+     "calls_by_run": {
+      "1": 5,
+      "2": 5,
+      "4": 4,
+      "0": 5,
+      "3": 6
+     },
+     "errors_by_run": {
+      "3": {
+       "503": 1
+      }
+     },
+     "models_requested": {
+      "gpt-4o-2024-11-20": 25
+     }
+    },
+    "src/paperqa/docs.py:703": {
+     "calls_by_run": {
+      "4": 1,
+      "1": 1,
+      "2": 1,
+      "0": 1,
+      "3": 1
+     },
+     "errors_by_run": {},
+     "models_requested": {
+      "gpt-4o-2024-11-20": 5
+     }
+    }
+   }
+  },
+  {
+   "utc": "2026-10-24T13:02:18Z",
+   "note": "Nano (infra re-run 2)",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "sites": [
+    "src/paperqa/core.py:254",
+    "src/paperqa/docs.py:234",
+    "src/paperqa/docs.py:675",
+    "src/paperqa/docs.py:703"
+   ],
+   "k": 3,
+   "tests": 5,
+   "sandbox_cost_diagnostic": 0.31565319000000003,
+   "cpu_s": 31.403691,
+   "wall_s": 203.924,
+   "exit_code": 0,
+   "model_spend": 0.02577285,
+   "error": null,
+   "envelope_error": null,
+   "exit_codes": [
+    1,
+    1,
+    1
+   ],
+   "durations_s": [
+    200.6,
+    192.2,
+    200.4
+   ],
+   "freeze_before": [],
+   "freeze_after": [],
+   "isolation": {
+    "32/environ": "PermissionError",
+    "32/mem": "PermissionError",
+    "33/environ": "PermissionError",
+    "33/mem": "PermissionError"
+   },
+   "test_uid": 10001,
+   "untraced": 0,
+   "site_runs": {
+    "src/paperqa/docs.py:234": {
+     "calls_by_run": {
+      "0": 9,
+      "2": 7,
+      "1": 8
+     },
+     "errors_by_run": {
+      "0": {
+       "503": 5
+      },
+      "1": {
+       "503": 4
+      },
+      "2": {
+       "503": 2
+      }
+     },
+     "models_requested": {
+      "gpt-4o-2024-11-20": 24
+     }
+    },
+    "src/paperqa/docs.py:374": {
+     "calls_by_run": {
+      "2": 8,
+      "0": 8,
+      "1": 8
+     },
+     "errors_by_run": {},
+     "models_requested": {
+      "text-embedding-3-small": 24
+     }
+    },
+    "src/paperqa/llms.py:251": {
+     "calls_by_run": {
+      "2": 4,
+      "0": 4,
+      "1": 4
+     },
+     "errors_by_run": {},
+     "models_requested": {
+      "text-embedding-3-small": 12
+     }
+    },
+    "src/paperqa/core.py:254": {
+     "calls_by_run": {
+      "2": 25,
+      "0": 30,
+      "1": 25
+     },
+     "errors_by_run": {
+      "0": {
+       "503": 5
+      }
+     },
+     "models_requested": {
+      "gpt-4o-2024-11-20": 80
+     }
+    },
+    "src/paperqa/docs.py:675": {
+     "calls_by_run": {
+      "2": 4,
+      "0": 7,
+      "1": 7
+     },
+     "errors_by_run": {
+      "0": {
+       "503": 4
+      },
+      "1": {
+       "503": 4
+      }
+     },
+     "models_requested": {
+      "gpt-4o-2024-11-20": 18
+     }
+    },
+    "src/paperqa/docs.py:703": {
+     "calls_by_run": {
+      "2": 4
+     },
+     "errors_by_run": {
+      "2": {
+       "503": 4
+      }
+     },
+     "models_requested": {
+      "gpt-4o-2024-11-20": 4
+     }
+    }
+   }
+  }
+ ],
+ "ended_utc": "2026-10-24T13:02:18Z"
+}

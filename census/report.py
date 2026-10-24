@@ -63,8 +63,14 @@ def main():
              "production traffic.", ""]
     all_sites, decisions, infra_total, token_total, diag_total, smoke_lines = [], {}, 0, 0.0, 0.0, []
     per_target = []
+    all_runs = {}
     for target in man["targets"]:
         dec = [d for d, _ in runs(target, "decision") if d["status"] == "complete"]
+        all_runs[target] = [d for d, _ in runs(target, "decision")]
+        for d in all_runs[target]:
+            for j in d["jobs"]:
+                token_total += j.get("model_spend") or 0
+                diag_total += j.get("sandbox_cost_diagnostic") or 0
         smoke = runs(target, "smoke")
         for d, p in smoke:
             smoke_lines.append(f"- `{target}` smoke `{d['run_id']}` ({d['smoke']}, K={d['k']}, rungs {', '.join(d['rungs'])}): "
@@ -74,9 +80,6 @@ def main():
             continue
         d = dec[-1]
         per_target.append((target, d))
-        for j in d["jobs"]:
-            token_total += j.get("model_spend") or 0
-            diag_total += j.get("sandbox_cost_diagnostic") or 0
         for s, v in d["sites"].items():
             all_sites.append((target, s, v))
             infra_total += sum(c.get("infra_runs", 0) for c in v["cells"])
@@ -90,19 +93,22 @@ def main():
     small = [g for g, r in measured.items() if r <= 1]
     sites_small = [s for _, s, v in all_sites if v["status"] == "chosen" and v["chosen"] in ("Nano", "Lightning")]
     lo, hi = ladder.wilson(len(small), len(measured))
+    decided = [x for x in all_sites if x[2]["status"] in ("chosen", "red")]
+    repos_decided = sorted({t for t, _, _ in decided})
     lines += ["## Headline", "",
-              f"- Call sites measured: {len(all_sites)} in {sum(1 for _, d in per_target if d)} repositories; "
-              f"moved to Lightning or Nano: {len(sites_small)} of {len(all_sites)}.",
+              f"- Call sites in the ladder: {len(all_sites)} in {sum(1 for _, d in per_target if d)} repositories; decided: "
+              f"{len(decided)} (in {len(repos_decided)} repositories); moved to Lightning or Nano: {len(sites_small)} of "
+              f"{len(decided)} decided.",
               f"- Independent decisions (one funnel's sync and async faces, or sites reached by the same tests, count "
               f"once; a group counts at its largest chosen model): {len(measured)}; on Lightning or Nano: {len(small)} "
               f"(Wilson 95 % [{lo:.2f}-{hi:.2f}]).",
               f"- Runs set aside as infrastructure (rate limits, 503, lost runs) and re-run: {infra_total}. "
               f"Sites with no decision because of infrastructure: "
               f"{sum(1 for _, _, v in all_sites if v['status'] == 'infra')}.",
-              f"- Coverage gate (at least 3 repositories and 5 independent sites): "
-              f"{'met' if sum(1 for _, d in per_target if d) >= 3 and len(measured) >= 5 else 'NOT met'} "
-              f"({sum(1 for _, d in per_target if d)} repositories, {len(measured)} independent decisions).",
-              f"- Model spend for the decision ladders: {money(token_total)} in tokens. The Sandboxes `cost` field summed "
+              f"- Coverage gate (at least 3 repositories and 5 independent sites, decided): "
+              f"{'met' if len(repos_decided) >= 3 and len(measured) >= 5 else 'NOT met'} "
+              f"({len(repos_decided)} repositories with a decision, {len(measured)} independent decisions).",
+              f"- Model spend for all decision ladder runs: {money(token_total)} in tokens. The Sandboxes `cost` field summed "
               f"to {money(diag_total, 2)}; it is diagnostic (the 2026-10-24 billing check found no Sandboxes charge).", ""]
     lines += ["## Which model does what", "",
               f"| Repository | Call site | What the call does | Model after the census | $/1k calls after | "
@@ -124,12 +130,37 @@ def main():
               f"red cell whose call log shows a diagnosis; the embedding calls of paper-qa go to "
               f"{man['rules']['embedding_model']['model']} on every rung.", ""]
     lines += ["## Every cell", ""]
-    for target, d in per_target:
-        if not d:
-            lines += [f"### {target}", "", "No complete decision run.", ""]
-            continue
+    for target, latest in per_target:
+        lines += [f"### {target}", ""]
+        if not all_runs[target]:
+            lines += ["No decision run.", ""]
+        for d in all_runs[target]:
+            decided_here = sum(1 for v in d["sites"].values() if v["status"] in ("chosen", "red"))
+            statuses = {}
+            for j in d["jobs"]:
+                for v in (j.get("site_runs") or {}).values():
+                    for e in (v.get("errors_by_run") or {}).values():
+                        for code, n in e.items():
+                            statuses[code] = statuses.get(code, 0) + n
+            spend = sum(j.get("model_spend") or 0 for j in d["jobs"])
+            lines.append(f"- Decision run `{d['run_id']}`: {d['status']}, {decided_here} of {len(d['sites'])} sites decided, "
+                         f"{len(d['jobs'])} sandbox jobs, {money(spend)} in tokens"
+                         + (f", proxy error statuses logged {dict(sorted(statuses.items()))}" if statuses else "")
+                         + (" (the headline uses this run)" if latest and d["run_id"] == latest["run_id"] else ""))
+        lines.append("")
+        for d in all_runs[target]:
+            _cells(lines, d)
+    lines += ["## Found, not measured", ""]
+    _rest(lines, man, smoke_lines)
+    (ROOT / "CENSUS.md").write_text("\n".join(lines) + "\n")
+    print(json.dumps({"sites": len(all_sites), "decided": len(decided), "independent": len(measured), "small": len(small),
+                      "tokens": round(token_total, 4), "diag": round(diag_total, 2)}))
+
+
+def _cells(lines, d):
+    if True:
         m = d["manifest"]
-        lines += [f"### {target}", "",
+        lines += [f"#### Run `{d['run_id']}`", "",
                   f"Decision run `{d['run_id']}` ({d['started_utc']} to {d.get('ended_utc')}), manifest "
                   f"`{m.get('sha256', '')[:12]}` pushed {m.get('pushed_at')}, K={d['k']}, pass = at least "
                   f"{ladder.required_passes(d['k'], d['baseline'], d['margin'])} of {d['k']} valid runs.", "",
@@ -147,7 +178,10 @@ def main():
                 f = v["fix"]
                 lines += [f"Fix at `{s}`: **{f['kind']}**, proposed by `{f['by']}` from the call log "
                           f"(\"{f['why']}\"); the request change showed on {f.get('applied_calls')} calls.", ""]
-    lines += ["## Found, not measured", ""]
+
+
+
+def _rest(lines, man, smoke_lines):
     for target in man["targets"]:
         t = man["targets"][target]
         for s, why in t.get("excluded_sites", {}).items():
@@ -166,9 +200,6 @@ def main():
                   f"confirm {r['confirm']}; local branch `{r['branch']}` commit `{(r['commit'] or '-')[:12]}`; "
                   f"PR text `evidence/census/{t}/patch/PR.md`"]
     lines += ["", "## What is not claimed", ""] + [f"- {x}" for x in man["not_claimed"]]
-    (ROOT / "CENSUS.md").write_text("\n".join(lines) + "\n")
-    print(json.dumps({"sites": len(all_sites), "independent": len(measured), "small": len(small),
-                      "tokens": round(token_total, 4), "diag": round(diag_total, 2)}))
 
 
 if __name__ == "__main__":
