@@ -198,6 +198,12 @@
     "local_commit_time_utc": "2026-10-24",
     "what": "tests/test_paperqa.py imports paperqa_pymupdf (AGPL), paperqa_docling and paperqa_nemotron at module level; they get import stubs (importing works, any use raises), and none of the 8 selected tests uses them (checked in the source before the run)",
     "order": "after attempt 2 (pinned install: collection failed on 'No module named paperqa_docling', no test ran, no model call)"
+   },
+   {
+    "commit": "census/targets.json",
+    "local_commit_time_utc": "2026-10-24",
+    "what": "import stubs are visible only to test modules; paper-qa's own optional imports (prefer pymupdf, else pypdf) see the packages as absent",
+    "order": "after attempt 3 (the library picked the stub as its PDF parser at session setup: every test errored before any model call)"
    }
   ],
   "baseline_evidence": "Not measured by us; the ladder uses the assumed 1.0.",

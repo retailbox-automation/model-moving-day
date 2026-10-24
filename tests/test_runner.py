@@ -99,7 +99,20 @@ def test_import_stubs_are_uploaded_and_any_use_fails(tmp_path, monkeypatch):
     _, _, kw = box.calls[0]
     src = kw["files"]["/mmd/stubs/agpl_reader/__init__.py"].decode()
     assert json.loads(kw["files"]["/mmd/spec.json"])["stub_path"] == runner.STUB_DIR
-    ns = {}
-    exec(src, ns)
-    with pytest.raises(RuntimeError, match="AGPL-3.0, not installed"):
-        ns["__getattr__"]("parse_pdf_to_pages")("x.pdf")
+    pkg = tmp_path / "stubs" / "agpl_reader"
+    pkg.mkdir(parents=True)
+    (pkg / "__init__.py").write_bytes(kw["files"]["/mmd/stubs/agpl_reader/__init__.py"])
+    (tmp_path / "lib").mkdir()
+    (tmp_path / "lib" / "library.py").write_text(
+        "def parser():\n    try:\n        from agpl_reader import parse\n    except ImportError:\n        return 'fallback'\n"
+        "    return parse\n")
+    (tmp_path / "tests").mkdir()
+    (tmp_path / "tests" / "test_mod.py").write_text("from agpl_reader import parse as agpl_parse\nimport library\n"
+                                                     "print(library.parser())\n"
+                                                     "try:\n    agpl_parse('x.pdf')\nexcept RuntimeError as e:\n    print(e)\n")
+    import subprocess, sys
+    out = subprocess.run([sys.executable, str(tmp_path / "tests" / "test_mod.py")], capture_output=True, text=True,
+                         env={"PYTHONPATH": f"{tmp_path / 'lib'}:{tmp_path / 'stubs'}", "PATH": "/usr/bin:/bin"})
+    # the test module imports it; the library's optional import falls back as if it were absent; any use raises
+    assert out.returncode == 0, out.stderr
+    assert out.stdout.splitlines() == ["fallback", "agpl_reader is not installed in this census run (AGPL-3.0, not installed)"]

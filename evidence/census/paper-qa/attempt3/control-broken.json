@@ -1,0 +1,79 @@
+{
+ "label": "control-broken",
+ "ts": 1792843991.453,
+ "exit_code": 0,
+ "elapsed_s": 7.263907,
+ "wall_s": 10.676,
+ "sandbox_cost": 0.07386237,
+ "summary": {
+  "runs": [
+   {
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]": {
+     "outcome": "error",
+     "message": "failed on setup with \"RuntimeError: paperqa_pymupdf is not installed in this census run (AGPL-3.0 sub-package, not installed by decision 2026-10-24)\""
+    },
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": {
+     "outcome": "error",
+     "message": "failed on setup with \"RuntimeError: paperqa_pymupdf is not installed in this census run (AGPL-3.0 sub-package, not installed by decision 2026-10-24)\""
+    },
+    "tests/test_paperqa.py::test_pre_prompt": {
+     "outcome": "error",
+     "message": "failed on setup with \"RuntimeError: paperqa_pymupdf is not installed in this census run (AGPL-3.0 sub-package, not installed by decision 2026-10-24)\""
+    },
+    "tests/test_paperqa.py::test_post_prompt": {
+     "outcome": "error",
+     "message": "failed on setup with \"RuntimeError: paperqa_pymupdf is not installed in this census run (AGPL-3.0 sub-package, not installed by decision 2026-10-24)\""
+    },
+    "tests/test_paperqa.py::test_location_awareness": {
+     "outcome": "error",
+     "message": "failed on setup with \"RuntimeError: paperqa_pymupdf is not installed in this census run (AGPL-3.0 sub-package, not installed by decision 2026-10-24)\""
+    },
+    "tests/test_paperqa.py::test_custom_prompts": {
+     "outcome": "error",
+     "message": "failed on setup with \"RuntimeError: paperqa_pymupdf is not installed in this census run (AGPL-3.0 sub-package, not installed by decision 2026-10-24)\""
+    },
+    "tests/test_paperqa.py::test_context_inner_outer_prompt": {
+     "outcome": "error",
+     "message": "failed on setup with \"RuntimeError: paperqa_pymupdf is not installed in this census run (AGPL-3.0 sub-package, not installed by decision 2026-10-24)\""
+    },
+    "tests/test_paperqa.py::test_aquery_groups_contexts_by_question": {
+     "outcome": "error",
+     "message": "failed on setup with \"RuntimeError: paperqa_pymupdf is not installed in this census run (AGPL-3.0 sub-package, not installed by decision 2026-10-24)\""
+    },
+    "tests/test_paperqa.py::test_evidence": {
+     "outcome": "error",
+     "message": "failed on setup with \"RuntimeError: paperqa_pymupdf is not installed in this census run (AGPL-3.0 sub-package, not installed by decision 2026-10-24)\""
+    }
+   }
+  ],
+  "durations_s": [
+   7.8
+  ],
+  "exit_codes": [
+   1
+  ],
+  "parallel": true,
+  "freeze_before": [],
+  "test_uid": 10001,
+  "isolation": {
+   "30/environ": "PermissionError",
+   "30/mem": "PermissionError",
+   "31/environ": "PermissionError",
+   "31/mem": "PermissionError"
+  },
+  "freeze_after": [],
+  "pytest_tail": "us run (AGPL-3.0 sub-package, not installed by decision 2026-10-24)\")\nE       RuntimeError: paperqa_pymupdf is not installed in this census run (AGPL-3.0 sub-package, not installed by decision 2026-10-24)\n\n/mmd/stubs/paperqa_pymupdf/__init__.py:7: RuntimeError\n_______________________ ERROR at setup of test_evidence ________________________\n\nself = <Coroutine test_evidence>\n\n    def setup(self) -> None:\n        runner_fixture_id = f\"_{self._loop_scope}_scoped_runner\"\n        if runner_fixture_id not in self.fixturenames:\n            self.fixturenames.append(runner_fixture_id)\n>       return super().setup()\n               ^^^^^^^^^^^^^^^\n\n/usr/local/lib/python3.12/site-packages/pytest_asyncio/plugin.py:458: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ntests/conftest.py:52: in _setup_default_logs\n    ParsingSettings.model_fields[\"configure_pdf_parser\"].default()\nsrc/paperqa/settings.py:204: in default_pdf_parser_configurator\n    setup_pymupdf_python_logging()\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nargs = (), kwargs = {}\n\n    def missing(*args, **kwargs):\n>       raise RuntimeError(\"paperqa_pymupdf is not installed in this census run (AGPL-3.0 sub-package, not installed by decision 2026-10-24)\")\nE       RuntimeError: paperqa_pymupdf is not installed in this census run (AGPL-3.0 sub-package, not installed by decision 2026-10-24)\n\n/mmd/stubs/paperqa_pymupdf/__init__.py:7: RuntimeError\n9 errors in 1.66s\n",
+  "calls": {
+   "tests": {},
+   "sites": {},
+   "cost": 0.0,
+   "models_listings": 0,
+   "untraced": {},
+   "by_test": {}
+  },
+  "envelope_spent": 0.0,
+  "proxy_log_tail": "[mmd-proxy] listening on 127.0.0.1:8765\n"
+ },
+ "stdout_tail": "",
+ "stderr_tail": ""
+}

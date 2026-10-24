@@ -1,0 +1,21 @@
+{
+ "target": "paper-qa",
+ "ast_sites": [
+  {
+   "id": "packages/paper-qa-nemotron/src/paperqa_nemotron/api.py:509",
+   "func": "_call_nvidia_api",
+   "sdk": "litellm",
+   "api": "acompletion",
+   "kind": "chat",
+   "model_expr": "model_name",
+   "model_literal": null
+  }
+ ],
+ "ast_parse_errors": [],
+ "traced_sites": [],
+ "ast_sites_not_reached": [
+  "packages/paper-qa-nemotron/src/paperqa_nemotron/api.py:509"
+ ],
+ "excluded_sites": {},
+ "covered_sites": []
+}

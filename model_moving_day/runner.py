@@ -17,10 +17,23 @@ TEST_UID = 10001  # the target's tests run under this uid inside the sandbox, ap
 KEY_FILE = "/mmd/secret/tf.key"
 STUB_DIR = "/mmd/stubs"
 STUB = '''"""Import stub written by Model Moving Day: {mod} is not installed in this census run ({why}).
-Importing it works so that test modules importing it at the top can be collected; any use raises."""
+
+To test modules (files under a tests/ directory or named test_*), `from {mod} import X` gives a placeholder that
+raises when called, so a test file that imports it at the top can still be collected. To everything else, such as
+the library's own optional-import fallbacks, the names do not exist, exactly as when the package is not installed."""
+import os, sys
 
 
 def __getattr__(attr):
+    if attr.startswith("__"):
+        raise AttributeError(attr)
+    f = sys._getframe(1)
+    while f is not None and "importlib" in f.f_code.co_filename:
+        f = f.f_back
+    caller = (f.f_code.co_filename if f is not None else "").replace(os.sep, "/")
+    if "/tests/" not in caller and not os.path.basename(caller).startswith("test_"):
+        raise AttributeError("{mod} is not installed in this census run ({why})")
+
     def missing(*args, **kwargs):
         raise RuntimeError("{mod} is not installed in this census run ({why})")
     return missing
