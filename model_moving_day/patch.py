@@ -33,6 +33,7 @@ PR_FILE = "NEMOTRON_MOVE_PR.md"
 UNKNOWN_MODEL_EVIDENCE = mf.ROOT / "evidence" / "platform" / "unknown-model.json"
 CHAT_SHAPE = "openai.resources.chat.completions"
 PROXY = "http://127.0.0.1:8765"
+BRAIN_ATTEMPTS = 8  # Ultra answered 503 for ~17 s in two patch attempts on 2026-10-24: back-off up to ~2 min
 
 
 class PatchError(RuntimeError):
@@ -136,8 +137,8 @@ def changed_paths(root):
 class _Unwrap(ast.NodeTransformer):
     """nemotron_move.call(slug, F, *a, **kw) -> F(*a, **kw); the helper import is dropped. Collects the slugs."""
 
-    def __init__(self):
-        self.slugs = []
+    def __init__(self, parent):
+        self.slugs, self.parent = [], parent
 
     def visit_Call(self, node):
         self.generic_visit(node)
@@ -149,16 +150,15 @@ class _Unwrap(ast.NodeTransformer):
         return node
 
     def visit_ImportFrom(self, node):
-        names = [a for a in node.names if a.name != "nemotron_move"]
+        if node.module != self.parent or node.level:
+            return node
+        names = [a for a in node.names if not (a.name == "nemotron_move" and a.asname is None)]
         return None if not names else ast.ImportFrom(module=node.module, names=names, level=node.level)
 
-    def visit_Import(self, node):
-        names = [a for a in node.names if not a.name.endswith(".nemotron_move")]
-        return None if not names else ast.Import(names=names)
 
-
-def check_patch(root, commit, the_plan, helper_rel, helper_src):
-    """Problems with the patch in `root` (empty = fine)."""
+def check_patch(root, commit, the_plan, helper_rel, helper_src, helper_import):
+    """Problems with the patch in `root` (empty = fine). The helper must be imported exactly as
+    `from <package> import nemotron_move`; any other form leaves a difference and is refused."""
     problems, files = [], {e["site"].rpartition(":")[0] for e in the_plan["sites"]}
     found = []
     for f in sorted(files):
@@ -167,7 +167,7 @@ def check_patch(root, commit, the_plan, helper_rel, helper_src):
         except SyntaxError as e:
             problems.append(f"{f} does not parse: {e}")
             continue
-        un = _Unwrap()
+        un = _Unwrap(helper_import.rpartition(".")[0])
         unwrapped = ast.fix_missing_locations(un.visit(new))
         found += un.slugs
         original = ast.parse(_git(root, "show", f"{commit}:{f}"))
@@ -186,13 +186,13 @@ def check_patch(root, commit, the_plan, helper_rel, helper_src):
 
 def write_and_check(brain, root, commit, frozen, the_plan, helper_import, helper_rel, helper_src):
     edits = brain.write_patch(root, frozen, the_plan, helper_import)
-    problems = check_patch(root, commit, the_plan, helper_rel, helper_src)
+    problems = check_patch(root, commit, the_plan, helper_rel, helper_src, helper_import)
     missing = next((p for p in problems if p.startswith("not wrapped")), None)
     if missing and len(problems) == 1:
         todo = [e for e in the_plan["sites"] if e["slug"] in missing]
         edits += brain.write_patch(root, frozen, {"sites": todo}, helper_import,
                                    feedback=f"{missing}. Wrap them, then finish.")
-        problems = check_patch(root, commit, the_plan, helper_rel, helper_src)
+        problems = check_patch(root, commit, the_plan, helper_rel, helper_src, helper_import)
     if problems:
         raise PatchError("patch rejected: " + "; ".join(problems))
     freeze.verify(root, frozen)
@@ -305,12 +305,14 @@ def _patch_in(name, root, commit, doc, runs, man, sha, push, entry, targets, out
     the_plan = plan(doc, root, find.scan(root).sites)
     (out / "plan.json").write_text(json.dumps({"ladder_run": doc["run_id"], **the_plan}, indent=1))
     pkg = entry["helper_package"]
-    helper_rel, helper_import = f"{pkg}/nemotron_move.py", f"{pkg.replace('/', '.')}.nemotron_move"
+    helper_rel = f"{pkg}/nemotron_move.py"
+    helper_import = f"{pkg.removeprefix('src/').replace('/', '.')}.nemotron_move"  # src layout: import paperqa...
     edits, conf, committed = [], {}, None
     if any(e["kind"] == "move" for e in the_plan["sites"]):
         helper_src = render_helper(the_plan)
         (root / helper_rel).write_text(helper_src)
-        brain = brain or agent.Brain(tf.Client("c1"), agent.pick_brain(root), out / "agent-steps.jsonl")
+        brain = brain or agent.Brain(tf.Client("c1", max_attempts=BRAIN_ATTEMPTS, max_sleep=60), agent.pick_brain(root),
+                                     out / "agent-steps.jsonl")
         edits = write_and_check(brain, root, commit, frozen, the_plan, helper_import, helper_rel, helper_src)
         changed = changed_paths(root)
         (out / "patch.diff").write_text(_git(root, "diff") + "".join(

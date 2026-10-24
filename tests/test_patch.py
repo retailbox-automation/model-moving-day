@@ -283,3 +283,26 @@ def test_the_retired_status_comes_from_evidence_when_measured(tmp_path, monkeypa
     monkeypatch.setattr(patch, "UNKNOWN_MODEL_EVIDENCE", ev)
     src = patch.render_helper({"sites": []})
     assert "RETIRED_STATUSES = {404}  # Token Factory's answer to an unknown model ID: measured" in src
+
+
+def test_a_helper_import_in_another_form_is_refused(world):
+    """2026-10-24, instructor attempt 3: `from instructor.nemotron_move import nemotron_move` passed the old check
+    and every confirm run failed at collection."""
+    bad_import = [WRAP_CORE[0], ("replace", {"path": "pkg/core.py", "old": "def run(",
+                                              "new": "from pkg.nemotron_move import nemotron_move\n\n\ndef run("})] + WRAP_VAL + FINISH
+    with pytest.raises(patch.PatchError, match="changed the code"):
+        run_patch(world, [bad_import])
+
+
+def test_the_brain_is_told_the_exact_import_line():
+    seen = []
+
+    class Rec:
+        def chat(self, model, messages, **params):
+            seen.append(messages[0]["content"])
+            return reply([("finish", {"summary": "x"})])
+    import tempfile, pathlib
+    d = pathlib.Path(tempfile.mkdtemp())
+    fr = freeze.Frozen("c", [], {}, [])
+    agent.Brain(Rec(), agent.SUPER, d / "s.jsonl", log=lambda m: None).write_patch(d, fr, {"sites": []}, "paperqa.nemotron_move")
+    assert "`from paperqa import nemotron_move`" in seen[0]

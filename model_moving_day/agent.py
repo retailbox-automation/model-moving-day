@@ -111,14 +111,16 @@ class Brain:
         sites = "\n".join(f"- site '{s['slug']}' at {s['site']} ({'async' if s['is_async'] else 'sync'}) -> "
                           f"{s['model']} (fallback {s['fallback']})" + (f"; the line reads: {s['code']}" if s.get("code") else "")
                           for s in plan["sites"])
+        parent = helper_import.rpartition(".")[0]
         msgs = [{"role": "system", "content": (
-            "You edit a Python repository so that each planned LLM call site goes through the Nemotron move helper. "
-            f"The helper is importable as `{helper_import}` and provides call(site, create, *args, **kwargs) for "
-            "sync calls and `await acall(site, create, *args, **kwargs)` for async calls; it leaves the call unchanged "
-            "unless NEMOTRON_MOVE=1. Wrap exactly the call on the given line: e.g. `response = func(*args, **kwargs)` "
-            f"becomes `response = {helper_import.split('.')[-1]}.call(\"<site>\", func, *args, **kwargs)`; for a method call "
-            "`client.chat.completions.create(model=m, ...)` pass the bound method as `create`. Add the import at the "
-            "top of each edited module. Change nothing else. Use read_file first, then replace, then finish.")},
+            "You edit a Python repository so that each planned LLM call site goes through the Nemotron move helper, "
+            f"the module `{helper_import}`. It provides nemotron_move.call(site, create, *args, **kwargs) for sync "
+            "calls and `await nemotron_move.acall(site, create, *args, **kwargs)` for async calls; it leaves the call "
+            "unchanged unless NEMOTRON_MOVE=1. Wrap exactly the call on the given line: e.g. `response = func(*args, "
+            "**kwargs)` becomes `response = nemotron_move.call(\"<site>\", func, *args, **kwargs)`; for a method call "
+            "`client.chat.completions.create(model=m, ...)` pass the bound method as `create`. Add exactly this line "
+            f"to the imports of each edited module, nothing else: `from {parent} import nemotron_move`. Change nothing "
+            "else. Use read_file first, then replace, then finish.")},
             {"role": "user", "content": f"Planned sites:\n{sites}\n{feedback}"}]
         edits = []
         for step in range(max_steps):
