@@ -356,7 +356,8 @@ def _patch_in(name, root, commit, doc, runs, man, sha, push, entry, targets, out
                                               f"(opt-in: NEMOTRON_MOVE=1)", PR_FILE)
     result = {"ladder_run": doc["run_id"], "moved": [e["site"] for e in moved],
               "kept": {e["site"]: e.get("not_moved_because", "guard") for e in the_plan["sites"] if e["kind"] == "keep"},
-              "branch": BRANCH if committed else None, "commit": committed, "pr": str(out / "PR.md"),
+              "branch": BRANCH if committed else None, "commit": committed,
+              "pr": (out / "PR.md").relative_to(mf.ROOT).as_posix() if (out / "PR.md").is_relative_to(mf.ROOT) else "PR.md",
               "confirm": {s: c["status"] for s, c in conf.items()}}
     (out / "result.json").write_text(json.dumps(result, indent=1))
     print(json.dumps(result))

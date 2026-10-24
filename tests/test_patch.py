@@ -164,6 +164,7 @@ def test_patch_moves_the_confirmed_site_guards_the_other_and_commits_only_to_a_l
     assert set(job["extra_files"]) == {"pkg/core.py", "pkg/validate.py", "pkg/nemotron_move.py"} and job["require_frozen"]
     assert sorted(job["tests"]) == sorted([FLIP, VFLIP]) and job["k"] == 5
     assert res["moved"] == [CORE] and res["kept"] == {VAL: "guard"} and res["branch"] == patch.BRANCH
+    assert not res["pr"].startswith("/")  # no local absolute paths in published evidence
     assert res["confirm"] == {CORE: "pass", VAL: "guard holds"}
     assert_clone_untouched(world)
     repo = world["repo"]
