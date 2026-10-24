@@ -1,0 +1,17 @@
+{
+ "ladder_run": "20261024T114940Z-f6c56a",
+ "moved": [
+  "instructor/v2/core/retry.py:224",
+  "instructor/v2/core/retry.py:523",
+  "instructor/v2/validation/llm_validators.py:34"
+ ],
+ "kept": {},
+ "branch": "mmd/move-to-nemotron",
+ "commit": "2318ca4be9b29bcef3493a1e9575ffcc33e94f81",
+ "pr": "evidence/census/instructor/patch/PR.md",
+ "confirm": {
+  "instructor/v2/core/retry.py:224": "pass",
+  "instructor/v2/core/retry.py:523": "pass",
+  "instructor/v2/validation/llm_validators.py:34": "pass"
+ }
+}

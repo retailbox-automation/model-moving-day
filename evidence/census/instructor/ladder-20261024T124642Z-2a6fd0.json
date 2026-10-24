@@ -1,0 +1,717 @@
+{
+ "target": "instructor",
+ "run_id": "20261024T124642Z-2a6fd0",
+ "kind": "confirm",
+ "smoke": null,
+ "status": "complete",
+ "started_utc": "2026-10-24T12:46:42Z",
+ "commit": "6cd771c5254a69f6a6cf9cdf357fb2f9523f0b85",
+ "manifest": {
+  "sha256": "41981436bbd6870906e4aac34b90c627d3dd803d5ae9425d270c394f3b8f73a5",
+  "commit": "51618521145d48bf11bae03724a13ccfc424d7a1",
+  "branch": "lane-c1",
+  "remote_head": "51618521145d48bf11bae03724a13ccfc424d7a1"
+ },
+ "k": 5,
+ "margin": 0.2,
+ "baseline": 1.0,
+ "baseline_note": "pass rate assumed 1.0 (strictest), not measured by us. Upstream CI run 39368977288 at the pinned 6cd771c: step 'Run core provider tests (OpenAI)' (tests/llm/test_core_providers -k openai, gpt-4.1-mini, one run) succeeded; the run's overall conclusion is failure from another job (checked with gh run view, 2026-10-24).",
+ "rungs": [],
+ "excluded_sites": {
+  "instructor/v2/providers/openai/client.py:23": "Responses API call site: 20 tests exist (tests/llm/test_openai/slow/test_response.py, sync and async) and are excluded because the proxy does not route /v1/responses (decision 2026-10-24: found, not measured)",
+  "instructor/v2/providers/openai/client.py:29": "Responses API call site: 20 tests exist (tests/llm/test_openai/slow/test_response.py, sync and async) and are excluded because the proxy does not route /v1/responses (decision 2026-10-24: found, not measured)"
+ },
+ "brain": null,
+ "frozen_sha256": "248a5aaab4d859643fcff59971c1d4717424cdb7e3a3b802de76932b05120510",
+ "sandbox_max_runs": 80,
+ "sites": {
+  "instructor/v2/core/retry.py:224": {
+   "status": "pending",
+   "chosen": null,
+   "model": null,
+   "fix": null,
+   "fallback": null,
+   "reason": "",
+   "flip_tests": [
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces",
+    "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]"
+   ],
+   "flags": {
+    "cassette_only": false,
+    "flip_tests_empty_only": [],
+    "good_side": "forward",
+    "isolated": true,
+    "wrong_control": true,
+    "wrong_control_missing": []
+   },
+   "cells": [
+    {
+     "rung": "confirm",
+     "model": "nvidia/Nemotron-3_5-Lightning",
+     "params": {},
+     "k": 5,
+     "valid_runs": 5,
+     "passed_runs": 5,
+     "infra_runs": 0,
+     "status": "pass",
+     "passes": true,
+     "runs_with_retried_infra": {
+      "pass": 0,
+      "fail": 0
+     },
+     "rate": 1.0,
+     "wilson95": [
+      0.5655,
+      1.0
+     ],
+     "fail_rate_upper_rule_of_three": 0.6,
+     "calls": 0,
+     "calls_per_test_run": 0.0,
+     "tokens_per_call": [
+      null,
+      null
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": null,
+     "model_cost": 0,
+     "usd_per_passed_run": 0.0,
+     "diagnoses": {},
+     "finish": {},
+     "changes": {},
+     "errors": {},
+     "repaired_empty_args": 0,
+     "first_failure": "",
+     "infra_failures": [],
+     "per_test_passed": {
+      "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces": [
+       5,
+       5
+      ],
+      "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]": [
+       5,
+       5
+      ],
+      "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]": [
+       5,
+       5
+      ],
+      "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]": [
+       5,
+       5
+      ],
+      "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]": [
+       5,
+       5
+      ],
+      "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]": [
+       5,
+       5
+      ],
+      "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]": [
+       5,
+       5
+      ],
+      "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": [
+       5,
+       5
+      ]
+     },
+     "per_run": [
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      }
+     ],
+     "role": "confirm",
+     "routing_problems": [],
+     "requested": {
+      "nvidia/Nemotron-3_5-Lightning": 5
+     }
+    }
+   ]
+  },
+  "instructor/v2/core/retry.py:523": {
+   "status": "pending",
+   "chosen": null,
+   "model": null,
+   "fix": null,
+   "fallback": null,
+   "reason": "",
+   "flip_tests": [
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]",
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]",
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]",
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]",
+    "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]",
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]",
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]",
+    "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]",
+    "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]",
+    "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]",
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]",
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]",
+    "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]",
+    "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]",
+    "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]",
+    "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]",
+    "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]",
+    "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]",
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces",
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]",
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]"
+   ],
+   "flags": {
+    "cassette_only": false,
+    "flip_tests_empty_only": [
+     "tests/llm/test_core_providers/test_retries.py::test_validation_with_retries[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_annotated_int[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_bool[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_int[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_literal[openai]",
+     "tests/llm/test_core_providers/test_simple_types.py::test_str[openai]"
+    ],
+    "good_side": "forward",
+    "isolated": true,
+    "wrong_control": true,
+    "wrong_control_missing": []
+   },
+   "cells": [
+    {
+     "rung": "confirm",
+     "model": "nvidia/nemotron-3-super-120b-a12b",
+     "params": {},
+     "k": 5,
+     "valid_runs": 5,
+     "passed_runs": 5,
+     "infra_runs": 0,
+     "status": "pass",
+     "passes": true,
+     "runs_with_retried_infra": {
+      "pass": 0,
+      "fail": 0
+     },
+     "rate": 1.0,
+     "wilson95": [
+      0.5655,
+      1.0
+     ],
+     "fail_rate_upper_rule_of_three": 0.6,
+     "calls": 0,
+     "calls_per_test_run": 0.0,
+     "tokens_per_call": [
+      null,
+      null
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": null,
+     "model_cost": 0,
+     "usd_per_passed_run": 0.0,
+     "diagnoses": {},
+     "finish": {},
+     "changes": {},
+     "errors": {},
+     "repaired_empty_args": 0,
+     "first_failure": "",
+     "infra_failures": [],
+     "per_test_passed": {
+      "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]": [
+       5,
+       5
+      ],
+      "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces": [
+       5,
+       5
+      ],
+      "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]": [
+       5,
+       5
+      ],
+      "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]": [
+       5,
+       5
+      ],
+      "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]": [
+       5,
+       5
+      ],
+      "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]": [
+       5,
+       5
+      ]
+     },
+     "per_run": [
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]": "passed",
+        "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]": "passed",
+        "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]": "passed",
+        "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]": "passed",
+        "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]": "passed",
+        "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]": "passed",
+        "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]": "passed",
+        "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]": "passed",
+        "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]": "passed",
+        "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      }
+     ],
+     "role": "confirm",
+     "routing_problems": [],
+     "requested": {
+      "nvidia/nemotron-3-super-120b-a12b": 10
+     }
+    }
+   ]
+  },
+  "instructor/v2/validation/llm_validators.py:34": {
+   "status": "pending",
+   "chosen": null,
+   "model": null,
+   "fix": null,
+   "fallback": null,
+   "reason": "",
+   "flip_tests": [
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]",
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]"
+   ],
+   "flags": {
+    "cassette_only": false,
+    "flip_tests_empty_only": [],
+    "good_side": "forward",
+    "isolated": true,
+    "wrong_control": true,
+    "wrong_control_missing": []
+   },
+   "cells": [
+    {
+     "rung": "confirm",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "params": {},
+     "k": 5,
+     "valid_runs": 5,
+     "passed_runs": 5,
+     "infra_runs": 0,
+     "status": "pass",
+     "passes": true,
+     "runs_with_retried_infra": {
+      "pass": 0,
+      "fail": 0
+     },
+     "rate": 1.0,
+     "wilson95": [
+      0.5655,
+      1.0
+     ],
+     "fail_rate_upper_rule_of_three": 0.6,
+     "calls": 0,
+     "calls_per_test_run": 0.0,
+     "tokens_per_call": [
+      null,
+      null
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": null,
+     "model_cost": 0,
+     "usd_per_passed_run": 0.0,
+     "diagnoses": {},
+     "finish": {},
+     "changes": {},
+     "errors": {},
+     "repaired_empty_args": 0,
+     "first_failure": "",
+     "infra_failures": [],
+     "per_test_passed": {
+      "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]": [
+       5,
+       5
+      ],
+      "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]": [
+       5,
+       5
+      ]
+     },
+     "per_run": [
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]": "passed",
+        "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]": "passed",
+        "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]": "passed",
+        "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]": "passed",
+        "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]": "passed",
+        "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]": "passed"
+       }
+      }
+     ],
+     "role": "confirm",
+     "routing_problems": [],
+     "requested": {
+      "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": 5
+     }
+    }
+   ]
+  }
+ },
+ "jobs": [
+  {
+   "utc": "2026-10-24T12:48:30Z",
+   "note": "confirm",
+   "model": null,
+   "sites": [
+    "instructor/v2/core/retry.py:224",
+    "instructor/v2/core/retry.py:523",
+    "instructor/v2/validation/llm_validators.py:34"
+   ],
+   "k": 5,
+   "tests": 33,
+   "sandbox_cost_diagnostic": 0.21107011,
+   "cpu_s": 21.044573,
+   "wall_s": 107.506,
+   "exit_code": 0,
+   "model_spend": 0.02875974,
+   "error": null,
+   "envelope_error": null,
+   "exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "durations_s": [
+    57.7,
+    68.7,
+    78.7,
+    103.7,
+    48.7
+   ],
+   "freeze_before": [],
+   "freeze_after": [],
+   "isolation": {
+    "30/environ": "PermissionError",
+    "30/mem": "PermissionError",
+    "31/environ": "PermissionError",
+    "31/mem": "PermissionError"
+   },
+   "test_uid": 10001,
+   "untraced": 0,
+   "site_runs": {
+    "instructor/v2/core/retry.py:525": {
+     "calls_by_run": {
+      "4": 26,
+      "1": 26,
+      "3": 26,
+      "2": 26,
+      "0": 26
+     },
+     "errors_by_run": {},
+     "models_requested": {
+      "nvidia/nemotron-3-super-120b-a12b": 130
+     }
+    },
+    "instructor/v2/core/retry.py:226": {
+     "calls_by_run": {
+      "4": 13,
+      "0": 13,
+      "1": 13,
+      "2": 13,
+      "3": 13
+     },
+     "errors_by_run": {},
+     "models_requested": {
+      "nvidia/Nemotron-3_5-Lightning": 55,
+      "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": 10
+     }
+    }
+   }
+  }
+ ],
+ "ended_utc": "2026-10-24T12:48:30Z"
+}

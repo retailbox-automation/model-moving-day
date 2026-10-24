@@ -1,0 +1,81 @@
+{
+ "ladder_run": "20261024T114940Z-f6c56a",
+ "sites": [
+  {
+   "slug": "instructor_v2_core_retry_py_224",
+   "site": "instructor/v2/core/retry.py:224",
+   "is_async": false,
+   "code": "response = func(*args, **kwargs)",
+   "kind": "move",
+   "model": "nvidia/Nemotron-3_5-Lightning",
+   "fallback": "nvidia/nemotron-3-super-120b-a12b",
+   "config": {
+    "model": "nvidia/Nemotron-3_5-Lightning",
+    "params": {},
+    "drop": [],
+    "min_max_tokens": null,
+    "notes": [],
+    "only": "openai.resources.chat.completions",
+    "fallback": {
+     "model": "nvidia/nemotron-3-super-120b-a12b",
+     "params": {},
+     "drop": [],
+     "min_max_tokens": null
+    }
+   }
+  },
+  {
+   "slug": "instructor_v2_core_retry_py_523",
+   "site": "instructor/v2/core/retry.py:523",
+   "is_async": true,
+   "code": "response = await func(*args, **kwargs)",
+   "kind": "move",
+   "model": "nvidia/nemotron-3-super-120b-a12b",
+   "fallback": "nvidia/Nemotron-3-Ultra-550b-a55b",
+   "config": {
+    "model": "nvidia/nemotron-3-super-120b-a12b",
+    "params": {},
+    "drop": [],
+    "min_max_tokens": null,
+    "notes": [],
+    "only": "openai.resources.chat.completions",
+    "fallback": {
+     "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+     "params": {
+      "extra_body": {
+       "chat_template_kwargs": {
+        "enable_thinking": true,
+        "force_nonempty_content": true
+       }
+      }
+     },
+     "drop": [],
+     "min_max_tokens": null
+    }
+   }
+  },
+  {
+   "slug": "instructor_v2_validation_llm_validators_py_34",
+   "site": "instructor/v2/validation/llm_validators.py:34",
+   "is_async": false,
+   "code": "resp = client.chat.completions.create(",
+   "kind": "move",
+   "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+   "fallback": "nvidia/Nemotron-3_5-Lightning",
+   "config": {
+    "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+    "params": {},
+    "drop": [],
+    "min_max_tokens": null,
+    "notes": [],
+    "only": "openai.resources.chat.completions",
+    "fallback": {
+     "model": "nvidia/Nemotron-3_5-Lightning",
+     "params": {},
+     "drop": [],
+     "min_max_tokens": null
+    }
+   }
+  }
+ ]
+}
