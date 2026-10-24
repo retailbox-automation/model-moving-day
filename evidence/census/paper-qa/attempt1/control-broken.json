@@ -1,0 +1,47 @@
+{
+ "label": "control-broken",
+ "ts": 1792843838.01,
+ "exit_code": 0,
+ "elapsed_s": 4.924131,
+ "wall_s": 8.776,
+ "sandbox_cost": 0.050299130000000004,
+ "summary": {
+  "runs": [
+   {
+    "__run__": {
+     "outcome": "infra",
+     "message": "no junit for run 0"
+    }
+   }
+  ],
+  "durations_s": [
+   5.6
+  ],
+  "exit_codes": [
+   4
+  ],
+  "parallel": true,
+  "freeze_before": [],
+  "test_uid": 10001,
+  "isolation": {
+   "28/environ": "PermissionError",
+   "28/mem": "PermissionError",
+   "29/environ": "PermissionError",
+   "29/mem": "PermissionError"
+  },
+  "freeze_after": [],
+  "pytest_tail": "ImportError while loading conftest '/work/repo/tests/conftest.py'.\ntests/conftest.py:17: in <module>\n    import vcr.stubs.httpcore_stubs\nE   ModuleNotFoundError: No module named 'vcr.stubs.httpcore_stubs'\n",
+  "calls": {
+   "tests": {},
+   "sites": {},
+   "cost": 0.0,
+   "models_listings": 0,
+   "untraced": {},
+   "by_test": {}
+  },
+  "envelope_spent": 0.0,
+  "proxy_log_tail": "[mmd-proxy] listening on 127.0.0.1:8765\n"
+ },
+ "stdout_tail": "",
+ "stderr_tail": ""
+}
