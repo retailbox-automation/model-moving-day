@@ -6,9 +6,9 @@ Every number below is recomputed by `census/report.py` from the evidence in this
 
 - Call sites in the ladder: 8 in 3 repositories; decided: 4 (in 2 repositories); moved to Lightning or Nano: 3 of 4 decided.
 - Independent decisions (one funnel's sync and async faces, or sites reached by the same tests, count once; a group counts at its largest chosen model): 3; on Lightning or Nano: 2 (Wilson 95 % [0.21-0.94]).
-- Runs set aside as infrastructure (rate limits, 503, lost runs) and re-run: 55. Sites with no decision because of infrastructure: 4.
+- Runs set aside as infrastructure (rate limits, 503, lost runs) and re-run, counted once per group of sites that share the same tests and per rung: 17 in the runs the headline uses, 43 in all decision runs. Sites with no decision because of infrastructure: 4.
 - Coverage gate (at least 3 repositories and 5 independent sites, decided): NOT met (2 repositories with a decision, 3 independent decisions).
-- Model spend for all decision ladder runs: $0.4668 in tokens. The Sandboxes `cost` field summed to $4.84; it is diagnostic (the 2026-10-24 billing check found no Sandboxes charge).
+- Model spend for all decision ladder runs: $0.5182 in tokens. The Sandboxes `cost` field summed to $5.33; it is diagnostic (the 2026-10-24 billing check found no Sandboxes charge). 2 sandbox jobs were lost to client timeouts; their token spend is not in this sum (each was capped by a $1 envelope).
 
 ## Which model does what
 
@@ -47,6 +47,8 @@ Decision run `20261024T114940Z-f6c56a` (2026-10-24T11:49:40Z to 2026-10-24T11:58
 | `instructor/v2/validation/llm_validators.py:34` | ladder | Nano | - | pass | 5/5 | 1 (0, 1) | $0.101 | - |
 | `instructor/v2/validation/llm_validators.py:34` | fallback | Lightning | - | pass | 5/5 | 0 (0, 0) | $0.073 | - |
 
+Set aside: runs set aside as infrastructure; in brackets how many of them had passed and how many had failed underneath (runs of a lost job have no outcome).
+
 ### llm
 
 - Decision run `20261024T115937Z-6e8505`: complete, 1 of 1 sites decided, 3 sandbox jobs, $0.0030 in tokens (the headline uses this run)
@@ -64,12 +66,16 @@ Decision run `20261024T115937Z-6e8505` (2026-10-24T11:59:37Z to 2026-10-24T12:00
 | `llm/default_plugins/openai_models.py:1494` | ladder | Nano | {'reasoning': 'off'} | pass | 5/5 | 0 (0, 0) | $0.030 | - |
 | `llm/default_plugins/openai_models.py:1494` | fallback | Lightning | - | pass | 5/5 | 0 (0, 0) | $0.038 | - |
 
+Set aside: runs set aside as infrastructure; in brackets how many of them had passed and how many had failed underneath (runs of a lost job have no outcome).
+
 Fix at `llm/default_plugins/openai_models.py:1494`: **reasoning_off**, proposed by `nvidia/nemotron-3-super-120b-a12b` from the call log ("The leading newline appears because reasoning is on by default and can cause content to start with a newline, as seen in the assertion failure where the output began with '\nYES'."); the request change showed on 15 calls.
 
 ### paper-qa
 
 - Decision run `20261024T122751Z-764b19`: complete, 0 of 4 sites decided, 3 sandbox jobs, $0.1612 in tokens, proxy error statuses logged {'500': 3, '503': 86}
-- Decision run `20261024T124923Z-ef27e9`: complete, 0 of 4 sites decided, 3 sandbox jobs, $0.1195 in tokens, proxy error statuses logged {'500': 3, '503': 133} (the headline uses this run)
+- Decision run `20261024T124923Z-ef27e9`: complete, 0 of 4 sites decided, 3 sandbox jobs, $0.1195 in tokens, proxy error statuses logged {'500': 3, '503': 133}
+- Decision run `20261024T131312Z-8fa47f`: complete, 0 of 4 sites decided, 3 sandbox jobs (2 lost: no summary came back, all their runs set aside), $0.0514 in tokens, proxy error statuses logged {'500': 1, '503': 20} (the headline uses this run)
+- Post-hoc read of lost jobs, not counted (summary lost = infrastructure by the pre-registered rule): `evidence/census/paper-qa/lost-jobs-posthoc-20261024T131312Z-8fa47f.json`
 
 #### Run `20261024T122751Z-764b19`
 
@@ -82,6 +88,8 @@ Decision run `20261024T122751Z-764b19` (2026-10-24T12:27:51Z to 2026-10-24T12:42
 | `src/paperqa/docs.py:675` | ladder | Nano | - | infra | 0/0 | 15 (8, 7) | $0.158 | - |
 | `src/paperqa/docs.py:703` | ladder | Nano | - | infra | 0/0 | 15 (13, 2) | $0.011 | - |
 
+Set aside: runs set aside as infrastructure; in brackets how many of them had passed and how many had failed underneath (runs of a lost job have no outcome).
+
 #### Run `20261024T124923Z-ef27e9`
 
 Decision run `20261024T124923Z-ef27e9` (2026-10-24T12:49:23Z to 2026-10-24T13:02:18Z), manifest `41981436bbd6` pushed 2026-10-24T12:45:59Z, K=5, pass = at least 4 of 5 valid runs.
@@ -92,6 +100,21 @@ Decision run `20261024T124923Z-ef27e9` (2026-10-24T12:49:23Z to 2026-10-24T13:02
 | `src/paperqa/docs.py:234` | ladder | Nano | - | infra | 1/2 | 11 (3, 8) | $0.054 | tests/test_paperqa.py::test_unrelated_context[default-unsure]: httpx.HTTPStatusError: Client error '429 Too Many Request |
 | `src/paperqa/docs.py:675` | ladder | Nano | - | infra | 1/2 | 11 (3, 8) | $0.108 | tests/test_paperqa.py::test_unrelated_context[default-unsure]: httpx.HTTPStatusError: Client error '429 Too Many Request |
 | `src/paperqa/docs.py:703` | ladder | Nano | - | infra | 2/2 | 11 (7, 4) | $0.016 | - |
+
+Set aside: runs set aside as infrastructure; in brackets how many of them had passed and how many had failed underneath (runs of a lost job have no outcome).
+
+#### Run `20261024T131312Z-8fa47f`
+
+Decision run `20261024T131312Z-8fa47f` (2026-10-24T13:13:12Z to 2026-10-24T14:06:42Z), manifest `273943f70ab5` pushed 2026-10-24T13:13:02Z, K=5, pass = at least 4 of 5 valid runs.
+
+| Call site | Role | Rung | Params | Status | Passed / valid | Set aside (passed, failed) | $/1k calls | First failure |
+|---|---|---|---|---|---|---|---|---|
+| `src/paperqa/core.py:254` | ladder | Nano | - | infra | 2/2 | 11 (2, 1) | $0.203 | - |
+| `src/paperqa/docs.py:234` | ladder | Nano | - | infra | 2/2 | 11 (2, 1) | $0.073 | - |
+| `src/paperqa/docs.py:675` | ladder | Nano | - | infra | 2/2 | 11 (2, 1) | $0.186 | - |
+| `src/paperqa/docs.py:703` | ladder | Nano | - | infra | 2/2 | 11 (3, 0) | $0.023 | - |
+
+Set aside: runs set aside as infrastructure; in brackets how many of them had passed and how many had failed underneath (runs of a lost job have no outcome).
 
 ## Found, not measured
 
@@ -121,6 +144,7 @@ Decision run `20261024T124923Z-ef27e9` (2026-10-24T12:49:23Z to 2026-10-24T13:02
 ## Migration patches
 
 - instructor: ladder run `20261024T114940Z-f6c56a`; moved 3 sites, kept 0; confirm {'instructor/v2/core/retry.py:224': 'pass', 'instructor/v2/core/retry.py:523': 'pass', 'instructor/v2/validation/llm_validators.py:34': 'pass'}; local branch `mmd/move-to-nemotron` commit `2318ca4be9b2`; PR text `evidence/census/instructor/patch/PR.md`
+- llm: ladder run `20261024T115937Z-6e8505`; moved 1 sites, kept 0; confirm {'llm/default_plugins/openai_models.py:1494': 'pass'}; local branch `mmd/move-to-nemotron` commit `a90319e522c0`; PR text `evidence/census/llm/patch/PR.md`
 
 ## What is not claimed
 

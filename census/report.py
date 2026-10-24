@@ -61,16 +61,19 @@ def main():
              "Every number below is recomputed by `census/report.py` from the evidence in this repository "
              "(`evidence/census/<repo>/ladder-*.json`, `coverage.json`, `census/MANIFEST.json`). Test traffic, not "
              "production traffic.", ""]
-    all_sites, decisions, infra_total, token_total, diag_total, smoke_lines = [], {}, 0, 0.0, 0.0, []
+    all_sites, decisions, token_total, diag_total, smoke_lines = [], {}, 0.0, 0.0, []
+    infra_latest, infra_all, lost_jobs = {}, {}, 0
     per_target = []
     all_runs = {}
     for target in man["targets"]:
         dec = [d for d, _ in runs(target, "decision") if d["status"] == "complete"]
         all_runs[target] = [d for d, _ in runs(target, "decision")]
         for d in all_runs[target]:
+            _count_infra(infra_all, target, d)
             for j in d["jobs"]:
                 token_total += j.get("model_spend") or 0
                 diag_total += j.get("sandbox_cost_diagnostic") or 0
+                lost_jobs += 1 if j.get("error") else 0
         smoke = runs(target, "smoke")
         for d, p in smoke:
             smoke_lines.append(f"- `{target}` smoke `{d['run_id']}` ({d['smoke']}, K={d['k']}, rungs {', '.join(d['rungs'])}): "
@@ -80,9 +83,9 @@ def main():
             continue
         d = dec[-1]
         per_target.append((target, d))
+        _count_infra(infra_latest, target, d)
         for s, v in d["sites"].items():
             all_sites.append((target, s, v))
-            infra_total += sum(c.get("infra_runs", 0) for c in v["cells"])
             g = GROUPS.get(s, s)
             rank = RUNG_ORDER.index(v["chosen"]) if v["status"] == "chosen" else (99 if v["status"] == "red" else None)
             if rank is not None:
@@ -102,14 +105,18 @@ def main():
               f"- Independent decisions (one funnel's sync and async faces, or sites reached by the same tests, count "
               f"once; a group counts at its largest chosen model): {len(measured)}; on Lightning or Nano: {len(small)} "
               f"(Wilson 95 % [{lo:.2f}-{hi:.2f}]).",
-              f"- Runs set aside as infrastructure (rate limits, 503, lost runs) and re-run: {infra_total}. "
+              f"- Runs set aside as infrastructure (rate limits, 503, lost runs) and re-run, counted once per group of "
+              f"sites that share the same tests and per rung: {sum(infra_latest.values())} in the runs the headline uses, "
+              f"{sum(infra_all.values())} in all decision runs. "
               f"Sites with no decision because of infrastructure: "
               f"{sum(1 for _, _, v in all_sites if v['status'] == 'infra')}.",
               f"- Coverage gate (at least 3 repositories and 5 independent sites, decided): "
               f"{'met' if len(repos_decided) >= 3 and len(measured) >= 5 else 'NOT met'} "
               f"({len(repos_decided)} repositories with a decision, {len(measured)} independent decisions).",
               f"- Model spend for all decision ladder runs: {money(token_total)} in tokens. The Sandboxes `cost` field summed "
-              f"to {money(diag_total, 2)}; it is diagnostic (the 2026-10-24 billing check found no Sandboxes charge).", ""]
+              f"to {money(diag_total, 2)}; it is diagnostic (the 2026-10-24 billing check found no Sandboxes charge)."
+              + (f" {lost_jobs} sandbox jobs were lost to client timeouts; their token spend is not in this sum (each was "
+                 f"capped by a $1 envelope)." if lost_jobs else ""), ""]
     lines += ["## Which model does what", "",
               f"| Repository | Call site | What the call does | Model after the census | $/1k calls after | "
               f"$/1k calls before ({base['model']}) | $ per passed test run after / before | Calls per test run |",
@@ -143,10 +150,15 @@ def main():
                         for code, n in e.items():
                             statuses[code] = statuses.get(code, 0) + n
             spend = sum(j.get("model_spend") or 0 for j in d["jobs"])
+            lost = sum(1 for j in d["jobs"] if j.get("error"))
             lines.append(f"- Decision run `{d['run_id']}`: {d['status']}, {decided_here} of {len(d['sites'])} sites decided, "
-                         f"{len(d['jobs'])} sandbox jobs, {money(spend)} in tokens"
+                         f"{len(d['jobs'])} sandbox jobs" + (f" ({lost} lost: no summary came back, all their runs set "
+                                                             f"aside)" if lost else "") + f", {money(spend)} in tokens"
                          + (f", proxy error statuses logged {dict(sorted(statuses.items()))}" if statuses else "")
                          + (" (the headline uses this run)" if latest and d["run_id"] == latest["run_id"] else ""))
+        for p in sorted((EVIDENCE / target).glob("lost-jobs-posthoc-*.json")):
+            lines.append(f"- Post-hoc read of lost jobs, not counted (summary lost = infrastructure by the pre-registered "
+                         f"rule): `{p.relative_to(ROOT)}`")
         lines.append("")
         for d in all_runs[target]:
             _cells(lines, d)
@@ -155,6 +167,14 @@ def main():
     (ROOT / "CENSUS.md").write_text("\n".join(lines) + "\n")
     print(json.dumps({"sites": len(all_sites), "decided": len(decided), "independent": len(measured), "small": len(small),
                       "tokens": round(token_total, 4), "diag": round(diag_total, 2)}))
+
+
+def _count_infra(acc, target, d):
+    """Set-aside runs once per (run, group of sites sharing tests, rung, params): sites of one group share the same runs."""
+    for s, v in d["sites"].items():
+        for c in v["cells"]:
+            key = (target, d["run_id"], GROUPS.get(s, s), c["rung"], json.dumps(c["params"], sort_keys=True))
+            acc[key] = max(acc.get(key, 0), c.get("infra_runs", 0))
 
 
 def _cells(lines, d):
@@ -172,7 +192,8 @@ def _cells(lines, d):
                 lines.append(f"| `{s}` | {c.get('role', 'ladder')} | {c['rung']} | {c['params'] or '-'} | {c['status']} | "
                              f"{c['passed_runs']}/{c['valid_runs']} | {c.get('infra_runs', 0)} ({r.get('pass', 0)}, {r.get('fail', 0)}) | "
                              f"{money(c['usd_per_1000_calls'], 3)} | {(c['first_failure'] or '-')[:120].replace('|', '/')} |")
-        lines += [""]
+        lines += ["", "Set aside: runs set aside as infrastructure; in brackets how many of them had passed and how many "
+                  "had failed underneath (runs of a lost job have no outcome).", ""]
         for s, v in d["sites"].items():
             if v.get("fix"):
                 f = v["fix"]
