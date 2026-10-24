@@ -109,3 +109,28 @@ def test_pushed_requires_the_manifest_commit_on_the_remote_branch(tmp_path, monk
     path.write_text('{"k": 2}\n')
     with pytest.raises(mf.ManifestMismatch, match="uncommitted"):
         mf.pushed(path)
+
+
+def test_the_embedding_model_enters_the_target_entry_only_when_the_target_has_one(world):
+    clones, repo, ev = world
+    assert "embedding_model" not in mf.target_entry("demo", clones)
+    d = json.loads(mf.TARGETS.read_text())
+    d["demo"]["embedding_model"] = "Qwen/Qwen3-Embedding-8B"
+    mf.TARGETS.write_text(json.dumps(d))
+    assert mf.target_entry("demo", clones)["embedding_model"] == "Qwen/Qwen3-Embedding-8B"
+
+
+def test_an_earlier_manifest_version_is_found_by_its_sha(tmp_path, monkeypatch):
+    work = tmp_path / "work"
+    (work / "census").mkdir(parents=True)
+    git(tmp_path, "init", "-q", str(work))
+    path = work / "census" / "MANIFEST.json"
+    shas = []
+    for k in (1, 2):
+        sha = mf.write({"rules": {"k": k}}, path)
+        shas.append(sha)
+        git(work, "add", ".")
+        git(work, "-c", "user.email=t@t", "-c", "user.name=t", "commit", "-q", "-m", f"v{k}")
+    monkeypatch.setattr(mf, "ROOT", work)
+    assert mf.version(shas[0], path) == {"rules": {"k": 1}} and mf.version(shas[1], path) == {"rules": {"k": 2}}
+    assert mf.version("0" * 64, path) is None

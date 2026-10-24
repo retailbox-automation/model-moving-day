@@ -11,6 +11,10 @@ rung, sends it through tf_client (spend reserved in a ledger first) and logs one
   passthrough  - serve the model the request names and send the body exactly as the app built it (no
              normalization; only the stream flags are removed because upstream is called without streaming):
              this is the route that confirms what a patched app really sends
+  old-model    - answer 200 with an empty message and log the request: in the confirm run the app's own endpoint
+             points here, so every call the helper did not move is visible (and fails its test)
+Paths under /moved/ (the helper's NEMOTRON_MOVE_BASE_URL in the confirm run) take routes["moved"] instead of the
+per-site routes, so moved and unmoved traffic are told apart by where the app sent them.
 The app receives the server's raw response: the proxy repairs nothing (empty tool-call arguments are only logged).
 /v1/embeddings is served by the one embedding model named in routes["embedding_model"] (the same on every rung),
 or refused with 501 when there is none. Streaming requests are served from a non-streaming upstream call and
@@ -19,7 +23,7 @@ re-emitted as server-sent events. Any unexpected error inside the proxy is logge
     python -m model_moving_day.proxy --port 8765 --routes routes.json --log calls.jsonl \
         --ledger ledger.jsonl --cap 0.50 --tag c1 --key-stdin
 """
-import argparse, json, sys, threading, time, urllib.request, uuid
+import argparse, json, re, sys, threading, time, urllib.request, uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -30,6 +34,7 @@ from model_moving_day import tf_client as tf
 TRACER_DIR = Path(__file__).resolve().parent / "tracer"
 CHAT_PATHS = {"/v1/chat/completions", "/chat/completions"}
 EMBED_PATHS = {"/v1/embeddings", "/embeddings"}
+MOVED_PREFIX = "/moved"
 # Upstream budget per call must stay below the SDK's own timeout (openai SDK: 600 s, then it retries in parallel):
 # 2 attempts x 270 s + at most 30 s back-off < 600 s, so the SDK never duplicates a call still running upstream.
 UPSTREAM_TIMEOUT_S, UPSTREAM_ATTEMPTS, UPSTREAM_MAX_SLEEP_S = 270, 2, 30
@@ -49,13 +54,57 @@ def _broken(body):
             "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}}
 
 
-def _instance(schema, defs, depth=0):
-    """A value that is valid for a JSON schema but not a plausible right answer (wrong_but_wellformed control)."""
+STRING_CANDIDATES = ("0", "1", "a", "A", "x", "mmd", "test", "a@b.co", "2000-01-01", "http://example.invalid/")
+
+
+def _string(schema, bad):
+    v = {"date-time": "1970-01-01T00:00:00Z", "date": "1970-01-01", "email": "wrong@example.invalid",
+         "uri": "http://example.invalid/"}.get(schema.get("format"), "mmd-wrong")
+    if schema.get("pattern"):
+        try:
+            v = next(c for c in (v, *STRING_CANDIDATES) if re.search(schema["pattern"], c))
+        except (StopIteration, re.error):
+            bad.append(f"pattern {schema['pattern']!r}")
+    lo, hi = schema.get("minLength") or 0, schema.get("maxLength")
+    v = v + "x" * max(0, lo - len(v))
+    if hi is not None:
+        v = v[:hi]
+    if len(v) < lo or (schema.get("pattern") and not re.search(schema["pattern"], v)):
+        bad.append("string length or pattern")
+    return v
+
+
+def _number(schema, t, bad):
+    v = 7919 if t == "integer" else 7919.5
+    step = 1 if t == "integer" else 0.5
+    if "maximum" in schema:
+        v = min(v, schema["maximum"])
+    if "exclusiveMaximum" in schema and v >= schema["exclusiveMaximum"]:
+        v = schema["exclusiveMaximum"] - step
+    if "minimum" in schema:
+        v = max(v, schema["minimum"])
+    if "exclusiveMinimum" in schema and v <= schema["exclusiveMinimum"]:
+        v = schema["exclusiveMinimum"] + step
+    if schema.get("multipleOf"):
+        m = schema["multipleOf"]
+        v = m * int(v // m) if v // m else m
+    if ("maximum" in schema and v > schema["maximum"]) or ("minimum" in schema and v < schema["minimum"]) or \
+            ("exclusiveMaximum" in schema and v >= schema["exclusiveMaximum"]) or \
+            ("exclusiveMinimum" in schema and v <= schema["exclusiveMinimum"]):
+        bad.append("number bounds")
+    return v
+
+
+def _instance(schema, defs, depth=0, bad=None):
+    """A value that is valid for a JSON schema but not a plausible right answer (wrong_but_wellformed control).
+    Constraints that cannot be met (a pattern no candidate matches, empty bounds) are appended to `bad`: then the
+    answer is not well-formed and a test failing on it is not a flip."""
+    bad = [] if bad is None else bad
     if depth > 8 or not isinstance(schema, dict):
         return "mmd-wrong"
     ref = schema.get("$ref")
     if isinstance(ref, str) and ref.startswith("#/"):
-        return _instance(defs.get(ref.rsplit("/", 1)[-1], {}), defs, depth + 1)
+        return _instance(defs.get(ref.rsplit("/", 1)[-1], {}), defs, depth + 1, bad)
     if "const" in schema:
         return schema["const"]
     if schema.get("enum"):
@@ -63,32 +112,31 @@ def _instance(schema, defs, depth=0):
     for key in ("anyOf", "oneOf", "allOf"):
         alts = [a for a in schema.get(key) or [] if a.get("type") != "null"]
         if alts:
-            return _instance(alts[0], defs, depth + 1)
+            return _instance(alts[0], defs, depth + 1, bad)
     t = schema.get("type")
     if isinstance(t, list):
         t = next((x for x in t if x != "null"), "null")
     if t == "object" or "properties" in schema:
-        return {k: _instance(v, defs, depth + 1) for k, v in (schema.get("properties") or {}).items()}
+        return {k: _instance(v, defs, depth + 1, bad) for k, v in (schema.get("properties") or {}).items()}
     if t == "array":
-        return [_instance(schema.get("items") or {}, defs, depth + 1)] * max(1, schema.get("minItems") or 1)
+        n = max(1, schema.get("minItems") or 0)
+        if schema.get("maxItems") is not None:
+            n = min(n, schema["maxItems"])
+        return [_instance(schema.get("items") or {}, defs, depth + 1, bad) for _ in range(n)]
     if t in ("integer", "number"):
-        v = 7919 if t == "integer" else 7919.5
-        if "maximum" in schema:
-            v = min(v, schema["maximum"])
-        if "minimum" in schema:
-            v = max(v, schema["minimum"])
-        return v
+        return _number(schema, t, bad)
     if t == "boolean":
         return True  # e.g. a validator's is_valid: accepting what should be rejected
     if t == "null":
         return None
-    return {"date-time": "1970-01-01T00:00:00Z", "date": "1970-01-01", "email": "wrong@example.invalid",
-            "uri": "http://example.invalid/"}.get(schema.get("format"), "mmd-wrong")
+    return _string(schema, bad)
 
 
-def _wrong(body):
+def _wrong(body, bad=None):
     """Once the app has sent tool results back, an unforced request gets a wrong final text: answering every turn
-    with another tool call would make a tool-using app loop forever (seen on llm, 2026-10-24) instead of failing."""
+    with another tool call would make a tool-using app loop forever (seen on llm, 2026-10-24) instead of failing.
+    Constraints the answer could not meet go to `bad`."""
+    bad = [] if bad is None else bad
     msg, finish = {"role": "assistant", "content": None}, "stop"
     tools = [t for t in body.get("tools") or [] if isinstance(t, dict) and t.get("function")]
     choice, rf = body.get("tool_choice"), body.get("response_format") or {}
@@ -98,13 +146,13 @@ def _wrong(body):
         name = (choice.get("function") or {}).get("name") if isinstance(choice, dict) else None
         tool = next((t for t in tools if t["function"].get("name") == name), tools[0])
         params = tool["function"].get("parameters") or {}
-        args = _instance(params, params.get("$defs") or params.get("definitions") or {})
+        args = _instance(params, params.get("$defs") or params.get("definitions") or {}, 0, bad)
         msg["tool_calls"] = [{"id": "mmd-wrong-0", "type": "function",
                               "function": {"name": tool["function"].get("name"), "arguments": json.dumps(args)}}]
         finish = "tool_calls"
     elif rf.get("type") == "json_schema":
         schema = (rf.get("json_schema") or {}).get("schema") or {}
-        msg["content"] = json.dumps(_instance(schema, schema.get("$defs") or schema.get("definitions") or {}))
+        msg["content"] = json.dumps(_instance(schema, schema.get("$defs") or schema.get("definitions") or {}, 0, bad))
     elif rf.get("type") == "json_object":
         msg["content"] = "{}"
     else:
@@ -187,16 +235,23 @@ class _Handler(BaseHTTPRequestHandler):
         body = json.loads(raw_body or b"{}")
         rec.update(requested_model=body.get("model"), stream=bool(body.get("stream")))
         path = self.path.split("?")[0]
+        moved = path.startswith(MOVED_PREFIX + "/")
+        if moved:
+            path = path[len(MOVED_PREFIX):]
+            rec["moved"] = True
         if path in EMBED_PATHS and srv.routes.get("embedding_model"):
             return self._embed(rec, body, srv.routes["embedding_model"])
         if path not in CHAT_PATHS:
             rec.update(status=501)
             srv.log(rec)
             return self._send(501, {"error": {"message": f"model-moving-day proxy does not route {path}"}})
-        route = _route(srv.routes, site)
+        route = dict(srv.routes.get("moved") or {"mode": "passthrough"}) if moved else _route(srv.routes, site)
         rec["mode"] = route.get("mode", "forward")
-        if rec["mode"] in ("broken", "wrong"):
-            raw = _broken(body) if rec["mode"] == "broken" else _wrong(body)
+        if rec["mode"] in ("broken", "wrong", "old-model"):
+            bad = []
+            raw = _wrong(body, bad) if rec["mode"] == "wrong" else _broken(body)
+            if rec["mode"] == "wrong":
+                rec["wrong_wellformed"], rec["wrong_unmet"] = not bad, bad[:5]
             rec.update(status=200, model=None, cost=0.0, content_empty=not raw["choices"][0]["message"].get("content"),
                        tool_calls=len(raw["choices"][0]["message"].get("tool_calls") or []),
                        seconds=round(time.time() - t0, 3))

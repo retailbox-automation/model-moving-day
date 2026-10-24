@@ -447,3 +447,31 @@ def test_cmd_ladder_hands_the_manifest_k_kind_and_sha_to_the_ladder(monkeypatch)
     assert seen[0]["manifest"] == {"sha256": "sha-of-manifest", "pushed_at": "2026-10-24T12:00:00Z", "commit": "abc",
                                    "branch": "lane-c1", "remote_head": "abc"}
     assert seen[1]["kind"] == "smoke" and seen[1]["k"] == 5 and seen[1]["rungs"] == ["Super"]
+
+
+def test_a_flip_on_a_wrong_answer_that_broke_the_schema_does_not_count():
+    """N13: such a test failed the way the empty answer fails, not on a wrong value."""
+    fwd = summ({"t1": "passed", "t2": "passed"}, reach={"t1": ["a.py:1"], "t2": ["a.py:1"]})
+    brk = summ({"t1": "failed", "t2": "failed"})
+    wrong = summ({"t1": "failed", "t2": "failed"})
+    wrong["calls"]["by_test"] = {"t1": {"wrong_not_wellformed": 2}, "t2": {"wrong_not_wellformed": 0}}
+    row = census.controls_table(fwd, brk, None, wrong)[0]
+    assert row["flip_tests"] == ["t2"] and row["wrong_not_wellformed"] == ["t1"]
+
+
+def test_ladder_jobs_get_the_targets_embedding_model_and_keep_per_run_counts(tmp_path):
+    """N5: without it every embedding call is a 501 and the whole target becomes infra."""
+    entry = dict(ENTRY, embedding_model=tf.EMBEDDING_MODEL)
+
+    def script(model, routes, k, i):
+        s = job_summary(["passed"] * k)
+        s["calls"]["sites"][SITE]["calls_by_run"] = {str(j): 2 for j in range(k)}
+        return s
+    rj = FakeRunJob(script)
+    run = census.Ladder("t", entry, mf.rules(), 3, census.RUNGS, "decision", tmp_path, rj, manifest={"sha256": "m"})
+    doc = run.run()
+    assert all(c["routes"]["embedding_model"] == tf.EMBEDDING_MODEL for c in rj.calls)
+    assert doc["jobs"][0]["site_runs"][SITE]["calls_by_run"] == {"0": 2, "1": 2, "2": 2}
+    rj2 = FakeRunJob(lambda m, r, k, i: job_summary(["passed"] * k))
+    census.Ladder("t", ENTRY, mf.rules(), 3, census.RUNGS, "decision", tmp_path, rj2, manifest={"sha256": "m"}).run()
+    assert "embedding_model" not in rj2.calls[0]["routes"]

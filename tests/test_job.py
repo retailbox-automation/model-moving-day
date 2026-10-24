@@ -182,3 +182,87 @@ def test_a_run_that_outlives_the_timeout_is_killed_and_has_no_junit(tmp_path):
 def test_a_job_that_requires_frozen_hashes_refuses_to_run_without_them(tmp_path):
     summary, _ = run_job(tmp_path, "def test_x():\n    pass\n", extra_spec={"require_frozen": True})
     assert "frozen_hashes are required" in summary["error"] and summary["runs"] == []
+
+
+def test_confirm_end_to_end_the_helper_routes_through_the_moved_path_and_the_tracer_skips_its_frame(tmp_path):
+    """N1/N3: a funnel wrapped with the real helper, the real openai SDK, tracer, proxy and job. The moved call must
+    reach the proxy under /moved/ with the planned model; an unmoved call goes to the app's own endpoint (old-model);
+    the recorded site is the funnel line, not the helper's own frame."""
+    import http.server, threading
+    pytest.importorskip("openai")
+    upstream_bodies = []
+
+    class Upstream(http.server.BaseHTTPRequestHandler):
+        def log_message(self, *a):
+            pass
+
+        def do_POST(self):
+            body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
+            upstream_bodies.append(body)
+            data = json.dumps({"id": "u", "object": "chat.completion", "created": 0, "model": body["model"],
+                               "choices": [{"index": 0, "finish_reason": "stop", "message": {"role": "assistant", "content": "moved"}}],
+                               "usage": {"prompt_tokens": 3, "completion_tokens": 1, "total_tokens": 4}}).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+
+    up = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Upstream)
+    threading.Thread(target=up.serve_forever, daemon=True).start()
+    repo = tmp_path / "repo"
+    (repo / "pkg").mkdir(parents=True)
+    (repo / "tests").mkdir()
+    (repo / "pkg" / "__init__.py").write_text("")
+    helper = (ROOT / "model_moving_day" / "templates" / "nemotron_move.py").read_text().replace(
+        "SITES = {}  # filled in by the migration patch",
+        'SITES = {"pkg_core_py_6": {"model": "nvidia/Nemotron-3_5-Lightning", "params": {}, "drop": [], '
+        '"only": "openai.resources.chat.completions", "fallback": None}}')
+    (repo / "pkg" / "nemotron_move.py").write_text(helper)
+    (repo / "pkg" / "core.py").write_text(textwrap.dedent("""
+        from openai import OpenAI
+        from pkg import nemotron_move
+
+        def funnel(func, **kw):
+            return nemotron_move.call("pkg_core_py_6", func, **kw)
+
+        def ask(moved):
+            client = OpenAI()
+            if moved:
+                return funnel(client.chat.completions.create, model="gpt-4.1-mini", messages=[{"role": "user", "content": "x"}])
+            return client.chat.completions.create(model="gpt-4.1-mini", messages=[{"role": "user", "content": "x"}])
+    """))
+    (repo / "tests" / "test_app.py").write_text(textwrap.dedent("""
+        from pkg.core import ask
+        def test_moved():
+            assert ask(True).choices[0].message.content == "moved"
+        def test_unmoved():
+            assert ask(False).choices[0].message.content == ""
+    """))
+    key = tmp_path / "key"
+    key.write_text("test-key\n")
+    import socket
+    with socket.socket() as sock:
+        sock.bind(("127.0.0.1", 0))
+        port = sock.getsockname()[1]
+    spec = {"repo_dir": str(repo), "k": 1, "pytest_args": ["tests", "-q"], "cap_usd": 0.05, "timeout_s": 60, "port": port,
+            "key_file": str(key), "routes": {"default": {"mode": "old-model"}, "moved": {"mode": "passthrough"}, "spans": {}},
+            "env": {"NEMOTRON_MOVE": "1", "NEMOTRON_MOVE_CHECK": "0", "NEMOTRON_MOVE_BASE_URL": f"http://127.0.0.1:{port}/moved/v1",
+                    "NEMOTRON_MOVE_API_KEY": "mmd-proxy"}}
+    (tmp_path / "spec.json").write_text(json.dumps(spec))
+    env = {k_: v for k_, v in os.environ.items() if k_ != "NEBIUS_API_KEY"}
+    env.update(MMD_OUT=str(tmp_path / "out"), TF_BASE_URL=f"http://127.0.0.1:{up.server_address[1]}/v1",
+               TF_LEDGER=str(tmp_path / "ledger.jsonl"))
+    out = subprocess.run([sys.executable, "-m", "model_moving_day.job", "--spec", str(tmp_path / "spec.json")],
+                         cwd=ROOT, env=env, capture_output=True, text=True, timeout=180)
+    up.shutdown()
+    summary = json.loads(out.stdout[out.stdout.rindex(job.MARK) + len(job.MARK):].splitlines()[0])
+    assert summary.get("error") is None, summary
+    assert [v["outcome"] for v in summary["runs"][0].values()] == ["passed", "passed"]
+    bt = summary["calls"]["by_test"]
+    moved, unmoved = bt["tests/test_app.py::test_moved"], bt["tests/test_app.py::test_unmoved"]
+    assert moved["moved"] == 1 and moved["modes"] == {"passthrough": 1} and moved["requested"] == {"nvidia/Nemotron-3_5-Lightning": 1}
+    assert unmoved["moved"] == 0 and unmoved["modes"] == {"old-model": 1} and unmoved["requested"] == {"gpt-4.1-mini": 1}
+    assert upstream_bodies == [{"model": "nvidia/Nemotron-3_5-Lightning", "messages": [{"role": "user", "content": "x"}]}]
+    sites = summary["calls"]["tests"]["tests/test_app.py::test_moved"]
+    assert sites == ["pkg/core.py:6"]  # the funnel line; the helper's own frame is skipped by the tracer

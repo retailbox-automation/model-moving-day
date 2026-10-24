@@ -65,9 +65,10 @@ def _fallback(v):
 
 
 def render(target, ladder_out, coverage, baseline, manifest_sha=None, changes_by_site=None, edits=None, confirm=None,
-           approved_by=None, manifest=None, dry_run=False):
+           approved_by=None, manifest=None, dry_run=False, plan=None, runs=None):
     """target: dict(name, github, commit, license); baseline: dict(model, price, source, retiring_model).
-    confirm: {site: confirm cell record} from the run of the patched app; approved_by: who approved the plan."""
+    confirm: {site: confirm cell record} from the run of the patched app; approved_by: who approved the plan;
+    plan: the patch plan (moved sites and guards); runs: every decision run of the target (run_id, used)."""
     sites = ladder_out["sites"]
     excluded = ladder_out.get("excluded_sites") or coverage.get("excluded_sites") or {}
     measured = [s for s, v in sites.items() if v["status"] in ("chosen", "red")]
@@ -131,11 +132,28 @@ def render(target, ladder_out, coverage, baseline, manifest_sha=None, changes_by
                          f"{c['passed_runs']}/{c['valid_runs']} ({c.get('infra_runs', 0)}) | {usd} | {ppr} | "
                          f"{c.get('calls_per_test_run', '-')} | {c['reasoning_tokens']} | {c['diagnoses'] or '-'} | "
                          f"{(c['first_failure'] or '-')[:160].replace('|', '/')} |")
+    if runs:
+        lines += ["", "## Ladder runs of this repository", "",
+                  "| Run | Started (UTC) | Used for this change |", "|---|---|---|"]
+        lines += [f"| `{r['run_id']}` | {r.get('started_utc') or '-'} | {'yes' if r.get('used') else 'no'} |" for r in runs]
     if confirm:
-        lines += ["", "## Confirm run of the patched app (route passthrough: the body exactly as the app built it)", "",
-                  "| Call site | Result | Models the helper sent |", "|---|---|---|"]
+        lines += ["", "## Confirm run of the patched app", "",
+                  "The helper's endpoint pointed at the recording proxy, which sent each moved call to Token Factory "
+                  "exactly as the app built it; the app's own endpoint pointed at a route that records the call and "
+                  "answers empty, so a call the helper did not move shows up and fails.", "",
+                  "| Call site | Result | Status | Models requested | Routing problems |", "|---|---|---|---|---|"]
         for s, c in confirm.items():
-            lines.append(f"| `{s}` | {_cell_text(c)} | {c.get('models') or '-'} |")
+            probs = "; ".join(c.get("routing_problems") or []) or "-"
+            lines.append(f"| `{s}` | {_cell_text(c)} | {c.get('status')} | {c.get('requested') or '-'} | "
+                         f"{probs.replace('|', '/')[:200]} |")
+    if plan:
+        moved_p = [e for e in plan["sites"] if e["kind"] == "move"]
+        kept_p = [e for e in plan["sites"] if e["kind"] == "keep"]
+        lines += ["", "## What this change moves", "",
+                  f"- Moved ({len(moved_p)}): " + (", ".join(f"`{e['site']}` -> `{e['model']}`" for e in moved_p) or "none"),
+                  f"- Wrapped but not moved ({len(kept_p)}): " + (", ".join(
+                      f"`{e['site']}` ({e.get('not_moved_because', 'guard: a moved funnel below it must not move its calls')})"
+                      for e in kept_p) or "none")]
     red = [s for s, v in sites.items() if v["status"] == "red"]
     traced_uncovered = [r["site"] for r in coverage.get("traced_sites", []) if not r["covered"] and not r.get("excluded")]
     not_reached = [x for x in coverage.get("ast_sites_not_reached", []) if x not in excluded]
@@ -153,13 +171,20 @@ def render(target, ladder_out, coverage, baseline, manifest_sha=None, changes_by
               f"- K={ladder_out['k']} runs per cell is a small sample; the intervals above say how small."]
     lines += [f"- {x}" for x in (manifest or {}).get("not_claimed", [])]
     lines += ["", "## How the move works", "",
-              "Each moved call site goes through `nemotron_move` (added by this change). It is off unless "
-              "`NEMOTRON_MOVE=1`; then the site sends the Nemotron model chosen above with the request parameters measured "
-              "for it. `NEMOTRON_MODEL_<SITE>` overrides one site. A moved call made inside another moved call keeps the "
-              "outer site's choice. When Token Factory answers that the model is unknown (it does not reroute retired "
-              "models), the call retries once on the fallback in the table, only if that fallback was measured and passed; "
-              "otherwise the error is raised. With `NEMOTRON_MOVE_BASE_URL` and `NEMOTRON_MOVE_API_KEY` set, the first "
-              "moved call lists the platform's models and warns about any configured model that is no longer listed.", "",
+              "Each wrapped call site goes through `nemotron_move` (added by this change). It is off unless "
+              "`NEMOTRON_MOVE=1`; then a moved site sends the Nemotron model chosen above, with the request parameters "
+              "measured for it, to Token Factory, and only for the call shape the census measured (other calls through "
+              "the same site keep their model and endpoint). `NEMOTRON_MODEL_<SITE>` overrides one site. The outermost "
+              "wrapped site decides for the calls below it; a site marked as not moved keeps a moved library funnel from "
+              "moving its calls. When Token Factory answers that the model is unknown (it does not reroute retired "
+              "models), the call retries once on the fallback in the table, only if that fallback was measured and "
+              "passed; otherwise the error is raised.", "",
+              "## Configuration", "", "```", "NEMOTRON_MOVE=1", "NEMOTRON_MOVE_BASE_URL=https://api.tokenfactory.nebius.com/v1",
+              "NEMOTRON_MOVE_API_KEY=<your Token Factory key>", "```",
+              "Moved calls go to `NEMOTRON_MOVE_BASE_URL` with that key; every other call keeps the app's own endpoint "
+              "and key. Without both variables nothing is moved and the helper logs one warning. With them, the first "
+              "moved call also lists the platform's models and warns about any configured model that is no longer "
+              "listed.", "",
               "## Reproduce", "", "```",
               f"python -m model_moving_day.census ladder {target['name']}" +
               (f" --smoke {ladder_out['smoke']}" if ladder_out.get("smoke") else ""), "```",

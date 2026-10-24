@@ -154,6 +154,7 @@ def target_entry(name, clones):
         "ast_sites_not_reached": sorted(set(cov["ast_sites_not_reached"]) - set(d.get("site_exclusions", {}))),
         "scope_decisions": d.get("scope_decisions", []),
         "baseline_evidence": d.get("baseline_evidence", ""),
+        **({"embedding_model": d["embedding_model"]} if d.get("embedding_model") else {}),
         "frozen": {"commit": frozen.commit, "extra_paths": frozen.extra_paths, "files": len(frozen.hashes),
                    "sha256": frozen.sha256(), "hashes": frozen.hashes},
     }
@@ -236,6 +237,16 @@ def push_time(commit, branch, remote="origin"):
                                     capture_output=True).returncode == 0:
             times.append(ev.get("timestamp"))
     return min(times) if times else None
+
+
+def version(sha, path=PATH):
+    """The manifest as it was in the committed version whose file SHA-256 is `sha` (None if no commit has it)."""
+    rel = Path(path).relative_to(ROOT).as_posix()
+    for commit in git("log", "--format=%H", "--", rel).split():
+        r = subprocess.run(["git", "show", f"{commit}:{rel}"], cwd=ROOT, capture_output=True)
+        if r.returncode == 0 and hashlib.sha256(r.stdout).hexdigest() == sha:
+            return json.loads(r.stdout)
+    return None
 
 
 def pushed(path=PATH, remote="origin"):

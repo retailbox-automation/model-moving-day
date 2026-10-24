@@ -75,11 +75,17 @@ def summarize_calls(calls):
     """Per test: the sites it reached. Per site: calls, tokens, $, models, diagnoses, finish reasons, request changes,
     and errors in total and per run (the run comes from the tracer's x-mmd-run header; "?" when it is missing).
     GET /models listings are counted apart; calls without a traced chain are counted as untraced."""
-    tests, sites, cost, listings, untraced = {}, {}, 0.0, 0, {}
+    tests, sites, cost, listings, untraced, by_test = {}, {}, 0.0, 0, {}, {}
     for c in calls:
         if c.get("method") == "GET":
             listings += 1
             continue
+        bt = by_test.setdefault(c.get("test", ""), {"requested": {}, "modes": {}, "status": {}, "moved": 0,
+                                                     "wrong_not_wellformed": 0})
+        for key, val in (("requested", c.get("requested_model")), ("modes", c.get("mode")), ("status", c.get("status"))):
+            bt[key][str(val)] = bt[key].get(str(val), 0) + 1
+        bt["moved"] += 1 if c.get("moved") else 0
+        bt["wrong_not_wellformed"] += 1 if c.get("wrong_wellformed") is False else 0
         if not c.get("chain"):
             m = c.get("mode") or "?"
             untraced[m] = untraced.get(m, 0) + 1
@@ -90,7 +96,10 @@ def summarize_calls(calls):
         s = sites.setdefault(site, {"calls": 0, "prompt_tokens": 0, "completion_tokens": 0, "reasoning_tokens": 0,
                                     "cost": 0.0, "seconds": 0.0, "models": {}, "diagnoses": {}, "errors": {},
                                     "errors_by_run": {}, "calls_by_run": {}, "max_tokens": {}, "changes": {},
-                                    "finish": {}, "repaired_empty_args": 0})
+                                    "finish": {}, "repaired_empty_args": 0, "models_requested": {}})
+        if c.get("requested_model") is not None:
+            rm = str(c["requested_model"])
+            s["models_requested"][rm] = s["models_requested"].get(rm, 0) + 1
         s["calls"] += 1
         run = "?" if c.get("run") is None else str(c["run"])
         s["calls_by_run"][run] = s["calls_by_run"].get(run, 0) + 1
@@ -120,7 +129,8 @@ def summarize_calls(calls):
             key = f"{ch['kind']}:{ch['key']}"
             s["changes"][key] = s["changes"].get(key, 0) + 1
         cost += c.get("cost") or 0.0
-    return {"tests": tests, "sites": sites, "cost": round(cost, 8), "models_listings": listings, "untraced": untraced}
+    return {"tests": tests, "sites": sites, "cost": round(cost, 8), "models_listings": listings, "untraced": untraced,
+            "by_test": by_test}
 
 
 def check_hashes(repo_dir, hashes, extra_paths=()):

@@ -340,3 +340,48 @@ def test_wrong_mode_ends_an_unforced_tool_chain_with_wrong_text_but_keeps_forced
     _, text = post(base, {"model": "m", "messages": msgs, "tools": [USER_TOOL],
                           "tool_choice": {"type": "function", "function": {"name": "User"}}}, site="app/wrong.py:1")
     assert json.loads(text)["choices"][0]["message"]["tool_calls"][0]["function"]["name"] == "User"
+
+
+def test_wrong_answers_meet_length_pattern_and_exclusive_bounds_or_say_they_cannot():
+    """N13: a 'wrong' answer that breaks the schema fails like the empty answer and proves nothing about values."""
+    bad = []
+    v = proxy._instance({"type": "object", "properties": {
+        "code": {"type": "string", "pattern": "^[0-9]+$"}, "short": {"type": "string", "maxLength": 5},
+        "long": {"type": "string", "minLength": 12}, "pct": {"type": "number", "exclusiveMaximum": 100},
+        "n": {"type": "integer", "exclusiveMinimum": 7919}, "none": {"type": "array", "maxItems": 0, "items": {"type": "string"}}}},
+        {}, 0, bad)
+    assert v == {"code": "0", "short": "mmd-w", "long": "mmd-wrongxxx", "pct": 99.5, "n": 7920, "none": []} and bad == []
+    bad = []
+    proxy._instance({"type": "string", "pattern": "^ZZ-[0-9]{9}$"}, {}, 0, bad)
+    assert bad and "pattern" in bad[0]
+
+
+def test_wrong_mode_logs_whether_the_answer_was_well_formed(server):
+    base, up, tmp, _ = server
+    tool = {"type": "function", "function": {"name": "Id", "parameters": {"type": "object", "properties": {
+        "id": {"type": "string", "pattern": "^ZZ-[0-9]{9}$"}}}}}
+    post(base, {"model": "m", "messages": [], "tools": [tool]}, site="app/wrong.py:1")
+    assert calls(tmp)[-1]["wrong_wellformed"] is False and calls(tmp)[-1]["wrong_unmet"]
+    post(base, {"model": "m", "messages": [], "tools": [USER_TOOL]}, site="app/wrong.py:1")
+    assert calls(tmp)[-1]["wrong_wellformed"] is True
+
+
+def test_moved_path_is_served_as_sent_and_the_apps_own_endpoint_is_the_old_model_route(tmp_path, monkeypatch):
+    up = FakeUpstream()
+    monkeypatch.setattr(tf.urllib.request, "urlopen", up)
+    ledger = tf.Ledger(tmp_path / "led.jsonl", caps={"total": 0.05, "c1": 0.05})
+    routes = {"default": {"mode": "old-model"}, "moved": {"mode": "passthrough"}}
+    srv = proxy.make_server(0, routes, tmp_path / "calls.jsonl", tf.Client("c1", ledger=ledger, key="k", log=lambda m: None))
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{srv.server_address[1]}"
+    try:
+        _, moved = post(base, {"model": LIGHT, "messages": [], "seed": 1}, path="/moved/v1/chat/completions")
+        _, old = post(base, {"model": "gpt-4.1-mini", "messages": []})
+    finally:
+        srv.shutdown()
+    assert json.loads(moved)["choices"][0]["message"]["content"] == f"served by {LIGHT}" and up.bodies == [
+        {"model": LIGHT, "messages": [], "seed": 1}]
+    assert json.loads(old)["choices"][0]["message"]["content"] == ""
+    recs = calls(tmp_path)
+    assert (recs[0]["mode"], recs[0]["moved"]) == ("passthrough", True) and recs[1]["mode"] == "old-model"
+    assert recs[1]["requested_model"] == "gpt-4.1-mini" and "moved" not in recs[1]

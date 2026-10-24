@@ -55,8 +55,11 @@ def controls_table(forward, broken, baseline=None, wrong=None):
     With a `wrong` control (well-formed wrong answers) a test counts only when it flips on both broken answers; a
     test with no outcome in the wrong control (run lost, killed) keeps its empty-answer flip and is listed under
     `wrong_control_missing`, so a failed control never shrinks coverage silently.
-    `cassette_only`: the site's flips rest on a recorded good answer; live forward and live broken do not differ."""
+    `cassette_only`: the site's flips rest on a recorded good answer; live forward and live broken do not differ.
+    A test whose wrong-control calls got an answer that could not meet the schema (pattern, bounds) is not a flip:
+    it failed the way the empty answer fails, not on a wrong value (`wrong_not_wellformed`)."""
     reach = (forward.get("calls") or {}).get("tests") or {}
+    wrong_bt = ((wrong or {}).get("calls") or {}).get("by_test") or {}
     good_name = "baseline" if baseline else "forward"
     good, bad, fwd, wr = outcomes(baseline or forward), outcomes(broken), outcomes(forward), outcomes(wrong)
     sites = {}
@@ -65,7 +68,7 @@ def controls_table(forward, broken, baseline=None, wrong=None):
             sites.setdefault(s, set()).add(test)
     rows = []
     for s, tests in sorted(sites.items()):
-        flips, flips_empty, live_flips, missing, details = [], [], [], [], []
+        flips, flips_empty, live_flips, missing, not_wellformed, details = [], [], [], [], [], []
         for t in sorted(tests):
             d = {"test": t, good_name: good.get(t), "broken": bad.get(t)}
             if baseline:
@@ -78,7 +81,9 @@ def controls_table(forward, broken, baseline=None, wrong=None):
                 flips_empty.append(t)
             if empty and wrong is not None and wr.get(t) in (None, "infra"):
                 missing.append(t)
-            if empty and (wrong is None or wr.get(t) in FAILED or t in missing):
+            if empty and (wrong_bt.get(t) or {}).get("wrong_not_wellformed"):
+                not_wellformed.append(t)
+            elif empty and (wrong is None or wr.get(t) in FAILED or t in missing):
                 flips.append(t)
             if fwd.get(t) == "passed" and bad.get(t) in FAILED:
                 live_flips.append(t)
@@ -89,6 +94,7 @@ def controls_table(forward, broken, baseline=None, wrong=None):
         if wrong is not None:
             row["flip_tests_empty_only"] = [t for t in flips_empty if t not in flips]
             row["wrong_control_missing"] = missing
+            row["wrong_not_wellformed"] = not_wellformed
         rows.append(row)
     return rows
 
@@ -318,6 +324,8 @@ class Ladder:
         routes = routes or {"default": {"mode": "forward", "model": model, "reasoning": "keep"},
                             "sites": {s: {"mode": "forward", "model": model, **params.get(s, {})} for s in sites if params.get(s)},
                             "spans": self.spans}
+        if self.entry.get("embedding_model"):
+            routes = dict(routes, embedding_model=self.entry["embedding_model"])
         e = self.entry
         t = runner.Target(self.name, e["github"], e["commit"], e["install"], tests + e["node_args"], e.get("env", {}))
         r, summary, error = None, None, None
@@ -337,7 +345,9 @@ class Ladder:
                "envelope_error": s.get("envelope_error"), "exit_codes": s.get("exit_codes"),
                "durations_s": s.get("durations_s"), "freeze_before": s.get("freeze_before"),
                "freeze_after": s.get("freeze_after"), "isolation": s.get("isolation"), "test_uid": s.get("test_uid"),
-               "untraced": untraced_calls(s)}
+               "untraced": untraced_calls(s),
+               "site_runs": {x: {k: v.get(k) for k in ("calls_by_run", "errors_by_run", "models_requested")}
+                             for x, v in ((s.get("calls") or {}).get("sites") or {}).items()}}
         self.jobs.append(rec)
         self.event("job", **rec)
         self.checkpoint()
@@ -359,7 +369,7 @@ class Ladder:
 
     def measure(self, rung, model, sites, params, note, **job_kw):
         """Run K runs per site, re-running only missing valid runs (at most MAX_INFRA_RETRIES times)."""
-        outs, parts = {s: [] for s in sites}, {s: [] for s in sites}
+        outs, parts, tests_seen = {s: [] for s in sites}, {s: [] for s in sites}, {}
         pending, attempt = list(sites), 0
         while pending and attempt <= ladder.MAX_INFRA_RETRIES:
             valid = {s: sum(1 for o in outs[s] if o.passed is not None) for s in pending}
@@ -375,11 +385,13 @@ class Ladder:
                         outs[s].append(o)
                         room -= 1
                 parts[s].append((((summary or {}).get("calls") or {}).get("sites") or {}).get(s, {}))
+                bt = ((summary or {}).get("calls") or {}).get("by_test") or {}
+                tests_seen.setdefault(s, []).extend(bt.get(t, {}) | {"test": t} for t in self.flips[s] if t in bt)
             attempt += 1
             pending = [s for s in pending
                        if sum(1 for o in outs[s] if o.passed is not None) < self.k
                        and not ladder.decided_red(ladder.Cell(s, rung, outs[s]), self.baseline, self.margin, self.k)]
-        return {s: (outs[s], merge_stats(parts[s])) for s in sites}
+        return {s: (outs[s], dict(merge_stats(parts[s]), by_test=tests_seen.get(s, []))) for s in sites}
 
     def record(self, site, rung, model, outs, stats, params=None, role="ladder", fix=None):
         cell = ladder.Cell(site, rung, outs, dict(params or {}))
@@ -514,6 +526,16 @@ def cmd_ladder(name, smoke_id=None, pushed_at=None, use_brain=True):
     return doc
 
 
+def ladder_runs(name, kind="decision"):
+    """Every complete ladder run of this kind for a target, oldest first, with its file."""
+    out = []
+    for p in sorted(out_dir(name).glob("ladder-*.json")):
+        d = json.loads(p.read_text())
+        if d.get("kind") == kind and d.get("status") == "complete":
+            out.append((d, p))
+    return out
+
+
 def latest_ladder(name, kind="decision"):
     """The newest complete ladder run of this kind for a target."""
     for p in sorted(out_dir(name).glob("ladder-*.json"), reverse=True):
@@ -548,6 +570,8 @@ def main():
     ap.add_argument("--smoke", default=None, help="id of a smoke run declared in the manifest")
     ap.add_argument("--pushed-at", default=None, help="UTC time GitHub recorded for the manifest push")
     ap.add_argument("--targets", default="instructor,llm")
+    ap.add_argument("--ladder-run", default=None, help="patch: run id of the decision ladder to use (required when "
+                                                       "the target has more than one complete decision run)")
     ap.add_argument("--reason", default="")
     a = ap.parse_args()
     if a.cmd == "prepare":
@@ -562,7 +586,7 @@ def main():
         cmd_ladder(a.target, a.smoke, a.pushed_at)
     elif a.cmd == "patch":
         from model_moving_day import patch
-        patch.cmd_patch(a.target)
+        patch.cmd_patch(a.target, ladder_run=a.ladder_run)
     else:
         cmd_coverage(a.target)
 

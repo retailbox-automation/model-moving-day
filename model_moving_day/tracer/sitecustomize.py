@@ -3,7 +3,8 @@
 Patches httpx and httpx2 (openai 3.x, litellm and most LLM clients send through one of them) so every request
 carries these headers:
 x-mmd-site = "<path relative to MMD_REPO_ROOT>:<line>" of the innermost stack frame that belongs to the target
-repo's own source (not its tests, not site-packages), x-mmd-chain = all such frames (innermost first, up to 8),
+repo's own source (not its tests, not site-packages, not the migration helper nemotron_move.py, so a wrapped call is
+attributed to the line that wraps it), x-mmd-chain = all such frames (innermost first, up to 8),
 x-mmd-test = $PYTEST_CURRENT_TEST and x-mmd-run = $MMD_RUN (which of the K test runs sent it). The recording
 proxy logs them, which links each of the repo's tests and runs to the call sites it really reaches.
 """
@@ -21,7 +22,7 @@ def _chain(limit=8):
         if _ROOT and fn.startswith(_ROOT) and "site-packages" not in fn:
             rel = fn[len(_ROOT):]
             base = os.path.basename(rel)
-            if rel.split(os.sep)[0] not in _SKIP and not base.startswith("test_") and base != "conftest.py":
+            if rel.split(os.sep)[0] not in _SKIP and not base.startswith("test_") and base not in ("conftest.py", "nemotron_move.py"):
                 out.append(f"{rel.replace(os.sep, '/')}:{f.f_lineno}")
         f = f.f_back
     return out
