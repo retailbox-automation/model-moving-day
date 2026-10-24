@@ -9,6 +9,11 @@
    "previous_sha256": "c31f0d0c56f8ca1aa1831574caad012c84ca7d0ea62915d775aeb73631a0cad9",
    "reason": "Amendment 2 before any ladder job (acceptance recheck 2026-10-24, DECISIONS 11:15): wrong-answer controls added to coverage (instructor retry.py:523 29->23 flips; llm :1494 kept), infra rule symmetric with MF1(a) (set aside whatever the outcome), 401/403 stop, 404 = model not served, diagnosis failures are infra, push time required, smoke S-instructor-super-k5, MMD_SANDBOX_MAX_RUNS=80",
    "utc": "2026-10-24T11:44:40Z"
+  },
+  {
+   "previous_sha256": "35365b0c8c68fe8a06270f9dbf6bd0715023effaaa66df047f7d125f2542e312",
+   "reason": "Amendment 3 after the instructor and llm decision ladders: code only (patch step fixes N1-N3, N5, N7-N10, N12-N14, per-run counts in ladder jobs); rules and target entries unchanged, so the ladder runs under amendment 2 stay valid for the patch step",
+   "utc": "2026-10-24T12:06:28Z"
   }
  ],
  "baseline_before": {
@@ -26,7 +31,7 @@
   "cap_usd_per_job": 1.0,
   "sandbox_runs": {
    "limit": "MMD_SANDBOX_MAX_RUNS=80 for every phase-B command (orchestrator decision 2026-10-24 11:15; default in code 40)",
-   "logged_when_written": 19,
+   "logged_when_written": 32,
    "plan": "instructor ladder <= 8, llm ladder <= 8, third repo prepare + controls + ladder <= 13, patch confirm 3, fallback cells, smoke 1-2",
    "planned_phase_b": 48
   },
@@ -36,25 +41,25 @@
   "files_sha256": {
    "model_moving_day/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
    "model_moving_day/agent.py": "78801912e52ad9d8cb36170a54e8fa9b42c2024c3dc012eb3292a478dea8ff7b",
-   "model_moving_day/census.py": "1f75e14929d096bc45339659df607495b2b009afbecb81c5e5ede9ea000569df",
+   "model_moving_day/census.py": "af11723ce0fefd5e38efaf3ab7b1bee595093bdd2834aac74f0d425320f0dbe8",
    "model_moving_day/fakes.py": "f208be4bfa5a18a6f643494f70884a725e8bcf95243b5fd1f0a7dc3f7a7de5a2",
    "model_moving_day/find.py": "0ec906cb4de772f9b0fc046ee09ecda8e20722216524e746afd6010c6ca1a568",
    "model_moving_day/freeze.py": "36546c55162515e28a086179cb15b7f801ed6d961f36192558292534fb72ceb0",
-   "model_moving_day/job.py": "2f67e9c8e6bbc297e5835d7b6b95a2b211ddf40352ca0dcad30155d2837a8c04",
+   "model_moving_day/job.py": "7f9197faae9492f17ed36cc6caad3eed6c35110c5d08b026a41944cff488cfb3",
    "model_moving_day/ladder.py": "cd64b81af53439247ae2d54932c21ef0d6de6b706c659ff1230393ae969cc3fe",
-   "model_moving_day/manifest.py": "8210dc62214f6c494f80210f4a616ee835a25f0efaced3167f1d13e98afd59a9",
+   "model_moving_day/manifest.py": "849b8685f18ae157fe98e1bb6c527553aed3d6b8806ae0c32d7cb075cbeeb01e",
    "model_moving_day/normalize.py": "a035f94e364f826be9c76b58e9a988f2d1adcea5425fee0a98e770dd98b289b4",
-   "model_moving_day/patch.py": "8df296668252de4ee84e59d97b2fc2e02a1d380841cefc91827601e2ac663ea5",
-   "model_moving_day/pr.py": "74774b0504bc1f6bdf8d5e7d10d9859b356e2121f30c2c3f87af4038ecbaa468",
-   "model_moving_day/proxy.py": "03a14a291ca75924ed4fe5758c3f575ee1cae8aa5189b85686209774bc69600e",
+   "model_moving_day/patch.py": "48506d4b0a278f311a3608652a8d761f5ee3833e2147155e4f06e534a5fc68ed",
+   "model_moving_day/pr.py": "250b010a58d16d1c82d59074cfa7d5ba2642f8ab345706ab351c77861e9a265b",
+   "model_moving_day/proxy.py": "1ca71c17abeb187bc1e696fe749b4476facac43d128427f0863b488eb24f7bc7",
    "model_moving_day/runner.py": "3119e28ca1cbfdb0ff1c8dde36c78e69c994d34e95c174ce7c471315d5ca9d49",
    "model_moving_day/sandbox.py": "fca5c4187051a81f489b1ee8fa18b88472ace6fd81ff574fbed7fc2f8e683b58",
    "model_moving_day/templates/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-   "model_moving_day/templates/nemotron_move.py": "f1fa54817d56089e84dc3215d4cd5378f7b55542a6c217c60a958f02efc0739a",
+   "model_moving_day/templates/nemotron_move.py": "b9492cdba133c3bb1c97fcabb99da42c5678bad659f1387cb4a081c42cffc352",
    "model_moving_day/tf_client.py": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b",
-   "model_moving_day/tracer/sitecustomize.py": "e17fe6b1d7988aaf3d5cdc2d1f8581d0666759a62e5832c9a131ab3fb39c2b4d"
+   "model_moving_day/tracer/sitecustomize.py": "97348cfb1f875bc7c035c201dd648efcd411738689193419f03d40246a175c0b"
   },
-  "git_head_when_written": "b418fb18f422d060714e41ae47a57300bfa83753",
+  "git_head_when_written": "702781ab042cc655bddfa87e20b2d3ac6088e56e",
   "tf_client_sha256": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b"
  },
  "first_written_utc": "2026-10-24T10:47:17Z",
@@ -70,7 +75,7 @@
   "after a run the hash check catches changed or missing frozen files; new files in test directories are recorded but do not stop the ladder"
  ],
  "publication": "every cell is published, including red cells, infra cells, cells of an aborted ladder, smoke runs and the 'old model stays' outcome; every job and cell is also appended to evidence/census/<target>/ladder-log.jsonl, and each ladder run writes its own ladder-<run_id>.json (never overwritten)",
- "reason": "Amendment 2 before any ladder job (acceptance recheck 2026-10-24, DECISIONS 11:15): wrong-answer controls added to coverage (instructor retry.py:523 29->23 flips; llm :1494 kept), infra rule symmetric with MF1(a) (set aside whatever the outcome), 401/403 stop, 404 = model not served, diagnosis failures are infra, push time required, smoke S-instructor-super-k5, MMD_SANDBOX_MAX_RUNS=80",
+ "reason": "Amendment 3 after the instructor and llm decision ladders: code only (patch step fixes N1-N3, N5, N7-N10, N12-N14, per-run counts in ladder jobs); rules and target entries unchanged, so the ladder runs under amendment 2 stay valid for the patch step",
  "rules": {
   "baseline_pass_rate": 1.0,
   "brain": {
@@ -781,5 +786,5 @@
    "traced_not_covered": []
   }
  },
- "written_utc": "2026-10-24T11:44:40Z"
+ "written_utc": "2026-10-24T12:06:28Z"
 }
