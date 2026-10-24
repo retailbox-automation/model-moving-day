@@ -1,0 +1,408 @@
+{
+ "target": "paper-qa",
+ "ast_sites": [
+  {
+   "id": "packages/paper-qa-nemotron/src/paperqa_nemotron/api.py:509",
+   "func": "_call_nvidia_api",
+   "sdk": "litellm",
+   "api": "acompletion",
+   "kind": "chat",
+   "model_expr": "model_name",
+   "model_literal": null
+  }
+ ],
+ "ast_parse_errors": [],
+ "traced_sites": [
+  {
+   "site": "src/paperqa/core.py:254",
+   "tests": 7,
+   "flip_tests": [
+    "tests/test_paperqa.py::test_context_inner_outer_prompt",
+    "tests/test_paperqa.py::test_custom_prompts",
+    "tests/test_paperqa.py::test_post_prompt",
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]"
+   ],
+   "covered": true,
+   "isolated": false,
+   "good_side": "forward",
+   "cassette_only": false,
+   "wrong_control": true,
+   "details": [
+    {
+     "test": "tests/test_paperqa.py::test_context_inner_outer_prompt",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_custom_prompts",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_location_awareness",
+     "forward": "failed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_post_prompt",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_pre_prompt",
+     "forward": "failed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_unrelated_context[default-unsure]",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    }
+   ],
+   "flip_tests_empty_only": [],
+   "wrong_control_missing": [],
+   "wrong_not_wellformed": []
+  },
+  {
+   "site": "src/paperqa/docs.py:234",
+   "tests": 6,
+   "flip_tests": [
+    "tests/test_paperqa.py::test_context_inner_outer_prompt",
+    "tests/test_paperqa.py::test_custom_prompts",
+    "tests/test_paperqa.py::test_post_prompt",
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]"
+   ],
+   "covered": true,
+   "isolated": false,
+   "good_side": "forward",
+   "cassette_only": false,
+   "wrong_control": true,
+   "details": [
+    {
+     "test": "tests/test_paperqa.py::test_context_inner_outer_prompt",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_custom_prompts",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_post_prompt",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_pre_prompt",
+     "forward": "failed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_unrelated_context[default-unsure]",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    }
+   ],
+   "flip_tests_empty_only": [],
+   "wrong_control_missing": [],
+   "wrong_not_wellformed": []
+  },
+  {
+   "site": "src/paperqa/docs.py:374",
+   "tests": 7,
+   "flip_tests": [
+    "tests/test_paperqa.py::test_context_inner_outer_prompt",
+    "tests/test_paperqa.py::test_custom_prompts",
+    "tests/test_paperqa.py::test_post_prompt",
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]"
+   ],
+   "covered": false,
+   "isolated": false,
+   "good_side": "forward",
+   "cassette_only": false,
+   "wrong_control": true,
+   "details": [
+    {
+     "test": "tests/test_paperqa.py::test_context_inner_outer_prompt",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_custom_prompts",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_location_awareness",
+     "forward": "failed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_post_prompt",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_pre_prompt",
+     "forward": "failed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_unrelated_context[default-unsure]",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    }
+   ],
+   "flip_tests_empty_only": [],
+   "wrong_control_missing": [],
+   "wrong_not_wellformed": [],
+   "excluded": "embedding call site: served by the one Token Factory embedding model (Qwen3-Embedding-8B) on every rung and in every control, so its model is not a ladder choice; its tests flip only through the chat sites they also reach"
+  },
+  {
+   "site": "src/paperqa/docs.py:446",
+   "tests": 1,
+   "flip_tests": [],
+   "covered": false,
+   "isolated": true,
+   "good_side": "forward",
+   "cassette_only": false,
+   "wrong_control": true,
+   "details": [
+    {
+     "test": "tests/test_paperqa.py::test_evidence",
+     "forward": "failed",
+     "broken": "failed",
+     "wrong": "failed"
+    }
+   ],
+   "flip_tests_empty_only": [],
+   "wrong_control_missing": [],
+   "wrong_not_wellformed": [],
+   "excluded": "embedding call site: served by the one Token Factory embedding model (Qwen3-Embedding-8B) on every rung and in every control, so its model is not a ladder choice; its tests flip only through the chat sites they also reach"
+  },
+  {
+   "site": "src/paperqa/docs.py:635",
+   "tests": 1,
+   "flip_tests": [],
+   "covered": false,
+   "isolated": true,
+   "good_side": "forward",
+   "cassette_only": false,
+   "wrong_control": true,
+   "details": [
+    {
+     "test": "tests/test_paperqa.py::test_pre_prompt",
+     "forward": "failed",
+     "broken": "failed",
+     "wrong": "failed"
+    }
+   ],
+   "flip_tests_empty_only": [],
+   "wrong_control_missing": [],
+   "wrong_not_wellformed": []
+  },
+  {
+   "site": "src/paperqa/docs.py:675",
+   "tests": 6,
+   "flip_tests": [
+    "tests/test_paperqa.py::test_context_inner_outer_prompt",
+    "tests/test_paperqa.py::test_custom_prompts",
+    "tests/test_paperqa.py::test_post_prompt",
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]"
+   ],
+   "covered": true,
+   "isolated": false,
+   "good_side": "forward",
+   "cassette_only": false,
+   "wrong_control": true,
+   "details": [
+    {
+     "test": "tests/test_paperqa.py::test_context_inner_outer_prompt",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_custom_prompts",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_post_prompt",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_pre_prompt",
+     "forward": "failed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_unrelated_context[default-unsure]",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    }
+   ],
+   "flip_tests_empty_only": [],
+   "wrong_control_missing": [],
+   "wrong_not_wellformed": []
+  },
+  {
+   "site": "src/paperqa/docs.py:703",
+   "tests": 1,
+   "flip_tests": [
+    "tests/test_paperqa.py::test_post_prompt"
+   ],
+   "covered": true,
+   "isolated": false,
+   "good_side": "forward",
+   "cassette_only": false,
+   "wrong_control": true,
+   "details": [
+    {
+     "test": "tests/test_paperqa.py::test_post_prompt",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    }
+   ],
+   "flip_tests_empty_only": [],
+   "wrong_control_missing": [],
+   "wrong_not_wellformed": []
+  },
+  {
+   "site": "src/paperqa/llms.py:251",
+   "tests": 8,
+   "flip_tests": [
+    "tests/test_paperqa.py::test_context_inner_outer_prompt",
+    "tests/test_paperqa.py::test_custom_prompts",
+    "tests/test_paperqa.py::test_post_prompt",
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]"
+   ],
+   "covered": false,
+   "isolated": false,
+   "good_side": "forward",
+   "cassette_only": false,
+   "wrong_control": true,
+   "details": [
+    {
+     "test": "tests/test_paperqa.py::test_context_inner_outer_prompt",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_custom_prompts",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_evidence",
+     "forward": "failed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_location_awareness",
+     "forward": "failed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_post_prompt",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_pre_prompt",
+     "forward": "failed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    },
+    {
+     "test": "tests/test_paperqa.py::test_unrelated_context[default-unsure]",
+     "forward": "passed",
+     "broken": "failed",
+     "wrong": "failed"
+    }
+   ],
+   "flip_tests_empty_only": [],
+   "wrong_control_missing": [],
+   "wrong_not_wellformed": [],
+   "excluded": "embedding call site: served by the one Token Factory embedding model (Qwen3-Embedding-8B) on every rung and in every control, so its model is not a ladder choice; its tests flip only through the chat sites they also reach"
+  }
+ ],
+ "ast_sites_not_reached": [
+  "packages/paper-qa-nemotron/src/paperqa_nemotron/api.py:509"
+ ],
+ "excluded_sites": {
+  "src/paperqa/docs.py:374": "embedding call site: served by the one Token Factory embedding model (Qwen3-Embedding-8B) on every rung and in every control, so its model is not a ladder choice; its tests flip only through the chat sites they also reach",
+  "src/paperqa/llms.py:251": "embedding call site: served by the one Token Factory embedding model (Qwen3-Embedding-8B) on every rung and in every control, so its model is not a ladder choice; its tests flip only through the chat sites they also reach",
+  "src/paperqa/docs.py:446": "embedding call site: served by the one Token Factory embedding model (Qwen3-Embedding-8B) on every rung and in every control, so its model is not a ladder choice; its tests flip only through the chat sites they also reach"
+ },
+ "covered_sites": [
+  "src/paperqa/core.py:254",
+  "src/paperqa/docs.py:234",
+  "src/paperqa/docs.py:675",
+  "src/paperqa/docs.py:703"
+ ]
+}

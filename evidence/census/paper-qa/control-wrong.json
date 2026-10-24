@@ -1,0 +1,439 @@
+{
+ "label": "control-wrong",
+ "ts": 1792844758.616,
+ "exit_code": 0,
+ "elapsed_s": 15.530484,
+ "wall_s": 179.561,
+ "sandbox_cost": 0.1572323,
+ "summary": {
+  "runs": [
+   {
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'I cannot answer' in 'mmd-wrong: this answer is deliberately wrong.'\n +  where 'mmd-wrong: this answer is deliberately wrong.' = PQASession(id=UUID('dfb6c6a0-c326-41f5-bee4-ce9d3954fe43'), question='What do scientist estimate as the planetary comp...s={'gpt-4o-2024-11-20': [0, 231]}, config_md5='0fc1c4ad35b11bd4abac5df3da07675c', tool_history=[], used_contexts=set()).answer"
+    },
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'I am unsure' in 'mmd-wrong: this answer is deliberately wrong.'\n +  where 'mmd-wrong: this answer is deliberately wrong.' = PQASession(id=UUID('cf45be46-c81c-4c69-b293-2082b2498d5e'), question='What do scientist estimate as the planetary comp...s={'gpt-4o-2024-11-20': [0, 231]}, config_md5='8de402bf22fbdaa51589b89a2e442807', tool_history=[], used_contexts=set()).answer"
+    },
+    "tests/test_paperqa.py::test_pre_prompt": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '212' in 'mmd-wrong: this answer is deliberately wrong.'\n +  where 'mmd-wrong: this answer is deliberately wrong.' = PQASession(id=UUID('186ed047-d2f1-42f1-9a92-74f639f9e3fb'), question='What is the boiling point of water?', answer='mm...s={'gpt-4o-2024-11-20': [0, 132]}, config_md5='70cef8003ef63c6f024688c1af523108', tool_history=[], used_contexts=set()).answer"
+    },
+    "tests/test_paperqa.py::test_post_prompt": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'up' in 'mmd-wrong: this answer is deliberately wrong.\\n\\nmmd-wrong: this answer is deliberately wrong.'\n +  where 'mmd-wrong: this answer is deliberately wrong.\\n\\nmmd-wrong: this answer is deliberately wrong.' = <built-in method lower of str object at 0x7fffe250f900>()\n +    where <built-in method lower of str object at 0x7fffe250f900> = 'mmd-wrong: this answer is delibera"
+    },
+    "tests/test_paperqa.py::test_location_awareness": {
+     "outcome": "failed",
+     "message": "AssertionError: correct location not found in parsed evidence []\nassert False\n +  where False = any(<generator object test_location_awareness.<locals>.<genexpr> at 0x7fffe29c9cb0>)"
+    },
+    "tests/test_paperqa.py::test_custom_prompts": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'United States' in 'I cannot answer this question due to insufficient information..'\n +  where 'I cannot answer this question due to insufficient information..' = PQASession(id=UUID('1b0967fa-f04b-4590-9c20-9ee294de0fa5'), question='What country is Frederick Bates from?', answer='...s={'gpt-4o-2024-11-20': [0, 110]}, config_md5='e075154f8b3ffa67120324ff43ab4b68', tool_histor"
+    },
+    "tests/test_paperqa.py::test_context_inner_outer_prompt": {
+     "outcome": "failed",
+     "message": "AssertionError: assert '@@@@@' in ''\n +  where '' = PQASession(id=UUID('0bc3d3ce-b5e2-4e9f-8a56-4a5a5cdcc201'), question='What country is Bates from?', answer='I cannot a...s={'gpt-4o-2024-11-20': [0, 110]}, config_md5='09beace6bab74b3c9610aadc68c8e72e', tool_history=[], used_contexts=set()).context"
+    },
+    "tests/test_paperqa.py::test_aquery_groups_contexts_by_question": {
+     "outcome": "error",
+     "message": "failed on setup with \"ImportError: pillow is required to do image extraction. It can be installed via 'pip install pypdf[image]'\""
+    },
+    "tests/test_paperqa.py::test_evidence": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 0 >= 2\n +  where 0 = len([])\n +  and   2 = AnswerSettings(evidence_k=2, evidence_retrieval=True, evidence_relevance_score_cutoff=1, evidence_summary_length='25 t...ckground=False, get_evidence_if_no_contexts=True, group_contexts_by_question=False, skip_evidence_citation_strip=False).evidence_k\n +    where AnswerSettings(evidence_k=2, evidence_retrieval=True, evidence_relevan"
+    }
+   }
+  ],
+  "durations_s": [
+   175.8
+  ],
+  "exit_codes": [
+   1
+  ],
+  "parallel": true,
+  "freeze_before": [],
+  "test_uid": 10001,
+  "isolation": {
+   "31/environ": "PermissionError",
+   "31/mem": "PermissionError",
+   "32/environ": "PermissionError",
+   "32/mem": "PermissionError"
+  },
+  "freeze_after": [],
+  "pytest_tail": "loyment = self._add_deployment(deployment=deployment)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/litellm/router.py\", line 6874, in _add_deployment\n    ) = litellm.get_llm_provider(\n        ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/site-packages/litellm/litellm_core_utils/get_llm_provider_logic.py\", line 490, in get_llm_provider\n    raise e\n  File \"/usr/local/lib/python3.12/site-packages/litellm/litellm_core_utils/get_llm_provider_logic.py\", line 471, in get_llm_provider\n    raise litellm.exceptions.BadRequestError(  # type: ignore\nlitellm.exceptions.BadRequestError: litellm.BadRequestError: LLM Provider NOT provided. Pass in the LLM provider you are trying to call. You passed model=claude-3-haiku-20240307\n Pass model as E.g. For 'Huggingface' inference endpoints pass in `completion(model='huggingface/starcoder',..)` Learn more: https://docs.litellm.ai/docs/providers\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/work/repo/src/paperqa/core.py\", line 389, in map_fxn_summary\n    return await _map_fxn_summary(**kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/work/repo/src/paperqa/core.py\", line 300, in _map_fxn_summary\n    raise LLMContextRequestFailedError(\npaperqa.core.LLMContextRequestFailedError: LLM call to create a context failed on text named 'Wellawatte2023 pages 27-29'.\n8 failed, 1 error in 168.94s (0:02:48)\n",
+  "calls": {
+   "tests": {
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]": [
+     "src/paperqa/docs.py:234",
+     "src/paperqa/docs.py:374",
+     "src/paperqa/llms.py:251",
+     "src/paperqa/core.py:254",
+     "src/paperqa/docs.py:675"
+    ],
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": [
+     "src/paperqa/docs.py:234",
+     "src/paperqa/docs.py:374",
+     "src/paperqa/llms.py:251",
+     "src/paperqa/core.py:254",
+     "src/paperqa/docs.py:675"
+    ],
+    "tests/test_paperqa.py::test_pre_prompt": [
+     "src/paperqa/docs.py:234",
+     "src/paperqa/docs.py:374",
+     "src/paperqa/llms.py:251",
+     "src/paperqa/core.py:254",
+     "src/paperqa/docs.py:635",
+     "src/paperqa/docs.py:675"
+    ],
+    "tests/test_paperqa.py::test_post_prompt": [
+     "src/paperqa/docs.py:234",
+     "src/paperqa/docs.py:374",
+     "src/paperqa/llms.py:251",
+     "src/paperqa/core.py:254",
+     "src/paperqa/docs.py:703"
+    ],
+    "tests/test_paperqa.py::test_location_awareness": [
+     "src/paperqa/docs.py:374",
+     "src/paperqa/llms.py:251",
+     "src/paperqa/core.py:254"
+    ],
+    "tests/test_paperqa.py::test_custom_prompts": [
+     "src/paperqa/docs.py:234",
+     "src/paperqa/docs.py:374",
+     "src/paperqa/llms.py:251",
+     "src/paperqa/core.py:254"
+    ],
+    "tests/test_paperqa.py::test_context_inner_outer_prompt": [
+     "src/paperqa/docs.py:234",
+     "src/paperqa/docs.py:374",
+     "src/paperqa/llms.py:251",
+     "src/paperqa/core.py:254"
+    ],
+    "tests/test_paperqa.py::test_evidence": [
+     "src/paperqa/docs.py:446",
+     "src/paperqa/llms.py:251"
+    ]
+   },
+   "sites": {
+    "src/paperqa/docs.py:234": {
+     "calls": 6,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.001,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 6
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "gpt-4o-2024-11-20": 6
+     }
+    },
+    "src/paperqa/docs.py:374": {
+     "calls": 13,
+     "prompt_tokens": 192597,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.00192597,
+     "seconds": 68.299,
+     "models": {
+      "Qwen/Qwen3-Embedding-8B": 13
+     },
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 13
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "text-embedding-3-small": 13
+     }
+    },
+    "src/paperqa/llms.py:251": {
+     "calls": 9,
+     "prompt_tokens": 150,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 1.5e-06,
+     "seconds": 18.876,
+     "models": {
+      "Qwen/Qwen3-Embedding-8B": 9
+     },
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 9
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "text-embedding-3-small": 9
+     }
+    },
+    "src/paperqa/core.py:254": {
+     "calls": 106,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.007,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 106
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "gpt-4o-2024-11-20": 106
+     }
+    },
+    "src/paperqa/docs.py:675": {
+     "calls": 3,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.0,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 3
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "gpt-4o-2024-11-20": 3
+     }
+    },
+    "src/paperqa/docs.py:635": {
+     "calls": 1,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.0,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 1
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "gpt-4o-2024-11-20": 1
+     }
+    },
+    "src/paperqa/docs.py:703": {
+     "calls": 1,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.0,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 1
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "gpt-4o-2024-11-20": 1
+     }
+    },
+    "src/paperqa/docs.py:446": {
+     "calls": 2,
+     "prompt_tokens": 20748,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.00020748,
+     "seconds": 37.699,
+     "models": {
+      "Qwen/Qwen3-Embedding-8B": 2
+     },
+     "diagnoses": {},
+     "errors": {
+      "503": 1
+     },
+     "errors_by_run": {
+      "0": {
+       "503": 1
+      }
+     },
+     "calls_by_run": {
+      "0": 2
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0,
+     "models_requested": {
+      "text-embedding-3-small": 2
+     }
+    }
+   },
+   "cost": 0.00213495,
+   "models_listings": 0,
+   "untraced": {},
+   "by_test": {
+    "tests/test_paperqa.py::test_unrelated_context[default-unsure]": {
+     "requested": {
+      "gpt-4o-2024-11-20": 22,
+      "text-embedding-3-small": 3
+     },
+     "modes": {
+      "wrong": 22,
+      "embedding": 3
+     },
+     "status": {
+      "200": 25
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    },
+    "tests/test_paperqa.py::test_unrelated_context[custom-unsure]": {
+     "requested": {
+      "gpt-4o-2024-11-20": 22,
+      "text-embedding-3-small": 3
+     },
+     "modes": {
+      "wrong": 22,
+      "embedding": 3
+     },
+     "status": {
+      "200": 25
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    },
+    "tests/test_paperqa.py::test_pre_prompt": {
+     "requested": {
+      "gpt-4o-2024-11-20": 33,
+      "text-embedding-3-small": 4
+     },
+     "modes": {
+      "wrong": 33,
+      "embedding": 4
+     },
+     "status": {
+      "200": 37
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    },
+    "tests/test_paperqa.py::test_post_prompt": {
+     "requested": {
+      "gpt-4o-2024-11-20": 12,
+      "text-embedding-3-small": 3
+     },
+     "modes": {
+      "wrong": 12,
+      "embedding": 3
+     },
+     "status": {
+      "200": 15
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    },
+    "tests/test_paperqa.py::test_location_awareness": {
+     "requested": {
+      "text-embedding-3-small": 2,
+      "gpt-4o-2024-11-20": 6
+     },
+     "modes": {
+      "embedding": 2,
+      "wrong": 6
+     },
+     "status": {
+      "200": 8
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    },
+    "tests/test_paperqa.py::test_custom_prompts": {
+     "requested": {
+      "gpt-4o-2024-11-20": 11,
+      "text-embedding-3-small": 3
+     },
+     "modes": {
+      "wrong": 11,
+      "embedding": 3
+     },
+     "status": {
+      "200": 14
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    },
+    "tests/test_paperqa.py::test_context_inner_outer_prompt": {
+     "requested": {
+      "gpt-4o-2024-11-20": 11,
+      "text-embedding-3-small": 3
+     },
+     "modes": {
+      "wrong": 11,
+      "embedding": 3
+     },
+     "status": {
+      "200": 14
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    },
+    "tests/test_paperqa.py::test_evidence": {
+     "requested": {
+      "text-embedding-3-small": 3
+     },
+     "modes": {
+      "embedding": 3
+     },
+     "status": {
+      "503": 1,
+      "200": 2
+     },
+     "moved": 0,
+     "wrong_not_wellformed": 0
+    }
+   }
+  },
+  "envelope_spent": 0.00213495,
+  "proxy_log_tail": "[mmd-proxy] listening on 127.0.0.1:8765\n"
+ },
+ "stdout_tail": "",
+ "stderr_tail": ""
+}
