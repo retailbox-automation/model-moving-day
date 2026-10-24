@@ -4,6 +4,11 @@
    "previous_sha256": "efa8a7adb1842755da0cddb1464abdc2c5f61233d54c47b237b7f7672e0df1b2",
    "reason": "Code change before any ladder run: the patch step accepts ladder runs made under an earlier manifest version listed in the amendments (needed when paper-qa is added later)",
    "utc": "2026-10-24T10:50:08Z"
+  },
+  {
+   "previous_sha256": "c31f0d0c56f8ca1aa1831574caad012c84ca7d0ea62915d775aeb73631a0cad9",
+   "reason": "Amendment 2 before any ladder job (acceptance recheck 2026-10-24, DECISIONS 11:15): wrong-answer controls added to coverage (instructor retry.py:523 29->23 flips; llm :1494 kept), infra rule symmetric with MF1(a) (set aside whatever the outcome), 401/403 stop, 404 = model not served, diagnosis failures are infra, push time required, smoke S-instructor-super-k5, MMD_SANDBOX_MAX_RUNS=80",
+   "utc": "2026-10-24T11:44:40Z"
   }
  ],
  "baseline_before": {
@@ -20,8 +25,8 @@
   "c1_cap_usd": 15.0,
   "cap_usd_per_job": 1.0,
   "sandbox_runs": {
-   "limit": "MMD_SANDBOX_MAX_RUNS, set by the orchestrator before the first ladder job (default in code 40)",
-   "logged_when_written": 15,
+   "limit": "MMD_SANDBOX_MAX_RUNS=80 for every phase-B command (orchestrator decision 2026-10-24 11:15; default in code 40)",
+   "logged_when_written": 19,
    "plan": "instructor ladder <= 8, llm ladder <= 8, third repo prepare + controls + ladder <= 13, patch confirm 3, fallback cells, smoke 1-2",
    "planned_phase_b": 48
   },
@@ -31,17 +36,17 @@
   "files_sha256": {
    "model_moving_day/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
    "model_moving_day/agent.py": "78801912e52ad9d8cb36170a54e8fa9b42c2024c3dc012eb3292a478dea8ff7b",
-   "model_moving_day/census.py": "2d8a8f912e25c4b25e2e2b63ac8954f58b395f20f5905e8b4727b6d735f4dfd8",
+   "model_moving_day/census.py": "1f75e14929d096bc45339659df607495b2b009afbecb81c5e5ede9ea000569df",
    "model_moving_day/fakes.py": "f208be4bfa5a18a6f643494f70884a725e8bcf95243b5fd1f0a7dc3f7a7de5a2",
    "model_moving_day/find.py": "0ec906cb4de772f9b0fc046ee09ecda8e20722216524e746afd6010c6ca1a568",
    "model_moving_day/freeze.py": "36546c55162515e28a086179cb15b7f801ed6d961f36192558292534fb72ceb0",
-   "model_moving_day/job.py": "bb6cfb52fa389378d217df37c4c1eb85dae3495dd80e9b7df451cbd8ef4f0ce7",
-   "model_moving_day/ladder.py": "4f3afad51e534b389929eccc9324cf6eefc2bba9d1064f656650ad5a8a683aab",
-   "model_moving_day/manifest.py": "23fc7cd151932a2c036a2af1b457b0f6fb85001da3c02085ae393a3690302898",
+   "model_moving_day/job.py": "2f67e9c8e6bbc297e5835d7b6b95a2b211ddf40352ca0dcad30155d2837a8c04",
+   "model_moving_day/ladder.py": "cd64b81af53439247ae2d54932c21ef0d6de6b706c659ff1230393ae969cc3fe",
+   "model_moving_day/manifest.py": "8210dc62214f6c494f80210f4a616ee835a25f0efaced3167f1d13e98afd59a9",
    "model_moving_day/normalize.py": "a035f94e364f826be9c76b58e9a988f2d1adcea5425fee0a98e770dd98b289b4",
    "model_moving_day/patch.py": "8df296668252de4ee84e59d97b2fc2e02a1d380841cefc91827601e2ac663ea5",
-   "model_moving_day/pr.py": "3752f9d7f5386f8081136a74873ab0226812af00a4d33b5cbd4de918128f932f",
-   "model_moving_day/proxy.py": "8c129e98b75cf525cce818d7928e0b886b9fb0890e7f366fb4fd29e6f02b93a6",
+   "model_moving_day/pr.py": "74774b0504bc1f6bdf8d5e7d10d9859b356e2121f30c2c3f87af4038ecbaa468",
+   "model_moving_day/proxy.py": "03a14a291ca75924ed4fe5758c3f575ee1cae8aa5189b85686209774bc69600e",
    "model_moving_day/runner.py": "3119e28ca1cbfdb0ff1c8dde36c78e69c994d34e95c174ce7c471315d5ca9d49",
    "model_moving_day/sandbox.py": "fca5c4187051a81f489b1ee8fa18b88472ace6fd81ff574fbed7fc2f8e683b58",
    "model_moving_day/templates/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -49,7 +54,7 @@
    "model_moving_day/tf_client.py": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b",
    "model_moving_day/tracer/sitecustomize.py": "e17fe6b1d7988aaf3d5cdc2d1f8581d0666759a62e5832c9a131ab3fb39c2b4d"
   },
-  "git_head_when_written": "0e24735e840980d6068c56747e360bcb3023b597",
+  "git_head_when_written": "b418fb18f422d060714e41ae47a57300bfa83753",
   "tf_client_sha256": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b"
  },
  "first_written_utc": "2026-10-24T10:47:17Z",
@@ -60,10 +65,12 @@
   "streaming tests get server-sent events re-synthesized by the proxy from a non-streaming upstream call",
   "during the ladder the proxy normalizes requests per rung (logged per call); the patched app is confirmed separately without normalization",
   "per-call $ is priced on Nemotron's token counts; the baseline uses the same counts (another tokenizer differs)",
-  "test traffic, not production traffic"
+  "test traffic, not production traffic",
+  "runs are set aside as infrastructure whenever the proxy logged 402/404/429/5xx/None at the site or at a site its flip tests reach, whatever their outcome, and re-run at most twice; each cell lists how many set-aside runs had passed and how many had failed (runs_with_retried_infra)",
+  "after a run the hash check catches changed or missing frozen files; new files in test directories are recorded but do not stop the ladder"
  ],
  "publication": "every cell is published, including red cells, infra cells, cells of an aborted ladder, smoke runs and the 'old model stays' outcome; every job and cell is also appended to evidence/census/<target>/ladder-log.jsonl, and each ladder run writes its own ladder-<run_id>.json (never overwritten)",
- "reason": "Code change before any ladder run: the patch step accepts ladder runs made under an earlier manifest version listed in the amendments (needed when paper-qa is added later)",
+ "reason": "Amendment 2 before any ladder job (acceptance recheck 2026-10-24, DECISIONS 11:15): wrong-answer controls added to coverage (instructor retry.py:523 29->23 flips; llm :1494 kept), infra rule symmetric with MF1(a) (set aside whatever the outcome), 401/403 stop, 404 = model not served, diagnosis failures are infra, push time required, smoke S-instructor-super-k5, MMD_SANDBOX_MAX_RUNS=80",
  "rules": {
   "baseline_pass_rate": 1.0,
   "brain": {
@@ -128,11 +135,12 @@
     "the job left no summary (sandbox run lost) or the summary has an error",
     "the pytest run timed out (exit code 'timeout')",
     "a flip test of the site is missing from the run's junit report",
-    "a flip test failed and the run logged a proxy status 402/429/5xx/None at a call site the failing tests reach (a run whose flip tests all passed stays a valid pass)"
+    "the run logged a proxy status 402, 404 (the rung's model not served), 429, 5xx or None at the site or at any site its flip tests reach (or without a run index), whatever the run's outcome; each cell counts such runs by the outcome they had (runs_with_retried_infra)"
    ],
    "persisting": "the site's status becomes 'infra' at that rung and it does not climb",
    "retries": 2,
-   "retry_rule": "re-run only the missing valid runs of the same rung and parameters; a cell already holding more failures than a passing cell may have is not re-run"
+   "retry_rule": "re-run only the missing valid runs of the same rung and parameters; a cell already holding more failures than a passing cell may have is not re-run",
+   "stop": "a 401 or 403 anywhere stops the ladder (the key was refused), with everything so far saved"
   },
   "jobs": {
    "per_batch_timeout_s": 3000,
@@ -189,9 +197,9 @@
  "schema": "mmd-census-manifest/1",
  "smoke": [
   {
-   "id": "S-instructor-super-k1",
-   "k": 1,
-   "purpose": "wiring check of the phase-B job (parallel runs, run tags, key file, test uid, frozen hashes, infra accounting) before the first decision run; published; not for decision",
+   "id": "S-instructor-super-k5",
+   "k": 5,
+   "purpose": "wiring check of the phase-B job with K=5 parallel runs (run tags, key file, test uid, frozen hashes, infra accounting, timings) before the first decision run; published; not for decision",
    "rungs": [
     "Super"
    ],
@@ -207,7 +215,8 @@
    "evidence_sha256": {
     "control-broken.json": "c073fdc662cb0a01909ab71d04467afb4e3a71e47e1047d68023777ccab154d3",
     "control-forward.json": "e178a9d8877c68d62af90a8a6daebda74da53959fae9c05669dc6ddccd1be58f",
-    "coverage.json": "a9fdb15b7fa87b3f1be6edf2ce8b0e09ea26539c4706b3dd606122f22e5af8ea",
+    "control-wrong.json": "db00299af5db8a19e55123647d6a7983fc7b9c215df20e0d0a649327f93e3c63",
+    "coverage.json": "db7237ebeba2f3dda537e3122c1599f003f9797c2b867386e57ed87b8a7fec33",
     "image.json": "579af53a7b403a8ed681efe02e33bf7cbf2abbe418092f6dfb4018e46eb9a3da"
    },
    "excluded_sites": {
@@ -241,12 +250,6 @@
      "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]",
      "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]",
      "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]",
-     "tests/llm/test_core_providers/test_retries.py::test_validation_with_retries[openai]",
-     "tests/llm/test_core_providers/test_simple_types.py::test_annotated_int[openai]",
-     "tests/llm/test_core_providers/test_simple_types.py::test_bool[openai]",
-     "tests/llm/test_core_providers/test_simple_types.py::test_int[openai]",
-     "tests/llm/test_core_providers/test_simple_types.py::test_literal[openai]",
-     "tests/llm/test_core_providers/test_simple_types.py::test_str[openai]",
      "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]",
      "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]",
      "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]",
@@ -539,7 +542,7 @@
      "tests/v2/test_xai_client.py": "2bab6f0e576da7c55f40df64bb0fe9735abbfd2081405e74d67445cf239a23da",
      "tests/v2/test_xai_handlers.py": "659591abcc5b22ea4a1e7b3bf3315f7c7dd022e94f54fb184f126cc9e2190276"
     },
-    "sha256": "e2421d4b8af2e15073a19e80f49401123ad9a6c13103bfb58d88c8fcef0b59d1"
+    "sha256": "248a5aaab4d859643fcff59971c1d4717424cdb7e3a3b802de76932b05120510"
    },
    "github": "567-labs/instructor",
    "helper_package": "instructor",
@@ -595,21 +598,34 @@
    "site_flags": {
     "instructor/v2/core/retry.py:224": {
      "cassette_only": false,
+     "flip_tests_empty_only": [],
      "good_side": "forward",
      "isolated": true,
-     "wrong_control": false
+     "wrong_control": true,
+     "wrong_control_missing": []
     },
     "instructor/v2/core/retry.py:523": {
      "cassette_only": false,
+     "flip_tests_empty_only": [
+      "tests/llm/test_core_providers/test_retries.py::test_validation_with_retries[openai]",
+      "tests/llm/test_core_providers/test_simple_types.py::test_annotated_int[openai]",
+      "tests/llm/test_core_providers/test_simple_types.py::test_bool[openai]",
+      "tests/llm/test_core_providers/test_simple_types.py::test_int[openai]",
+      "tests/llm/test_core_providers/test_simple_types.py::test_literal[openai]",
+      "tests/llm/test_core_providers/test_simple_types.py::test_str[openai]"
+     ],
      "good_side": "forward",
      "isolated": true,
-     "wrong_control": false
+     "wrong_control": true,
+     "wrong_control_missing": []
     },
     "instructor/v2/validation/llm_validators.py:34": {
      "cassette_only": false,
+     "flip_tests_empty_only": [],
      "good_side": "forward",
      "isolated": true,
-     "wrong_control": false
+     "wrong_control": true,
+     "wrong_control_missing": []
     }
    },
    "traced_not_covered": [
@@ -631,7 +647,8 @@
     "control-baseline.json": "6e91dcf97cfb642b1611e5f6d6dbe3105416c09dc5a79d3a894ffad481ea1d5d",
     "control-broken.json": "73496ed3c5d699b7ba04055570c54773f55dc7084288d99fdf5f36bf13b380d2",
     "control-forward.json": "2f174e77020d085966e2be32444351fd9b7a8355cde483b5e5a6928b083c3726",
-    "coverage.json": "bc8e5a935964ef5e0714db2b20d3053fd31e93cc18074c614459bb3fd742046e",
+    "control-wrong.json": "33fcffb41ea1610dd33484eb12186505fbc88532cfd3b7ac2428b373a0827520",
+    "coverage.json": "9d083c408f515328a9017f46b1a465d59236901efc1c450399971a4989ce7bcb",
     "image.json": "a8c07b2b746363891e8eb6547b7b0714cf49d9d37a0fb6da4a473d6685dd5cda"
    },
    "excluded_sites": {
@@ -754,13 +771,15 @@
    "site_flags": {
     "llm/default_plugins/openai_models.py:1494": {
      "cassette_only": true,
+     "flip_tests_empty_only": [],
      "good_side": "baseline",
      "isolated": true,
-     "wrong_control": false
+     "wrong_control": true,
+     "wrong_control_missing": []
     }
    },
    "traced_not_covered": []
   }
  },
- "written_utc": "2026-10-24T10:50:08Z"
+ "written_utc": "2026-10-24T11:44:40Z"
 }
