@@ -29,6 +29,11 @@
    "previous_sha256": "41ea5072d69c76fc3a9c7d552d8e039bbd67f0101f43168a11d7beb2e3fb67e1",
    "reason": "Amendment 6: code only (patch result path relative to the repository); rules and target entries unchanged",
    "utc": "2026-10-24T12:45:50Z"
+  },
+  {
+   "previous_sha256": "41981436bbd6870906e4aac34b90c627d3dd803d5ae9425d270c394f3b8f73a5",
+   "reason": "Amendment 7, before paper-qa's third and last decision run: paper-qa runs its K runs in sequence and stops before passing a /bin/bash.66 token budget; ladder rules and the instructor and llm entries unchanged",
+   "utc": "2026-10-24T13:12:39Z"
   }
  ],
  "baseline_before": {
@@ -46,7 +51,7 @@
   "cap_usd_per_job": 1.0,
   "sandbox_runs": {
    "limit": "MMD_SANDBOX_MAX_RUNS=80 for every phase-B command (orchestrator decision 2026-10-24 11:15; default in code 40)",
-   "logged_when_written": 48,
+   "logged_when_written": 53,
    "plan": "instructor ladder <= 8, llm ladder <= 8, third repo prepare + controls + ladder <= 13, patch confirm 3, fallback cells, smoke 1-2",
    "planned_phase_b": 48
   },
@@ -56,13 +61,13 @@
   "files_sha256": {
    "model_moving_day/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
    "model_moving_day/agent.py": "04a2c7a0af2498d237bffc6d3a3564b3026fda1d95c3333ac0d275bb9110b259",
-   "model_moving_day/census.py": "92781afec290f4cfbb206f6cb5895b65b1ee2494f5b466362b4caea69a61faf4",
+   "model_moving_day/census.py": "14c0478e6af543908adc94d46806945a40021e36d58b50d73c9f7e62f020c664",
    "model_moving_day/fakes.py": "f208be4bfa5a18a6f643494f70884a725e8bcf95243b5fd1f0a7dc3f7a7de5a2",
    "model_moving_day/find.py": "0ec906cb4de772f9b0fc046ee09ecda8e20722216524e746afd6010c6ca1a568",
    "model_moving_day/freeze.py": "36546c55162515e28a086179cb15b7f801ed6d961f36192558292534fb72ceb0",
    "model_moving_day/job.py": "21623d43a1c726bdc223bd927f4887337d45579e76b344eb3463cae251a906a3",
    "model_moving_day/ladder.py": "cd64b81af53439247ae2d54932c21ef0d6de6b706c659ff1230393ae969cc3fe",
-   "model_moving_day/manifest.py": "35a5ab095352e120126b8417d5e2b97e814997c45dd794eebc1e8654412f32a0",
+   "model_moving_day/manifest.py": "8b76ce57051d100c4f72418a9325fd975f4a5665557fb5e3da4bf310c5086b9c",
    "model_moving_day/normalize.py": "a035f94e364f826be9c76b58e9a988f2d1adcea5425fee0a98e770dd98b289b4",
    "model_moving_day/patch.py": "08d5f307315c1b056d6ed806a0d7ac91e75c3a5406055296ee22c8fa4e36084f",
    "model_moving_day/pr.py": "250b010a58d16d1c82d59074cfa7d5ba2642f8ab345706ab351c77861e9a265b",
@@ -74,7 +79,7 @@
    "model_moving_day/tf_client.py": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b",
    "model_moving_day/tracer/sitecustomize.py": "97348cfb1f875bc7c035c201dd648efcd411738689193419f03d40246a175c0b"
   },
-  "git_head_when_written": "bb7b0153abd375807f01e8b5113d6bd49caca60f",
+  "git_head_when_written": "cc3eb1f3147beae2ef7acce123736a797948b310",
   "tf_client_sha256": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b"
  },
  "first_written_utc": "2026-10-24T10:47:17Z",
@@ -90,7 +95,7 @@
   "after a run the hash check catches changed or missing frozen files; new files in test directories are recorded but do not stop the ladder"
  ],
  "publication": "every cell is published, including red cells, infra cells, cells of an aborted ladder, smoke runs and the 'old model stays' outcome; every job and cell is also appended to evidence/census/<target>/ladder-log.jsonl, and each ladder run writes its own ladder-<run_id>.json (never overwritten)",
- "reason": "Amendment 6: code only (patch result path relative to the repository); rules and target entries unchanged",
+ "reason": "Amendment 7, before paper-qa's third and last decision run: paper-qa runs its K runs in sequence and stops before passing a /bin/bash.66 token budget; ladder rules and the instructor and llm entries unchanged",
  "rules": {
   "baseline_pass_rate": 1.0,
   "brain": {
@@ -992,6 +997,7 @@
     "-rs",
     "--disable-recording"
    ],
+   "parallel_runs": false,
    "prepare_env": {
     "SETUPTOOLS_SCM_PRETEND_VERSION": "0.0.0+mmd.57e89f7"
    },
@@ -1037,6 +1043,12 @@
      "local_commit_time_utc": "2026-10-24",
      "order": "after the paper-qa controls (forward on Super, broken, wrong), before any paper-qa ladder job",
      "what": "embedding call sites (docs.py:374, docs.py:446, llms.py:251) excluded from the ladder with the reason above"
+    },
+    {
+     "commit": "census/targets.json",
+     "local_commit_time_utc": "2026-10-24",
+     "order": "after decision runs 20261024T122751Z-764b19 and 20261024T124923Z-ef27e9 (all sites infra: Token Factory 503 on Nano with 5 runs in parallel), before the third run",
+     "what": "third and last paper-qa decision run (orchestrator decision 2026-10-24): the same ladder rules (K=5, margin 0.2, at least 4 of 5, infra rule); only execution changes: the K runs go one after another in the sandbox (660 s per run, 3600 s per sandbox; the slowest Nano run seen so far took 366 s with 5 in parallel), and the run stops before a job whose estimated token cost would pass $0.66 (the rest of paper-qa's $1 time box); if the sites are infra again, paper-qa stays 'gate not taken'"
     }
    ],
    "site_flags": {
@@ -1073,10 +1085,11 @@
      "wrong_control_missing": []
     }
    },
+   "token_budget_usd": 0.66,
    "traced_not_covered": [
     "src/paperqa/docs.py:635"
    ]
   }
  },
- "written_utc": "2026-10-24T12:45:50Z"
+ "written_utc": "2026-10-24T13:12:39Z"
 }
