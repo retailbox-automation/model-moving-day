@@ -1,0 +1,931 @@
+{
+ "label": "control-wrong",
+ "ts": 1792840582.594,
+ "exit_code": 0,
+ "elapsed_s": 5.533538,
+ "wall_s": 9.843,
+ "sandbox_cost": 0.05603418,
+ "summary": {
+  "runs": [
+   {
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong' == 'Jason'\n  \n  - Jason\n  + mmd-wrong"
+    },
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 1 == 3\n +  where 1 = len([User(name='mmd-wrong', age=7919)])"
+    },
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong' == 'John Doe'\n  \n  - John Doe\n  + mmd-wrong"
+    },
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert ('iphone' in 'mmd-wrong' or 'iPhone' in 'mmd-wrong')\n +  where 'mmd-wrong' = <built-in method lower of str object at 0x7ffff32b3170>()\n +    where <built-in method lower of str object at 0x7ffff32b3170> = 'mmd-wrong'.lower\n +      where 'mmd-wrong' = Product(name='mmd-wrong', price=7919.5, in_stock=True).name\n +  and   'mmd-wrong' = Product(name='mmd-wrong', price=7919.5, in"
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert ('bug' in 'mmd-wrong' or 'login' in 'mmd-wrong')\n +  where 'mmd-wrong' = <built-in method lower of str object at 0x7ffff32b3170>()\n +    where <built-in method lower of str object at 0x7ffff32b3170> = 'mmd-wrong'.lower\n +      where 'mmd-wrong' = Task(title='mmd-wrong', description='mmd-wrong', priority=7919).title\n +  and   'mmd-wrong' = <built-in method lower of str object"
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 7919 == 5\n +  where 7919 = Task(title='mmd-wrong', description='mmd-wrong', priority=7919).priority"
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 7919 == 3\n +  where 7919 = Task(title='mmd-wrong', description='mmd-wrong', priority=7919).priority"
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 7919 == 10\n +  where 7919 = Task(title='mmd-wrong', description='mmd-wrong', priority=7919).priority"
+    },
+    "tests/llm/test_core_providers/test_response_modes.py::test_response_model_none[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong' == 'John Smith'\n  \n  - John Smith\n  + mmd-wrong"
+    },
+    "tests/llm/test_core_providers/test_retries.py::test_validation_with_retries[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_int[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_bool[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_str[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_literal[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_union[openai]": {
+     "outcome": "skipped",
+     "message": "openai does not support union_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)"
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_enum[openai]": {
+     "outcome": "skipped",
+     "message": "openai does not support enum_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)"
+    },
+    "tests/llm/test_core_providers/test_simple_types.py::test_annotated_int[openai]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong' == 'Jason Liu'\n  \n  - Jason Liu\n  + mmd-wrong"
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 1 == 3\n +  where 1 = len([User(name='mmd-wrong', age=7919)])"
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 1 == 2\n +  where 1 = len([User(name='mmd-wrong', age=7919)])"
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_union_streaming[openai]": {
+     "outcome": "skipped",
+     "message": "openai does not support union_streaming (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)"
+    },
+    "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 1 == 2\n +  where 1 = len([User(name='mmd-wrong', age=7919)])"
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong' == 'John Doe'\n  \n  - John Doe\n  + mmd-wrong"
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 1 == 3\n +  where 1 = len([UserWithValidation(name='mmd-wrong', age=150)])"
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    1 validation error for Email\nemail\n  Value error, Must be a valid email address [type=value_error, input_value='mmd-wrong', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error\n</exception>\n<completion>\n    ChatCompletion(id='mmd-wrong-0b50b2d7'"
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong' == 'Paris'\n  \n  - Paris\n  + mmd-wrong"
+    },
+    "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong' == 'Jane Smith'\n  \n  - Jane Smith\n  + mmd-wrong"
+    },
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_async_validator_model_rejected_before_cache_lookup": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 7919 == 42\n +  where 7919 = Answer(value=7919).value\n +    where Answer(value=7919) = create(**{'cache': <tests.llm.test_openai.test_cache_namespace_release.CountingCache object at 0x7ffff0f24590>, 'messages': [{'...], 'model': 'gpt-4.1-mini', 'response_model': <class 'tests.llm.test_openai.test_cache_namespace_release.Answer'>, ...})\n +      where create = <instructor.v2.co"
+    },
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces": {
+     "outcome": "failed",
+     "message": "assert 7919 == 42\n +  where 7919 = Answer(value=7919).value"
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[1-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[2-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_str[3-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_on_method_enum[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[1-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[2-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_str[3-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_off_method_enum[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[1-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[2-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:kwargs]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:response]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:last_attempt]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-completion:usage]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method_str[3-parse:error]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_method[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[1-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[2-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_KWARGS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_RESPONSE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_LAST_ATTEMPT]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.COMPLETION_USAGE]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_hooks.py::test_clear_no_args[3-HookName.PARSE_ERROR]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 1 == 2\n +  where 1 = len([User(name='mmd-wrong', age=7919)])"
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 1 == 2\n +  where 1 = len([User(name='mmd-wrong', age=7919)])"
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 1 == 2\n +  where 1 = len([User(name='mmd-wrong', age=7919)])"
+    },
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 1 == 2\n +  where 1 = len([User(name='mmd-wrong', age=7919)])"
+    },
+    "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong' == 'jason'\n  \n  - jason\n  + mmd-wrong"
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong' == 'jason'\n  \n  - jason\n  + mmd-wrong"
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "AssertionError: assert 'mmd-wrong' == 'jason'\n  \n  - jason\n  + mmd-wrong"
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    1 validation error for UserExtractValidated\nname\n  Value error, Name should have all letters in uppercase. Make sure to use the `uppercase` form of the name [type=value_error, input_value='mmd-wrong', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/val"
+    },
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    1 validation error for UserExtractValidated\nname\n  Value error, Name should have all letters in uppercase. Make sure to use the `uppercase` form of the name [type=value_error, input_value='mmd-wrong', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/val"
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "Failed: DID NOT RAISE <class 'Exception'>"
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_banned_words_validation_old[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "passed",
+     "message": ""
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "AssertionError: Expected 'love', got mmd-wrong\nassert 'mmd-wrong' == 'love'\n  \n  - love\n  + mmd-wrong"
+    },
+    "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "instructor.v2.core.errors.InstructorRetryException: <failed_attempts>\n\n<generation number=\"1\">\n<exception>\n    1 validation error for Response\ncontent\n  Value error, Content must contain the following words: love, peace, joy [type=value_error, input_value='mmd-wrong', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error\n</exception>\n<completion>\n    Chat"
+    },
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]": {
+     "outcome": "failed",
+     "message": "Failed: DID NOT RAISE <class 'pydantic_core._pydantic_core.ValidationError'>"
+    },
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]": {
+     "outcome": "failed",
+     "message": "Failed: DID NOT RAISE <class 'pydantic_core._pydantic_core.ValidationError'>"
+    }
+   }
+  ],
+  "durations_s": [
+   6.4
+  ],
+  "exit_codes": [
+   1
+  ],
+  "parallel": true,
+  "freeze_before": [],
+  "test_uid": 10001,
+  "isolation": {
+   "27/environ": "PermissionError",
+   "27/mem": "PermissionError",
+   "28/environ": "PermissionError",
+   "28/mem": "PermissionError"
+  },
+  "freeze_after": [],
+  "pytest_tail": "________\n\nmodel = 'gpt-4.1-mini'\nclient = <instructor.v2.core.client.Instructor object at 0x7ffff0e25d00>\n\n    @pytest.mark.parametrize(\"model\", models)\n    def test_runmodel_validator_default_openai_client(model, client):\n        client = instructor.from_openai(client)\n    \n        class QuestionAnswerNoEvil(BaseModel):\n            question: str\n            answer: Annotated[\n                str,\n                BeforeValidator(\n                    llm_validator(\n                        \"don't say objectionable things\", model=model, client=client\n                    )\n                ),\n            ]\n    \n>       with pytest.raises(ValidationError):\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       Failed: DID NOT RAISE <class 'pydantic_core._pydantic_core.ValidationError'>\n\ntests/llm/test_openai/test_validators.py:64: Failed\n----------------- generated xml file: /mmd/out/run-0/junit.xml -----------------\n=========================== short test summary info ============================\nSKIPPED [1] tests/llm/test_core_providers/capabilities.py:166: openai does not support union_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)\nSKIPPED [1] tests/llm/test_core_providers/capabilities.py:166: openai does not support enum_types (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)\nSKIPPED [1] tests/llm/test_core_providers/capabilities.py:166: openai does not support union_streaming (model: openai/gpt-4.1-mini, mode: Mode.TOOLS)\n34 failed, 135 passed, 3 skipped, 1 deselected in 3.66s\n",
+  "calls": {
+   "tests": {
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_simple_extraction[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_list_extraction[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_nested_model_extraction[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_basic_extraction.py::test_extraction_with_field_descriptions[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_method[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_response_modes.py::test_chat_completions_create_method[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_response_modes.py::test_messages_create_method[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_response_modes.py::test_create_with_completion[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_response_modes.py::test_response_model_none[openai]": [
+     "instructor/v2/core/retry.py:483"
+    ],
+    "tests/llm/test_core_providers/test_retries.py::test_max_retries_parameter[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_retries.py::test_validation_with_retries[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_simple_types.py::test_int[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_simple_types.py::test_bool[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_simple_types.py::test_str[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_simple_types.py::test_literal[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_simple_types.py::test_annotated_int[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_streaming.py::test_partial_streaming[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_streaming.py::test_iterable_streaming_with_stream_flag[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_streaming.py::test_create_iterable_method[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_validation.py::test_basic_validation[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_validation.py::test_list_with_validation[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_validation.py::test_custom_validator[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_validation.py::test_field_constraints[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_core_providers/test_validation.py::test_max_retries[openai]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_sync_cache_namespaces": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_cache_namespace_release.py::test_live_async_cache_namespaces": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_openai/test_multitask.py::test_multi_user[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_stream[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_multitask.py::test_multi_user_tools_mode_async_stream[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_openai/test_patch.py::test_typed_dict[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_patch.py::test_runmodel[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_openai/test_patch.py::test_runmodel_validator[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_patch.py::test_runmodel_async_validator[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:523"
+    ],
+    "tests/llm/test_openai/test_validation_context.py::test_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_validation_context.py::test_no_banned_words_validation[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_validation_context.py::test_forced_words_validation[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/core/retry.py:224"
+    ],
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_error[gpt-4.1-mini-Mode.TOOLS]": [
+     "instructor/v2/validation/llm_validators.py:34"
+    ],
+    "tests/llm/test_openai/test_validators.py::test_runmodel_validator_default_openai_client[gpt-4.1-mini]": [
+     "instructor/v2/validation/llm_validators.py:34"
+    ]
+   },
+   "sites": {
+    "instructor/v2/core/retry.py:523": {
+     "calls": 34,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.001,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 34
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0
+    },
+    "instructor/v2/core/retry.py:483": {
+     "calls": 1,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.0,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 1
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0
+    },
+    "instructor/v2/core/retry.py:224": {
+     "calls": 14,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.0,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 14
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0
+    },
+    "instructor/v2/validation/llm_validators.py:34": {
+     "calls": 2,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 0.0,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 2
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0
+    }
+   },
+   "cost": 0.0,
+   "models_listings": 0,
+   "untraced": {}
+  },
+  "envelope_spent": 0.0,
+  "proxy_log_tail": "[mmd-proxy] listening on 127.0.0.1:8765\n"
+ },
+ "stdout_tail": "",
+ "stderr_tail": ""
+}

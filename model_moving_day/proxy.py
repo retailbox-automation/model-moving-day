@@ -87,10 +87,14 @@ def _instance(schema, defs, depth=0):
 
 
 def _wrong(body):
+    """Once the app has sent tool results back, an unforced request gets a wrong final text: answering every turn
+    with another tool call would make a tool-using app loop forever (seen on llm, 2026-10-24) instead of failing."""
     msg, finish = {"role": "assistant", "content": None}, "stop"
     tools = [t for t in body.get("tools") or [] if isinstance(t, dict) and t.get("function")]
     choice, rf = body.get("tool_choice"), body.get("response_format") or {}
-    if tools and choice != "none":
+    forced = isinstance(choice, dict) or choice == "required"
+    after_tool = any(isinstance(m, dict) and m.get("role") == "tool" for m in body.get("messages") or [])
+    if tools and choice != "none" and (forced or not after_tool):
         name = (choice.get("function") or {}).get("name") if isinstance(choice, dict) else None
         tool = next((t for t in tools if t["function"].get("name") == name), tools[0])
         params = tool["function"].get("parameters") or {}

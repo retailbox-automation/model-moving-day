@@ -138,7 +138,8 @@ def target_entry(name, clones):
         "image": {"uuid": image["image_uuid"], "tag": image["tag"]},
         "evidence_sha256": _evidence_sha(name),
         "flip_tests": flips,
-        "site_flags": {s: {k: rows[s].get(k) for k in ("isolated", "good_side", "cassette_only", "wrong_control")}
+        "site_flags": {s: {k: rows[s].get(k) for k in ("isolated", "good_side", "cassette_only", "wrong_control",
+                                                        "flip_tests_empty_only", "wrong_control_missing")}
                        for s in flips},
         "excluded_sites": d.get("site_exclusions", {}),
         "excluded_tests": d.get("exclusions", {}),

@@ -52,7 +52,9 @@ def outcomes(summary, run=0):
 def controls_table(forward, broken, baseline=None, wrong=None):
     """Per traced call site: which tests reach it and whether their outcome flips between a good answer and a
     deliberately broken one. The good side is the cassette baseline when there is one, else the forward run.
-    With a `wrong` control (well-formed wrong answers) a test counts only when it flips on both broken answers.
+    With a `wrong` control (well-formed wrong answers) a test counts only when it flips on both broken answers; a
+    test with no outcome in the wrong control (run lost, killed) keeps its empty-answer flip and is listed under
+    `wrong_control_missing`, so a failed control never shrinks coverage silently.
     `cassette_only`: the site's flips rest on a recorded good answer; live forward and live broken do not differ."""
     reach = (forward.get("calls") or {}).get("tests") or {}
     good_name = "baseline" if baseline else "forward"
@@ -63,7 +65,7 @@ def controls_table(forward, broken, baseline=None, wrong=None):
             sites.setdefault(s, set()).add(test)
     rows = []
     for s, tests in sorted(sites.items()):
-        flips, flips_empty, live_flips, details = [], [], [], []
+        flips, flips_empty, live_flips, missing, details = [], [], [], [], []
         for t in sorted(tests):
             d = {"test": t, good_name: good.get(t), "broken": bad.get(t)}
             if baseline:
@@ -74,7 +76,9 @@ def controls_table(forward, broken, baseline=None, wrong=None):
             empty = good.get(t) == "passed" and bad.get(t) in FAILED
             if empty:
                 flips_empty.append(t)
-            if empty and (wrong is None or wr.get(t) in FAILED):
+            if empty and wrong is not None and wr.get(t) in (None, "infra"):
+                missing.append(t)
+            if empty and (wrong is None or wr.get(t) in FAILED or t in missing):
                 flips.append(t)
             if fwd.get(t) == "passed" and bad.get(t) in FAILED:
                 live_flips.append(t)
@@ -84,6 +88,7 @@ def controls_table(forward, broken, baseline=None, wrong=None):
                "wrong_control": wrong is not None, "details": details}
         if wrong is not None:
             row["flip_tests_empty_only"] = [t for t in flips_empty if t not in flips]
+            row["wrong_control_missing"] = missing
         rows.append(row)
     return rows
 

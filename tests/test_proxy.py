@@ -326,3 +326,17 @@ def test_proxy_reads_its_key_from_stdin_not_from_the_environment(tmp_path):
     finally:
         p.terminate()
         p.wait(timeout=5)
+
+
+def test_wrong_mode_ends_an_unforced_tool_chain_with_wrong_text_but_keeps_forced_calls(server):
+    """llm, 2026-10-24: answering every turn with a tool call made its tool chain loop for 1112 s."""
+    base, up, tmp, _ = server
+    msgs = [{"role": "user", "content": "x"}, {"role": "assistant", "content": None, "tool_calls": [
+        {"id": "1", "type": "function", "function": {"name": "User", "arguments": "{}"}}]},
+        {"role": "tool", "tool_call_id": "1", "content": "0.36"}]
+    _, text = post(base, {"model": "m", "messages": msgs, "tools": [USER_TOOL]}, site="app/wrong.py:1")
+    msg = json.loads(text)["choices"][0]["message"]
+    assert msg["content"] == proxy.WRONG_TEXT and not msg.get("tool_calls")
+    _, text = post(base, {"model": "m", "messages": msgs, "tools": [USER_TOOL],
+                          "tool_choice": {"type": "function", "function": {"name": "User"}}}, site="app/wrong.py:1")
+    assert json.loads(text)["choices"][0]["message"]["tool_calls"][0]["function"]["name"] == "User"

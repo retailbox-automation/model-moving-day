@@ -1,0 +1,70 @@
+{
+ "label": "control-wrong",
+ "ts": 1792841743.075,
+ "exit_code": 0,
+ "elapsed_s": 1112.071664,
+ "wall_s": 1122.96,
+ "sandbox_cost": 11.1400722,
+ "summary": {
+  "runs": [
+   {
+    "__run__": {
+     "outcome": "infra",
+     "message": "no junit for run 0"
+    }
+   }
+  ],
+  "durations_s": [
+   1112.7
+  ],
+  "exit_codes": [
+   -9
+  ],
+  "parallel": true,
+  "freeze_before": [],
+  "test_uid": 10001,
+  "isolation": {
+   "30/environ": "PermissionError",
+   "30/mem": "PermissionError",
+   "31/environ": "PermissionError",
+   "31/mem": "PermissionError"
+  },
+  "freeze_after": [],
+  "pytest_tail": "",
+  "calls": {
+   "tests": {
+    "tests/test_tools.py::test_tool_use_basic": [
+     "llm/default_plugins/openai_models.py:1441"
+    ]
+   },
+   "sites": {
+    "llm/default_plugins/openai_models.py:1441": {
+     "calls": 2746,
+     "prompt_tokens": 0,
+     "completion_tokens": 0,
+     "reasoning_tokens": 0,
+     "cost": 0.0,
+     "seconds": 8.679,
+     "models": {},
+     "diagnoses": {},
+     "errors": {},
+     "errors_by_run": {},
+     "calls_by_run": {
+      "0": 2746
+     },
+     "max_tokens": {},
+     "changes": {},
+     "finish": {},
+     "repaired_empty_args": 0
+    }
+   },
+   "cost": 0.0,
+   "models_listings": 0,
+   "untraced": {}
+  },
+  "envelope_spent": 0.0,
+  "proxy_log_tail": "[mmd-proxy] listening on 127.0.0.1:8765\n"
+ },
+ "stdout_tail": "",
+ "stderr_tail": ""
+}

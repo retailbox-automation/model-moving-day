@@ -323,3 +323,11 @@ def test_cmd_coverage_applies_site_exclusions_and_refuses_untraced_calls(tmp_pat
     (ev / "demo" / "control-forward.json").write_text(json.dumps({"summary": fwd}))
     with pytest.raises(RuntimeError, match="not tagged"):
         census.cmd_coverage("demo")
+
+
+def test_a_wrong_control_without_an_outcome_keeps_the_empty_flip_and_says_so():
+    fwd = summ({"t1": "passed"}, reach={"t1": ["a.py:1"]})
+    brk = summ({"t1": "failed"})
+    lost = {"runs": [{"__run__": {"outcome": "infra", "message": "no junit for run 0"}}]}
+    row = census.controls_table(fwd, brk, None, lost)[0]
+    assert row["covered"] and row["flip_tests"] == ["t1"] and row["wrong_control_missing"] == ["t1"]
