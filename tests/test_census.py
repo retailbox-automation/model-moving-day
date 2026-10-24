@@ -475,3 +475,43 @@ def test_ladder_jobs_get_the_targets_embedding_model_and_keep_per_run_counts(tmp
     rj2 = FakeRunJob(lambda m, r, k, i: job_summary(["passed"] * k))
     census.Ladder("t", ENTRY, mf.rules(), 3, census.RUNGS, "decision", tmp_path, rj2, manifest={"sha256": "m"}).run()
     assert "embedding_model" not in rj2.calls[0]["routes"]
+
+
+def test_a_target_can_run_its_k_runs_in_sequence(tmp_path):
+    entry = dict(ENTRY, parallel_runs=False)
+    rj = FakeRunJob(lambda m, r, k, i: job_summary(["passed"] * k))
+    census.Ladder("t", entry, mf.rules(), 3, census.RUNGS, "decision", tmp_path, rj, manifest={"sha256": "m"}).run()
+    assert all(c["kw"]["parallel"] is False for c in rj.calls)
+    rj2 = FakeRunJob(lambda m, r, k, i: job_summary(["passed"] * k))
+    census.Ladder("t", ENTRY, mf.rules(), 3, census.RUNGS, "decision", tmp_path, rj2, manifest={"sha256": "m"}).run()
+    assert all(c["kw"]["parallel"] is True for c in rj2.calls)
+
+
+def test_a_declared_token_budget_stops_before_a_job_that_would_pass_it(tmp_path):
+    """paper-qa attempt 3: the run may not spend more than the time box's remainder; what is not run is said so."""
+    def script(model, routes, k, i):
+        s = job_summary(["failed"] * k if model == ladder.NANO else ["passed"] * k)
+        s["envelope_spent"] = 0.01 * k  # $0.01 per run on Nano-priced models
+        return s
+    entry = dict(ENTRY, token_budget_usd=0.16)
+    run, rj = make_ladder(tmp_path, script, k=5)
+    run.entry, run.budget = entry, 0.16
+    doc = run.run()
+    # Nano ($0.05) and Lightning (same prices, est. $0.05) fit; Lightning passes; the Super fallback is estimated at
+    # 5x (input price ratio): $0.25 does not fit the remaining $0.06 (unscaled it would be $0.05 and would run)
+    assert [c["model"] for c in rj.calls] == [ladder.NANO, ladder.LIGHT]
+    site = doc["sites"][SITE]
+    assert site["chosen"] == "Lightning" and site["fallback"]["status"].startswith("not measured: token budget")
+    assert doc["status"] == "complete"
+
+
+def test_a_budget_stop_inside_the_climb_leaves_the_sites_stopped_not_red(tmp_path):
+    def script(model, routes, k, i):
+        s = job_summary(["failed"] * k)
+        s["envelope_spent"] = 0.01 * k
+        return s
+    run, rj = make_ladder(tmp_path, script, k=5)
+    run.budget = 0.12
+    doc = run.run()
+    assert [c["model"] for c in rj.calls] == [ladder.NANO, ladder.LIGHT]
+    assert doc["sites"][SITE]["status"] == "stopped" and "budget" in doc["budget_stop"] + doc["sites"][SITE]["reason"]

@@ -157,6 +157,8 @@ def target_entry(name, clones):
         **({"embedding_model": d["embedding_model"]} if d.get("embedding_model") else {}),
         **({"prepare_env": d["prepare_env"]} if d.get("prepare_env") else {}),
         **({"import_stubs": d["import_stubs"]} if d.get("import_stubs") else {}),
+        **({"parallel_runs": d["parallel_runs"]} if "parallel_runs" in d else {}),
+        **({"token_budget_usd": d["token_budget_usd"]} if "token_budget_usd" in d else {}),
         "frozen": {"commit": frozen.commit, "extra_paths": frozen.extra_paths, "files": len(frozen.hashes),
                    "sha256": frozen.sha256(), "hashes": frozen.hashes},
     }

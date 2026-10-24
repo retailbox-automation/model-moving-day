@@ -183,6 +183,10 @@ def cmd_coverage(name):
 
 
 # --- ladder ---------------------------------------------------------------------------------------------------
+class BudgetStop(RuntimeError):
+    """A target's declared token budget for this run would be passed by the next job: stop before it."""
+
+
 class IntegrityError(RuntimeError):
     """The run cannot be trusted (frozen checks changed, the spend envelope broke, calls went untraced): stop."""
 
@@ -303,6 +307,10 @@ class Ladder:
                           "flip_tests": f, "flags": (entry.get("site_flags") or {}).get(s, {}), "cells": []}
                       for s, f in self.flips.items()}
         self.jobs = []
+        # A target may declare how its runs execute (K runs in sequence) and a token budget per ladder run; the next
+        # job's cost is estimated from the spend per run already seen, scaled by the models' prices.
+        self.parallel = entry.get("parallel_runs", True)
+        self.budget, self.spent, self.per_run = entry.get("token_budget_usd"), 0.0, {}
         self.doc = {"target": name, "run_id": self.run_id, "kind": kind, "smoke": smoke_id, "status": "running",
                     "started_utc": _utc(), "commit": entry["commit"], "manifest": manifest or {}, "k": k,
                     "margin": self.margin, "baseline": self.baseline,
@@ -329,11 +337,18 @@ class Ladder:
         e = self.entry
         t = runner.Target(self.name, e["github"], e["commit"], e["install"], tests + e["node_args"], e.get("env", {}),
                           import_stubs=e.get("import_stubs", {}))
+        if self.budget is not None and model is not None:
+            est = self.estimate(model, k)
+            if self.spent + est > self.budget + 1e-9:
+                self.event("budget_stop", note=note, model=model, spent=round(self.spent, 6), estimate=round(est, 6),
+                           budget=self.budget)
+                raise BudgetStop(f"{note}: spent ${self.spent:.4f}, next job estimated ${est:.4f}, budget ${self.budget:.2f}")
         r, summary, error = None, None, None
         try:
             r, summary = self.run_job(self.box, e["image"]["uuid"], t, routes, k=k, cap_usd=self.cap, ledger=self.ledger,
                                       frozen_hashes=e["frozen"]["hashes"], frozen_extra=e["frozen"]["extra_paths"],
-                                      require_frozen=True, note=f"{self.kind} {note}", env=env, extra_files=files)
+                                      require_frozen=True, note=f"{self.kind} {note}", env=env, extra_files=files,
+                                      parallel=self.parallel)
         except (sb.SandboxRunLimit, tf.BudgetExceeded):
             raise
         except Exception as ex:  # a lost sandbox run is an infrastructure error for every run of this job
@@ -350,6 +365,10 @@ class Ladder:
                "site_runs": {x: {k: v.get(k) for k in ("calls_by_run", "errors_by_run", "models_requested")}
                              for x, v in ((s.get("calls") or {}).get("sites") or {}).items()}}
         self.jobs.append(rec)
+        spend = s.get("envelope_spent") or 0.0
+        self.spent += spend
+        if model is not None and k:
+            self.per_run[model] = max(self.per_run.get(model, 0.0), spend / k)
         self.event("job", **rec)
         self.checkpoint()
         print(json.dumps({k_: rec[k_] for k_ in ("note", "model", "k", "tests", "model_spend", "error", "durations_s")}), flush=True)
@@ -468,6 +487,11 @@ class Ladder:
             if self.kind == "decision":
                 self.fallbacks()
             self.doc["status"] = "complete"
+        except BudgetStop as e:  # a declared stop, not a failure: every cell so far stays published
+            self.doc.update(status="complete", budget_stop=str(e)[:300])
+            for s, v in self.state.items():
+                if v["status"] == "pending":
+                    self.settle(s, status="stopped", reason=f"not measured further: the token budget of this run ({e})")
         except BaseException as e:
             self.doc.update(status="aborted", error=f"{type(e).__name__}: {e}"[:800])
             for s, v in self.state.items():
@@ -480,6 +504,17 @@ class Ladder:
             self.checkpoint()
         return self.doc
 
+    def estimate(self, model, k):
+        """Expected spend of a job of k runs on `model`: its own spend per run if seen, else the dearest seen per-run
+        spend scaled by the larger of the input and output price ratios; 0 before the first job."""
+        if model in self.per_run:
+            return self.per_run[model] * k
+        if not self.per_run:
+            return 0.0
+        seen, per_run = max(self.per_run.items(), key=lambda x: x[1])
+        ratio = max(tf.PRICES[model][0] / tf.PRICES[seen][0], tf.PRICES[model][1] / tf.PRICES[seen][1])
+        return per_run * ratio * k
+
     def fallbacks(self):
         """One measured cell on the next rung up for every chosen site; the helper may only fall back to a pass."""
         names = [r for r, _ in self.rungs]
@@ -489,7 +524,15 @@ class Ladder:
                 groups.setdefault(names.index(v["chosen"]) + 1, []).append(s)
         for idx, sites in sorted(groups.items()):
             rung, model = self.rungs[idx]
-            for s, (outs, stats) in self.measure(rung, model, sites, {}, f"{rung} fallback").items():
+            try:
+                res = self.measure(rung, model, sites, {}, f"{rung} fallback")
+            except BudgetStop as e:
+                for s in sites:
+                    self.state[s]["fallback"] = {"rung": rung, "model": model, "passes": False,
+                                                 "status": f"not measured: token budget ({e})"}
+                self.checkpoint()
+                continue
+            for s, (outs, stats) in res.items():
                 rec = self.record(s, rung, model, outs, stats, role="fallback")
                 self.state[s]["fallback"] = {"rung": rung, "model": model, "passes": rec["passes"], "status": rec["status"]}
                 self.event("fallback", site=s, rung=rung, passes=rec["passes"])

@@ -214,6 +214,12 @@
     "local_commit_time_utc": "2026-10-24",
     "what": "embedding call sites (docs.py:374, docs.py:446, llms.py:251) excluded from the ladder with the reason above",
     "order": "after the paper-qa controls (forward on Super, broken, wrong), before any paper-qa ladder job"
+   },
+   {
+    "commit": "census/targets.json",
+    "local_commit_time_utc": "2026-10-24",
+    "what": "third and last paper-qa decision run (orchestrator decision 2026-10-24): the same ladder rules (K=5, margin 0.2, at least 4 of 5, infra rule); only execution changes: the K runs go one after another in the sandbox (660 s per run, 3600 s per sandbox; the slowest Nano run seen so far took 366 s with 5 in parallel), and the run stops before a job whose estimated token cost would pass $0.66 (the rest of paper-qa's $1 time box); if the sites are infra again, paper-qa stays 'gate not taken'",
+    "order": "after decision runs 20261024T122751Z-764b19 and 20261024T124923Z-ef27e9 (all sites infra: Token Factory 503 on Nano with 5 runs in parallel), before the third run"
    }
   ],
   "baseline_evidence": "Not measured by us; the ladder uses the assumed 1.0.",
@@ -221,6 +227,8 @@
    "paperqa_pymupdf": "AGPL-3.0 sub-package, not installed by decision 2026-10-24",
    "paperqa_docling": "optional reader with a heavy ML stack, not installed",
    "paperqa_nemotron": "optional reader (NVIDIA hosted parse model), not installed"
-  }
+  },
+  "parallel_runs": false,
+  "token_budget_usd": 0.66
  }
 }
