@@ -14,6 +14,11 @@
    "previous_sha256": "35365b0c8c68fe8a06270f9dbf6bd0715023effaaa66df047f7d125f2542e312",
    "reason": "Amendment 3 after the instructor and llm decision ladders: code only (patch step fixes N1-N3, N5, N7-N10, N12-N14, per-run counts in ladder jobs); rules and target entries unchanged, so the ladder runs under amendment 2 stay valid for the patch step",
    "utc": "2026-10-24T12:06:28Z"
+  },
+  {
+   "previous_sha256": "2753ed991e7ec4c1ade235b74ba7c89e8d75e2e17332943aeea4c790802176b6",
+   "reason": "Amendment 4: adds paper-qa core (third repo; controls done, 4 chat sites covered, embedding sites excluded, import stubs, pinned install) and the code since amendment 3 (install env, import stubs, embedding client); rules and the instructor and llm entries unchanged",
+   "utc": "2026-10-24T12:27:01Z"
   }
  ],
  "baseline_before": {
@@ -31,7 +36,7 @@
   "cap_usd_per_job": 1.0,
   "sandbox_runs": {
    "limit": "MMD_SANDBOX_MAX_RUNS=80 for every phase-B command (orchestrator decision 2026-10-24 11:15; default in code 40)",
-   "logged_when_written": 32,
+   "logged_when_written": 42,
    "plan": "instructor ladder <= 8, llm ladder <= 8, third repo prepare + controls + ladder <= 13, patch confirm 3, fallback cells, smoke 1-2",
    "planned_phase_b": 48
   },
@@ -41,25 +46,25 @@
   "files_sha256": {
    "model_moving_day/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
    "model_moving_day/agent.py": "78801912e52ad9d8cb36170a54e8fa9b42c2024c3dc012eb3292a478dea8ff7b",
-   "model_moving_day/census.py": "af11723ce0fefd5e38efaf3ab7b1bee595093bdd2834aac74f0d425320f0dbe8",
+   "model_moving_day/census.py": "92781afec290f4cfbb206f6cb5895b65b1ee2494f5b466362b4caea69a61faf4",
    "model_moving_day/fakes.py": "f208be4bfa5a18a6f643494f70884a725e8bcf95243b5fd1f0a7dc3f7a7de5a2",
    "model_moving_day/find.py": "0ec906cb4de772f9b0fc046ee09ecda8e20722216524e746afd6010c6ca1a568",
    "model_moving_day/freeze.py": "36546c55162515e28a086179cb15b7f801ed6d961f36192558292534fb72ceb0",
-   "model_moving_day/job.py": "7f9197faae9492f17ed36cc6caad3eed6c35110c5d08b026a41944cff488cfb3",
+   "model_moving_day/job.py": "21623d43a1c726bdc223bd927f4887337d45579e76b344eb3463cae251a906a3",
    "model_moving_day/ladder.py": "cd64b81af53439247ae2d54932c21ef0d6de6b706c659ff1230393ae969cc3fe",
-   "model_moving_day/manifest.py": "849b8685f18ae157fe98e1bb6c527553aed3d6b8806ae0c32d7cb075cbeeb01e",
+   "model_moving_day/manifest.py": "35a5ab095352e120126b8417d5e2b97e814997c45dd794eebc1e8654412f32a0",
    "model_moving_day/normalize.py": "a035f94e364f826be9c76b58e9a988f2d1adcea5425fee0a98e770dd98b289b4",
    "model_moving_day/patch.py": "48506d4b0a278f311a3608652a8d761f5ee3833e2147155e4f06e534a5fc68ed",
    "model_moving_day/pr.py": "250b010a58d16d1c82d59074cfa7d5ba2642f8ab345706ab351c77861e9a265b",
-   "model_moving_day/proxy.py": "1ca71c17abeb187bc1e696fe749b4476facac43d128427f0863b488eb24f7bc7",
-   "model_moving_day/runner.py": "3119e28ca1cbfdb0ff1c8dde36c78e69c994d34e95c174ce7c471315d5ca9d49",
+   "model_moving_day/proxy.py": "4cf0d73b9acef638a0caee715148b098d24ce084f2f31e39896916122eecd69c",
+   "model_moving_day/runner.py": "bfe980a61b35d3459c221f13584a8285d6d383ec10720c761464a3d6c27d3b6e",
    "model_moving_day/sandbox.py": "fca5c4187051a81f489b1ee8fa18b88472ace6fd81ff574fbed7fc2f8e683b58",
    "model_moving_day/templates/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
    "model_moving_day/templates/nemotron_move.py": "b9492cdba133c3bb1c97fcabb99da42c5678bad659f1387cb4a081c42cffc352",
    "model_moving_day/tf_client.py": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b",
    "model_moving_day/tracer/sitecustomize.py": "97348cfb1f875bc7c035c201dd648efcd411738689193419f03d40246a175c0b"
   },
-  "git_head_when_written": "702781ab042cc655bddfa87e20b2d3ac6088e56e",
+  "git_head_when_written": "b66679ddf7a3bd7b973c260e7d6ee470bad9ef3b",
   "tf_client_sha256": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b"
  },
  "first_written_utc": "2026-10-24T10:47:17Z",
@@ -75,7 +80,7 @@
   "after a run the hash check catches changed or missing frozen files; new files in test directories are recorded but do not stop the ladder"
  ],
  "publication": "every cell is published, including red cells, infra cells, cells of an aborted ladder, smoke runs and the 'old model stays' outcome; every job and cell is also appended to evidence/census/<target>/ladder-log.jsonl, and each ladder run writes its own ladder-<run_id>.json (never overwritten)",
- "reason": "Amendment 3 after the instructor and llm decision ladders: code only (patch step fixes N1-N3, N5, N7-N10, N12-N14, per-run counts in ladder jobs); rules and target entries unchanged, so the ladder runs under amendment 2 stay valid for the patch step",
+ "reason": "Amendment 4: adds paper-qa core (third repo; controls done, 4 chat sites covered, embedding sites excluded, import stubs, pinned install) and the code since amendment 3 (install env, import stubs, embedding client); rules and the instructor and llm entries unchanged",
  "rules": {
   "baseline_pass_rate": 1.0,
   "brain": {
@@ -784,7 +789,284 @@
     }
    },
    "traced_not_covered": []
+  },
+  "paper-qa": {
+   "ast_sites_not_reached": [
+    "packages/paper-qa-nemotron/src/paperqa_nemotron/api.py:509"
+   ],
+   "baseline_evidence": "Not measured by us; the ladder uses the assumed 1.0.",
+   "commit": "57e89f7223b0960d5ee5ea048c69e3c47e088572",
+   "embedding_model": "Qwen/Qwen3-Embedding-8B",
+   "env": {},
+   "evidence_sha256": {
+    "control-broken.json": "d5eedd2cd30a3ff118c6cdd13ee09ebd9ca1e06bb3253e821826c41c7ec4a8c9",
+    "control-forward.json": "c3bb2545c3d1da01dd96acd3632eafe09769e977d4e0b81f02f2985c90a6cbe4",
+    "control-wrong.json": "0f6ed6f75d37f8c40a719d64bfeeacfcd212e940ce190ebc86ee7a0ef6549627",
+    "coverage.json": "81327917724571038c00f65fb903255e79c0b921265d0727a35dc14e119865cf",
+    "image.json": "a3864cdead9f302ece1f0e0e0d6072ee6c2ac9d3e186bc27688560db204e48c5"
+   },
+   "excluded_sites": {
+    "src/paperqa/docs.py:374": "embedding call site: served by the one Token Factory embedding model (Qwen3-Embedding-8B) on every rung and in every control, so its model is not a ladder choice; its tests flip only through the chat sites they also reach",
+    "src/paperqa/docs.py:446": "embedding call site: served by the one Token Factory embedding model (Qwen3-Embedding-8B) on every rung and in every control, so its model is not a ladder choice; its tests flip only through the chat sites they also reach",
+    "src/paperqa/llms.py:251": "embedding call site: served by the one Token Factory embedding model (Qwen3-Embedding-8B) on every rung and in every control, so its model is not a ladder choice; its tests flip only through the chat sites they also reach"
+   },
+   "excluded_tests": {
+    "other tests in tests/test_paperqa.py": "recorded (vcr), no LLM call, or outside the time box; the 8 selected tests assert on answers and need only stub_data",
+    "packages/": "sub-packages; paper-qa-pymupdf is AGPL-3.0 and not installed",
+    "tests/test_agents.py": "agent loops with a tantivy index; outside the half-day, $1 time box",
+    "tests/test_clients.py": "metadata APIs (Crossref, Semantic Scholar), no LLM",
+    "tests/test_clinical_trials.py": "calls clinicaltrials.gov live",
+    "tests/test_paperqa.py::test_model_chain": "parametrized over gemini/* and anthropic/* models: gemini calls go to Google, not through the proxy; anthropic needs another SDK",
+    "tests/test_paperqa.py::test_parse_office_doc": "uses gemini/* models, which bypass the proxy"
+   },
+   "flip_tests": {
+    "src/paperqa/core.py:254": [
+     "tests/test_paperqa.py::test_context_inner_outer_prompt",
+     "tests/test_paperqa.py::test_custom_prompts",
+     "tests/test_paperqa.py::test_post_prompt",
+     "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+     "tests/test_paperqa.py::test_unrelated_context[default-unsure]"
+    ],
+    "src/paperqa/docs.py:234": [
+     "tests/test_paperqa.py::test_context_inner_outer_prompt",
+     "tests/test_paperqa.py::test_custom_prompts",
+     "tests/test_paperqa.py::test_post_prompt",
+     "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+     "tests/test_paperqa.py::test_unrelated_context[default-unsure]"
+    ],
+    "src/paperqa/docs.py:675": [
+     "tests/test_paperqa.py::test_context_inner_outer_prompt",
+     "tests/test_paperqa.py::test_custom_prompts",
+     "tests/test_paperqa.py::test_post_prompt",
+     "tests/test_paperqa.py::test_unrelated_context[custom-unsure]",
+     "tests/test_paperqa.py::test_unrelated_context[default-unsure]"
+    ],
+    "src/paperqa/docs.py:703": [
+     "tests/test_paperqa.py::test_post_prompt"
+    ]
+   },
+   "frozen": {
+    "commit": "57e89f7223b0960d5ee5ea048c69e3c47e088572",
+    "extra_paths": [],
+    "files": 94,
+    "hashes": {
+     "packages/paper-qa-docling/pyproject.toml": "dba8048303734eb16daf9a56ba619014f2c5e12084413211bf724ab19c1471c8",
+     "packages/paper-qa-docling/tests/test_paperqa_docling.py": "8d16e603a8c377ee5a09510494d5fe9405b39e55528cdb2df8eabc1bf2d3a8fe",
+     "packages/paper-qa-nemotron/pyproject.toml": "13179ca9696e3b342a9acd606c8ae8e530b03dda7b44740f8af188f19b4162c9",
+     "packages/paper-qa-nemotron/tests/cassettes/TestNvidiaAPI.test_detection_only[0].yaml": "922dfcfbebb4feb7e341a28f08cfba238ef64fec4ca9ab4e77ae9629c3cee114",
+     "packages/paper-qa-nemotron/tests/cassettes/TestNvidiaAPI.test_detection_only[1].yaml": "29ef1b599ea082f35c3ad57286430b2b161282138f377d9f7edd8b2d3b730d17",
+     "packages/paper-qa-nemotron/tests/cassettes/TestNvidiaAPI.test_markdown_bbox[0].yaml": "67334466563b9441dd9f9ff40fbb7694c21524d4ffbc16fa82791dc56b5f5021",
+     "packages/paper-qa-nemotron/tests/cassettes/TestNvidiaAPI.test_markdown_bbox[1].yaml": "8202aa3db8fee4a163a5bd0474baa55c462b556c32c526ae884df25f91497752",
+     "packages/paper-qa-nemotron/tests/cassettes/TestNvidiaAPI.test_markdown_no_bbox[0].yaml": "caf84f4a6da78b9f3e34e468572bbfeeb0d17b71bb21281e1604565961eeaf9e",
+     "packages/paper-qa-nemotron/tests/cassettes/TestNvidiaAPI.test_markdown_no_bbox[1].yaml": "1a07b4a09432b884225fcc94ee67a0569749d9fed5bbacc53d9ae899198433e4",
+     "packages/paper-qa-nemotron/tests/conftest.py": "6d24b5a68396f29d6a846d0028a6d27571b9c9fdc6c5b8792d84bfe4bc361aef",
+     "packages/paper-qa-nemotron/tests/test_api.py": "91888decf16124f4126ba1c696431f6e2799686d9dcd92784f920a160a25eeca",
+     "packages/paper-qa-nemotron/tests/test_paperqa_nemotron.py": "5944521605925cd8e08a366157a991bbd2edf1e3a65623df3149cd840503ce91",
+     "packages/paper-qa-pymupdf/pyproject.toml": "15ea612bf88253468d88693c3d90270be5f251a46ac158e273df11cec161b7ec",
+     "packages/paper-qa-pymupdf/tests/test_paperqa_pymupdf.py": "04195e20145dc80ff067ab8f7257399e898a98d4be1a58a10076241c4eb8682c",
+     "packages/paper-qa-pypdf/pyproject.toml": "3987201afb7cc3772f09e24bcc94ac2e6e088140cd9443ac7a3357208343823f",
+     "packages/paper-qa-pypdf/tests/test_paperqa_pypdf.py": "f8143028a92da65d4ffb23aeee66fc10e3e45322bec52a46add712aaea9fd9cc",
+     "packages/paper-qa-pypdf/tests/test_utils.py": "0fd680288768acea29abfcfe2ce3f920db6774dbccb4de7d4ff836be9761df86",
+     "pyproject.toml": "f1ad892fa66877da4b10376525ec030c5f74eefa4a9b7d796c666a2161eef63e",
+     "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "tests/cassettes/test_arxiv_doi_is_used_when_available.yaml": "5729e38247f5dc7ba31c08e04a02c4f5bdb725746f10ee08dda8af49476452e0",
+     "tests/cassettes/test_author_matching.yaml": "6361f48948addfdf8b75a205038199cde628c1c0e509e8026606883fb5fb176f",
+     "tests/cassettes/test_bad_dois.yaml": "43374d85d628335ff766f7aba263647df28cf4b0c02a2f22ee19bd16bebc8958",
+     "tests/cassettes/test_bad_titles.yaml": "3443c7c86429a806f2f67ea292a692535c621cc87eb5a2f88fb849924427b659",
+     "tests/cassettes/test_bulk_doi_search.yaml": "c5da9bb40d4625d60912a6ac3bb1b2552ba9cd4f1d2e55ddaee7176ef1b35697",
+     "tests/cassettes/test_bulk_title_search.yaml": "f15ed24c19384853db01bc279855f609689cc1d9d350223ab8eb962ab020149b",
+     "tests/cassettes/test_crossref_journalquality_fields_filtering.yaml": "5f13b9f7831f3dd37f3c53577d64311c20be2b30516b35c38fc93694445c3042",
+     "tests/cassettes/test_crossref_retraction_status.yaml": "10727655ee118f43eba9bdf59a19ddc5d9cdca4f9b74bf0c071f8f1ffea9234f",
+     "tests/cassettes/test_docs_lifecycle.yaml": "9c15567bc98da37ffee6e796bea959d05903022d334b657a26778fea41715b24",
+     "tests/cassettes/test_does_openalex_work[not-in-openalex].yaml": "51fd918b2b2944e0ccf1296c9d1757485ae931ffc43787218582d115c83e9b29",
+     "tests/cassettes/test_does_openalex_work[not-oa-in-openalex].yaml": "4c3c47260e302a4f539410fc383f6a796193255eb16647abde84174c06f2fb63",
+     "tests/cassettes/test_does_openalex_work[oa-in-openalex1].yaml": "aa2c47b8493f6ef45cdf8bf091d0cc4b004c15da09ad093c2cb681e792ca0309",
+     "tests/cassettes/test_does_openalex_work[oa-in-openalex2].yaml": "e645b481acdb6c1d22d70ed57ab1355bdbab42b0d251722a3eff1e01350c7e40",
+     "tests/cassettes/test_doi_search[paper_attributes0].yaml": "3b1ac4bb1b4475d7078087673e73db7c47052ec7f20ae4e40b63e1ebabc0bc04",
+     "tests/cassettes/test_doi_search[paper_attributes1].yaml": "908bb563d1dc9cab7eb004f6b2b6a67476a83daba7277bd7aa432ed4d99296aa",
+     "tests/cassettes/test_doi_search[paper_attributes2].yaml": "029d902f87929f96e81fc6b6e01ed6342a643efcd82cff62521729a9e25292dd",
+     "tests/cassettes/test_doi_search[paper_attributes3].yaml": "268dc4c4f0d242cd1ada4be7766ab43c18b78c7ea1aca7dd7245b49c1abc42d0",
+     "tests/cassettes/test_doi_search[paper_attributes4].yaml": "285fd8767d76b48c7b8a65f549b5435d349f6d92ae5fcaa1653017a7a1ab1052",
+     "tests/cassettes/test_ensure_sequential_run.yaml": "c9e0248ec5259df5da6dd965eab91b28f1ac28882d3b32106f49a38222e92bce",
+     "tests/cassettes/test_ensure_sequential_run_early_stop.yaml": "3f127dd10023587ade84f8bf405f682c383b51d840ba5fdde1f8579f4bb36220",
+     "tests/cassettes/test_equations[docling].yaml": "2413fcb977d3dac7cb0e3d4a92223ed8c3107957afb3348f49a7060e600fd577",
+     "tests/cassettes/test_equations[nemotron].yaml": "d4b5ab517e22ee6faed9823dd1257682aa8a43f4ea561a7543197a8416396ba3",
+     "tests/cassettes/test_equations[pymupdf].yaml": "41726ab31737f25046dccacb8334d625c07c2e2183d8abda2d5a90a96b15f4d0",
+     "tests/cassettes/test_get_reasoning[deepseek-reasoner].yaml": "92903c294e20499cb0aff2f7dd23e08428f825426fca7c04f70a9ceb00b2bcc1",
+     "tests/cassettes/test_get_reasoning[openrouter-deepseek].yaml": "9287cba1cbbc8d50a0e794e6c77e63dd94415f63555e84f5a9c5b449f43bd9fb",
+     "tests/cassettes/test_image_enrichment_invalid_image.yaml": "6f0c2586dfcfe4417707ee58c30c80d2a3c9e1787ba17785d6054af7c1a71955",
+     "tests/cassettes/test_image_enrichment_normal_use.yaml": "2c0e850d8128b425a12c5020e8ba5f037216047dc1af97bff6716f3e2aa7ecd4",
+     "tests/cassettes/test_maybe_is_text.yaml": "39f323562a6c95c46c38af7c84ee3835371983ddc9e307aa81b6cf2af0c96042",
+     "tests/cassettes/test_minimal_fields_filtering.yaml": "74fae126a8c5c50397062af41af825207bc52a187437c42b49a725868cfbb50b",
+     "tests/cassettes/test_nonduplicate_contexts.yaml": "e2fb5d57e8c1b6b00a106574de5a26de28b4c9db1f9c2c6bdcb22ef3e09272f8",
+     "tests/cassettes/test_odd_client_requests.yaml": "c93b9344fcf6a9801c54f9f9285585841065fa63fcbc59714423624b95d60a8f",
+     "tests/cassettes/test_partitioning_fn_docs[False].yaml": "9842dda3ebf4bd0d98c2f6b3e3f293ca5196fa6dfce19f683c6cf4ddbd5ae917",
+     "tests/cassettes/test_partitioning_fn_docs[True].yaml": "48c13dd6c2147ba37ad2f8a67effa979499cf3ac0aec5b2e08c7b471678a4c19",
+     "tests/cassettes/test_partly_embedded_texts[False].yaml": "2653f03e55e95fd6b421cf9e41bede126ca9dd71ca52be9c480032098ad8a95c",
+     "tests/cassettes/test_partly_embedded_texts[True].yaml": "8fa78fddfa6a87d96f3ea66fb68dbc542ce6da58df73b3d90e47d64045cda999",
+     "tests/cassettes/test_pdf_reader_match_doc_details.yaml": "0b137380ee09192b019820e674cae34000b98780958e29aa0e901ad18dda5b40",
+     "tests/cassettes/test_s2_only_fields_filtering.yaml": "3f725d0c265a1e8e9d85463df65c854f483f532b08963ffac0cc969906dff9f3",
+     "tests/cassettes/test_s2_title_search_empty_data.yaml": "3e9bb02819673f9768898d9df507747cc8203cc3cdfbbebe350750cc95e245de",
+     "tests/cassettes/test_title_search[paper_attributes0].yaml": "6942b85f363bc26fe9dff10b7753e0ba9771cc4fb879b15416971bc9763be0b0",
+     "tests/cassettes/test_title_search[paper_attributes1].yaml": "3b0da8479d9fe0baa4c7f54c97239878295cc775c8a2bde432db1ac259dedfaf",
+     "tests/cassettes/test_title_search[paper_attributes2].yaml": "3f5f6aee562893caa097dc34bf5e0aee3c002e99604d2c65fabf3b140d3b8585",
+     "tests/cassettes/test_tricky_journal_quality_results[10.1016-j.bbcan.2023.188947-1].yaml": "25fc9bb3f891f129bfe5f8507b83888167f8f4ccef3fe4631f1c64a256e656de",
+     "tests/cassettes/test_tricky_journal_quality_results[10.1016-j.semcdb.2016.08.024-1].yaml": "fdcbadcb5633608b3dfd2f18fe4b09b11f1a6ce6d648df2b0f63e96d9575bfc0",
+     "tests/cassettes/test_tricky_journal_quality_results[10.1038-s41598-018-27044-6-1].yaml": "23263e959719a2a8b751359fa0847a23a2e5151fff6879c602f1fd75eaefb6ac",
+     "tests/cassettes/test_tricky_journal_quality_results[10.1073-pnas.1205508109-3].yaml": "17d4ba28745ab6ff8b20c404da8fccdc4976131d7bb0936bf56148622b41e332",
+     "tests/cassettes/test_tricky_journal_quality_results[10.1146-annurev.pathol.4.110807.092311-2].yaml": "f33fcd2650252ec0a8a8859a2792907eff2f6c6375a669ed873998190e42eee7",
+     "tests/cassettes/test_tricky_journal_quality_results[10.1186-1471-2148-11-4-2].yaml": "08a9eace8c43f2b1392179d0279f8277ff79e82a71256ab86f39a752066435f0",
+     "tests/conftest.py": "9c1e5c181370f4b953938adf051bc60e61f35969d6266235525f5b9fc77a71eb",
+     "tests/duplicate_media_template.md": "b0f444d44e626be4644981ee949d8db1e9a29a206731712a3ca0a24f11ebeb5b",
+     "tests/stub_data/.DS_Store": "03558275c58fe6dda229dfb7723f7c5e945686b7a045259f9edd3ddc7b5b47c7",
+     "tests/stub_data/bates.txt": "ec9ccb4e99c7f3ae76bc3d2fa91a5e09fdad010900c484dc2b6cc9036dc9e576",
+     "tests/stub_data/dummy.docx": "652f9d4d3aea0672bf61de13c32636d5bb35ce5e087443379193c3566a5e2b1b",
+     "tests/stub_data/dummy.pptx": "9e9f5f09a348cddfc15af9bd838ff1508b641e2a4a2ec64a1be01ed2b4ae6ea7",
+     "tests/stub_data/dummy.xlsx": "1aea864512a545205690e76f8afc9bd4065289e3d3c29cd0043d21211d57373a",
+     "tests/stub_data/dummy_jap.docx": "2a84c77c36cce17f9231fc76bcbdcc830a023c644616590dc6cd141f8e351d3e",
+     "tests/stub_data/duplicate_media.pdf": "632d5115da4a0095b595c74616ca8272f7e585106fde62f3e1da78da276c268e",
+     "tests/stub_data/empty.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "tests/stub_data/flag_day.html": "a9360870bb21358455f4b902462ae8d2e59453af4d92b99c4b93c856b718e044",
+     "tests/stub_data/gravity_hill.md": "46d65f73403695f94c5d5ca36018df7f835eccc773e25e6724e03e8a629f7f5f",
+     "tests/stub_data/influence.pdf": "c74c85edf37bc335ceb83d8b107c1a8e7a736157f6f32e63ca5095d1e575e1b2",
+     "tests/stub_data/obama.txt": "ffae3ff56f196c758f89170637f9dcd3bbae8a18906bb0be9e4b5ca0bba2c076",
+     "tests/stub_data/paper.pdf": "145c91b72086b5cde6b048e4b50c7b325c7e1b8c6260e4e91fbc12fcf177eaf3",
+     "tests/stub_data/pasa.pdf": "3979809118c8636e3148d836da89dffd6716afa616f458a1111d76e2301cfc85",
+     "tests/stub_data/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+     "tests/stub_data/sf_districts.png": "f623850080cc1972be4ad29d17cf09ea7dd21f2db3a9d3699247d142109f9a6b",
+     "tests/stub_data/stub_manifest.csv": "15a2cdd65f622ff41cde40562aacbc94bed014896fb192574c0328b75b48deb4",
+     "tests/stub_data/stub_manifest_nocitation.csv": "3e08c47b44c24a0d0f6b874ef81c0d46029cdb4e3e046979b255f8ad5314c8bb",
+     "tests/stub_data/stub_retractions.csv": "d5f6fc9ad0915d749852a778525348400798bc1229e65a3a43c952263d197e4e",
+     "tests/test_agents.py": "357c7c145b7336d267d9d7222d5359a69329a65588367914adead93544029bc0",
+     "tests/test_cli.py": "0664aae3832a09dcfea92c0b4508202d59d68092daec045b4cc44ada6cb5676e",
+     "tests/test_clients.py": "c2d87adeff53c00986a2e6755617f9a48ed4cbd024169047b2789a57acf7a0df",
+     "tests/test_clinical_trials.py": "a68b82d64112ca08ae1f454e9763da2dbb2cd85bc7565d66c0d3fbfc8e787a90",
+     "tests/test_configs.py": "e5bf2e03cf06777c4fd6154fc37292dda4e4d1a76293ed6ab1ab47d02a0d8975",
+     "tests/test_paperqa.py": "36177ff018e5cd4566fe168a88dff7124a1f0fa25cba18e0a4513714c630f9d3",
+     "tests/test_utils.py": "d8ecee098bca7a0b70f19a65ef830f513a278186bf2050b93c89c3ce35d03aea"
+    },
+    "sha256": "870e673b062f05450fad6ad84ee94af7160fec5de2642bb53e82fbc178d3d4e8"
+   },
+   "github": "Future-House/paper-qa",
+   "helper_package": "src/paperqa",
+   "image": {
+    "tag": "mmd-paper-qa:57e89f7223b0",
+    "uuid": "b7a61779-7283-4526-b819-3f002f8ad574"
+   },
+   "import_stubs": {
+    "paperqa_docling": "optional reader with a heavy ML stack, not installed",
+    "paperqa_nemotron": "optional reader (NVIDIA hosted parse model), not installed",
+    "paperqa_pymupdf": "AGPL-3.0 sub-package, not installed by decision 2026-10-24"
+   },
+   "install": [
+    "pytest==9.0.2",
+    "pytest-asyncio==1.3.0",
+    "pytest-recording==0.13.4",
+    "pytest-timeout==2.4.0",
+    "pytest-rerunfailures==16.1",
+    "pytest-subtests==0.15.0",
+    "typeguard==4.5.1",
+    "vcrpy==8.1.1",
+    "python-dotenv==1.2.2",
+    "litellm==1.82.4",
+    "fhlmi==0.45.0",
+    "fhaviary==0.34.0",
+    "openai==2.29.0",
+    "httpx-aiohttp==0.1.12",
+    "aiohttp==3.13.3",
+    "httpcore==1.0.9"
+   ],
+   "license": "Apache-2.0 (LICENSE at the pinned commit); core install only: the AGPL-3.0 package paper-qa-pymupdf (extras dev, pymupdf, zotero) is not installed",
+   "node_args": [
+    "-q",
+    "-rs",
+    "--disable-recording"
+   ],
+   "prepare_env": {
+    "SETUPTOOLS_SCM_PRETEND_VERSION": "0.0.0+mmd.57e89f7"
+   },
+   "pytest_args": [
+    "tests/test_paperqa.py::test_unrelated_context",
+    "tests/test_paperqa.py::test_pre_prompt",
+    "tests/test_paperqa.py::test_post_prompt",
+    "tests/test_paperqa.py::test_location_awareness",
+    "tests/test_paperqa.py::test_custom_prompts",
+    "tests/test_paperqa.py::test_context_inner_outer_prompt",
+    "tests/test_paperqa.py::test_aquery_groups_contexts_by_question",
+    "tests/test_paperqa.py::test_evidence",
+    "-q",
+    "-rs"
+   ],
+   "scope_decisions": [
+    {
+     "commit": "census/targets.json (this entry)",
+     "local_commit_time_utc": "2026-10-24",
+     "order": "before the first paper-qa sandbox run",
+     "what": "third repo = paper-qa core (decision 2026-10-24 10:02, acceptance lane question b): 8 live tests of tests/test_paperqa.py chosen before any paper-qa run; gemini/* tests excluded; live mode via --disable-recording; embeddings served by one Token Factory model (Qwen3-Embedding-8B) on every rung"
+    },
+    {
+     "commit": "census/targets.json",
+     "local_commit_time_utc": "2026-10-24",
+     "order": "after attempt 1 (unpinned install: conftest import failed on vcrpy 8.3.0, no test ran, no model call), kept in evidence/census/paper-qa/attempt1/",
+     "what": "install pinned to paper-qa's own uv.lock versions (vcrpy 8.1.1, fhlmi 0.45.0, litellm 1.82.4, openai 2.29.0, ...)"
+    },
+    {
+     "commit": "census/targets.json",
+     "local_commit_time_utc": "2026-10-24",
+     "order": "after attempt 2 (pinned install: collection failed on 'No module named paperqa_docling', no test ran, no model call)",
+     "what": "tests/test_paperqa.py imports paperqa_pymupdf (AGPL), paperqa_docling and paperqa_nemotron at module level; they get import stubs (importing works, any use raises), and none of the 8 selected tests uses them (checked in the source before the run)"
+    },
+    {
+     "commit": "census/targets.json",
+     "local_commit_time_utc": "2026-10-24",
+     "order": "after attempt 3 (the library picked the stub as its PDF parser at session setup: every test errored before any model call)",
+     "what": "import stubs are visible only to test modules; paper-qa's own optional imports (prefer pymupdf, else pypdf) see the packages as absent"
+    },
+    {
+     "commit": "census/targets.json",
+     "local_commit_time_utc": "2026-10-24",
+     "order": "after the paper-qa controls (forward on Super, broken, wrong), before any paper-qa ladder job",
+     "what": "embedding call sites (docs.py:374, docs.py:446, llms.py:251) excluded from the ladder with the reason above"
+    }
+   ],
+   "site_flags": {
+    "src/paperqa/core.py:254": {
+     "cassette_only": false,
+     "flip_tests_empty_only": [],
+     "good_side": "forward",
+     "isolated": false,
+     "wrong_control": true,
+     "wrong_control_missing": []
+    },
+    "src/paperqa/docs.py:234": {
+     "cassette_only": false,
+     "flip_tests_empty_only": [],
+     "good_side": "forward",
+     "isolated": false,
+     "wrong_control": true,
+     "wrong_control_missing": []
+    },
+    "src/paperqa/docs.py:675": {
+     "cassette_only": false,
+     "flip_tests_empty_only": [],
+     "good_side": "forward",
+     "isolated": false,
+     "wrong_control": true,
+     "wrong_control_missing": []
+    },
+    "src/paperqa/docs.py:703": {
+     "cassette_only": false,
+     "flip_tests_empty_only": [],
+     "good_side": "forward",
+     "isolated": false,
+     "wrong_control": true,
+     "wrong_control_missing": []
+    }
+   },
+   "traced_not_covered": [
+    "src/paperqa/docs.py:635"
+   ]
   }
  },
- "written_utc": "2026-10-24T12:06:28Z"
+ "written_utc": "2026-10-24T12:27:01Z"
 }
