@@ -1,6 +1,6 @@
 # Scan: retiring OpenAI model IDs in popular Python repositories
 
-Rule: `evidence/scan/RULE.md`, commit ccaccc550d4960c6709143210831325d70c30678 2026-10-28T17:47:34-04:00. Code commit that ran: e8480c09a51fd83b87d66b0edaa64fe6d77ab5c9.
+Rule: `evidence/scan/RULE.md`, commit ccaccc550d4960c6709143210831325d70c30678 2026-10-28T17:47:34-04:00. Code commit that ran: 53b7cc0b (HEAD at the query time, 21:59:00Z commit, pushed before the scan). The script wrote this file at the end and first printed e8480c09 here, the HEAD by then; the commits between them (3457949, b380f49, e8480c0) change only README.md and demo data, not `model_moving_day/` (`git diff --stat 53b7cc0 e8480c0 -- model_moving_day` is empty).
 Query time (UTC): 2026-10-28T21:59:36+00:00. Query: `gh search repos openai --language=python --sort=stars --order=desc --archived=false --limit 200 --json fullName,stargazersCount,isFork,isArchived,pushedAt,defaultBranch,license,url`.
 
 ## Headline

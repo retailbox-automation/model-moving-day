@@ -164,6 +164,7 @@ def scan_popular(out_dir, n=50, limit=200, clone_dir=None, gh=_run_gh, clone=git
     clone_dir = Path(clone_dir or out_dir / "_clones")
     clone_dir.mkdir(parents=True, exist_ok=True)
     now = now or datetime.datetime.now(datetime.timezone.utc)
+    code_head = _git_out("rev-parse", "HEAD")  # the code that runs: read now, not when SCAN.md is written at the end
     query = [*QUERY]
     query[query.index("--limit") + 1] = str(limit)
     raw = gh(query)
@@ -206,7 +207,7 @@ def scan_popular(out_dir, n=50, limit=200, clone_dir=None, gh=_run_gh, clone=git
                "scan_errors": sum(r["reason"] == "scan failed" for r in repos),
                "parse_errors": sum(len(r["errors"]) for r in results),
                "repos_with_errors": sum(bool(r["errors"]) for r in results),
-               "query_time": now.isoformat(timespec="seconds"), "query": " ".join(query)}
+               "query_time": now.isoformat(timespec="seconds"), "query": " ".join(query), "code_head": code_head}
     (out_dir / "repos.json").write_text(json.dumps(repos, indent=1))
     (out_dir / "results.json").write_text(json.dumps(results, indent=1))
     write_scan_md(out_dir, summary)
@@ -219,7 +220,7 @@ def write_scan_md(out_dir, summary):
     dirty = " (with uncommitted changes to tracked files)" if _git_out("status", "--porcelain", "--untracked-files=no") else ""
     text = f"""# Scan: retiring OpenAI model IDs in popular Python repositories
 
-Rule: `evidence/scan/RULE.md`, commit {rule}. Code commit that ran: {_git_out("rev-parse", "HEAD")}{dirty}.
+Rule: `evidence/scan/RULE.md`, commit {rule}. Code commit that ran: {summary.get("code_head") or _git_out("rev-parse", "HEAD")}{dirty}.
 Query time (UTC): {summary["query_time"]}. Query: `{summary["query"]}`.
 
 ## Headline
