@@ -1,0 +1,347 @@
+{
+ "target": "llm",
+ "run_id": "20261028T215612Z-c7390e",
+ "kind": "confirm",
+ "smoke": null,
+ "status": "complete",
+ "started_utc": "2026-10-28T21:56:12Z",
+ "commit": "aebaca27f9acb6cc56ba4b33ab81e08d6dcb3bc3",
+ "manifest": {
+  "sha256": "32b356fe0e83ab27dea4fcaeb8dc15f3518563f55b9fd96b49ff7b7b8c7c905e",
+  "commit": "7b57d18def1dd57a437516add8eca6a129e91455",
+  "branch": "rerun-2026-10-29",
+  "remote_head": "ffe3600097a67f2fba8f9e562f24ce29197a7c14"
+ },
+ "k": 5,
+ "margin": 0.2,
+ "baseline": 1.0,
+ "baseline_note": "pass rate assumed 1.0 (strictest), not measured by us. Cassette replay 6/6 at aebaca2 (control-baseline, one run, recorded answers of gpt-4o-mini and gpt-4.1-mini); the ladder still uses the assumed 1.0.",
+ "rungs": [],
+ "excluded_sites": {
+  "llm/default_plugins/openai_models.py:1441": "not testable live: its 5 flip tests assert wording recorded from the old model (tests/test_tools.py:226, gpt-4o-mini's exact sentence) or the recorded tool output '0.fixed-version' (tests/test_tools_streaming.py :18, :28, :40, :53; a live run returns the installed llm version), and the variants expect different sentences, so no live model, the old one included, can pass them",
+  "llm/default_plugins/openai_models.py:2552": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+  "llm/default_plugins/openai_models.py:2677": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+  "llm/default_plugins/openai_models.py:2799": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured",
+  "llm/default_plugins/openai_models.py:2926": "Responses API call site: tests/test_openai_responses.py is excluded because the proxy does not route /v1/responses; which of its recorded tests reach this site is not measured"
+ },
+ "brain": null,
+ "frozen_sha256": "479b7ffa2880864b021ece815375d3fac68066b8f3e469d385526b3953109967",
+ "sandbox_max_runs": 64,
+ "sites": {
+  "llm/default_plugins/openai_models.py:1494": {
+   "status": "pending",
+   "chosen": null,
+   "model": null,
+   "fix": null,
+   "fallback": null,
+   "reason": "",
+   "flip_tests": [
+    "tests/test_tools.py::test_tool_use_chain_of_two_calls"
+   ],
+   "flags": {
+    "cassette_only": true,
+    "flip_tests_empty_only": [],
+    "good_side": "baseline",
+    "isolated": true,
+    "wrong_control": true,
+    "wrong_control_missing": []
+   },
+   "cells": [
+    {
+     "rung": "confirm",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "params": {},
+     "k": 5,
+     "valid_runs": 5,
+     "passed_runs": 5,
+     "infra_runs": 0,
+     "status": "pass",
+     "passes": true,
+     "runs_with_retried_infra": {
+      "pass": 0,
+      "fail": 0
+     },
+     "rate": 1.0,
+     "wilson95": [
+      0.5655,
+      1.0
+     ],
+     "fail_rate_upper_rule_of_three": 0.6,
+     "calls": 0,
+     "calls_per_test_run": 0.0,
+     "tokens_per_call": [
+      null,
+      null
+     ],
+     "reasoning_tokens": 0,
+     "usd_per_1000_calls": null,
+     "model_cost": 0,
+     "model_seconds": 0,
+     "seconds_per_call": null,
+     "usd_per_passed_run": 0.0,
+     "diagnoses": {},
+     "finish": {},
+     "changes": {},
+     "errors": {},
+     "repaired_empty_args": 0,
+     "first_failure": "",
+     "infra_failures": [],
+     "per_test_passed": {
+      "tests/test_tools.py::test_tool_use_chain_of_two_calls": [
+       5,
+       5
+      ]
+     },
+     "per_run": [
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      },
+      {
+       "passed": true,
+       "tests": {
+        "tests/test_tools.py::test_tool_use_chain_of_two_calls": "passed"
+       }
+      }
+     ],
+     "role": "confirm",
+     "routing_problems": [],
+     "requested": {
+      "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": 15
+     }
+    }
+   ]
+  }
+ },
+ "jobs": [
+  {
+   "utc": "2026-10-28T21:56:21Z",
+   "note": "confirm",
+   "model": null,
+   "sites": [
+    "llm/default_plugins/openai_models.py:1494"
+   ],
+   "k": 5,
+   "tests": 1,
+   "sandbox_cost_diagnostic": 0.11917693,
+   "cpu_s": 11.871889,
+   "wall_s": 8.421,
+   "exit_code": 0,
+   "model_spend": 0.0004452,
+   "error": null,
+   "envelope_error": null,
+   "exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "durations_s": [
+    5.0,
+    4.8,
+    5.2,
+    5.4,
+    5.4
+   ],
+   "freeze_before": [],
+   "freeze_after": [],
+   "isolation": {
+    "30/environ": "PermissionError",
+    "30/mem": "PermissionError",
+    "31/environ": "PermissionError",
+    "31/mem": "PermissionError"
+   },
+   "test_uid": 10001,
+   "untraced": 0,
+   "calls": [
+    {
+     "run": 1,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-ccabd8e6-cdc6-4258-a500-b70fbb6779dd",
+     "status": 200,
+     "seconds": 0.552,
+     "cost": 2.8199999999999998e-05
+    },
+    {
+     "run": 2,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-7cc1523e-3370-49f2-9e24-c3f062715450",
+     "status": 200,
+     "seconds": 0.471,
+     "cost": 2.8199999999999998e-05
+    },
+    {
+     "run": 0,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-34d10d81-7a2a-4b86-8574-0607de42fa95",
+     "status": 200,
+     "seconds": 0.491,
+     "cost": 2.8199999999999998e-05
+    },
+    {
+     "run": 1,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-37024f78-f285-4f2f-b4f1-520832d71a44",
+     "status": 200,
+     "seconds": 0.626,
+     "cost": 3.27e-05
+    },
+    {
+     "run": 2,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-e2c92608-46b0-4525-b0d2-c90e6c77b49a",
+     "status": 200,
+     "seconds": 0.623,
+     "cost": 3.27e-05
+    },
+    {
+     "run": 4,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-63cfed6f-c3e9-4673-a290-75eb9b3ceecb",
+     "status": 200,
+     "seconds": 1.085,
+     "cost": 2.8199999999999998e-05
+    },
+    {
+     "run": 3,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-da775908-8e52-4f2d-bc96-9cb797c9f8f9",
+     "status": 200,
+     "seconds": 0.951,
+     "cost": 2.8199999999999998e-05
+    },
+    {
+     "run": 0,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-3de6b8e2-f53d-4fc1-8b65-b3ed80ed5ebd",
+     "status": 200,
+     "seconds": 0.621,
+     "cost": 3.27e-05
+    },
+    {
+     "run": 1,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-f8d61739-a02d-47f8-8e6c-5f59fe5548a0",
+     "status": 200,
+     "seconds": 0.38,
+     "cost": 2.814e-05
+    },
+    {
+     "run": 0,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-2a6e7945-9f84-40a8-9323-4c97b48c2782",
+     "status": 200,
+     "seconds": 0.381,
+     "cost": 2.814e-05
+    },
+    {
+     "run": 4,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-49ea413b-8399-4a5e-aadc-aa80b399e4c2",
+     "status": 200,
+     "seconds": 0.627,
+     "cost": 3.27e-05
+    },
+    {
+     "run": 3,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-3fc78e57-f95f-4bcf-bdba-8f55ffd4fcd8",
+     "status": 200,
+     "seconds": 0.655,
+     "cost": 3.27e-05
+    },
+    {
+     "run": 2,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-606d2255-22f9-49a2-b3cf-2663cdcda3e6",
+     "status": 200,
+     "seconds": 0.884,
+     "cost": 2.814e-05
+    },
+    {
+     "run": 4,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-d5f75631-f651-4bb5-ade5-f1bc95b59624",
+     "status": 200,
+     "seconds": 0.384,
+     "cost": 2.814e-05
+    },
+    {
+     "run": 3,
+     "test": "tests/test_tools.py::test_tool_use_chain_of_two_calls",
+     "site": "llm/default_plugins/openai_models.py:1495",
+     "model": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
+     "upstream_id": "chatcmpl-f3967e37-31cb-44b8-b803-fb6596960276",
+     "status": 200,
+     "seconds": 0.328,
+     "cost": 2.814e-05
+    }
+   ],
+   "site_runs": {
+    "llm/default_plugins/openai_models.py:1495": {
+     "calls_by_run": {
+      "1": 3,
+      "2": 3,
+      "0": 3,
+      "4": 3,
+      "3": 3
+     },
+     "errors_by_run": {},
+     "models_requested": {
+      "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B": 15
+     }
+    }
+   }
+  }
+ ],
+ "ended_utc": "2026-10-28T21:56:21Z"
+}

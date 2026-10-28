@@ -1,0 +1,244 @@
+diff --git a/llm/default_plugins/openai_models.py b/llm/default_plugins/openai_models.py
+index 0efc806..4bd3c48 100644
+--- a/llm/default_plugins/openai_models.py
++++ b/llm/default_plugins/openai_models.py
+@@ -27,6 +27,7 @@ from llm import (
+     Response,
+     hookimpl,
+ )
++from llm import nemotron_move
+ from llm.models import _partition_tools
+ from llm.parts import StreamEvent
+ from llm.utils import (
+@@ -1491,12 +1492,7 @@ class Chat(_Shared, KeyModel):
+                         )
+                     )
+         else:
+-            completion = client.chat.completions.create(
+-                model=self.model_name or self.model_id,
+-                messages=messages,
+-                stream=False,
+-                **kwargs,
+-            )
++            completion = nemotron_move.call("llm_default_plugins_openai_models_py_1494", client.chat.completions.create, model=self.model_name or self.model_id, messages=messages, stream=False, **kwargs)
+             usage = completion.usage.model_dump()
+             response.response_json = remove_dict_none_values(completion.model_dump())
+             for tool_call in completion.choices[0].message.tool_calls or []:
+
+--- new file llm/nemotron_move.py
+"""Nemotron move helper (added by Model Moving Day, MIT). Off unless NEMOTRON_MOVE=1.
+
+With NEMOTRON_MOVE=1 each moved call site sends the Nemotron model the census chose for it, with the request
+parameters the census measured for that model (SITES below), to Nebius Token Factory instead of the model and
+endpoint the caller named. NEMOTRON_MODEL_<SITE> overrides one site (and then no fallback is used).
+
+Routing: a moved call goes to NEMOTRON_MOVE_BASE_URL with the key in NEMOTRON_MOVE_API_KEY (a site may name other
+variables), never to the app's own endpoint: an openai SDK method is re-bound to a copy of its client
+(`client.with_options(base_url=..., api_key=...)`), a litellm function gets `api_base` and `api_key`. Only the call
+shape the census measured is moved (`only`, e.g. openai chat completions); anything else that passes through the
+same site keeps its model and endpoint. Without both variables nothing is moved and one warning says why.
+
+Nested sites: the outermost wrapped site decides the model and parameters for every wrapped call below it, and the
+first wrapped call that can be routed sends it (an app-level wrapper is moved by the library funnel it calls, with
+the outer site's plan). A site marked "keep" is wrapped but never moved, so a moved funnel leaves its calls on the
+old model too.
+
+On an answer that means "unknown model" (RETIRED_STATUSES; Token Factory does not reroute retired models) the call is
+retried once on the site's fallback, but only when the census measured a fallback cell that passed; each fallback
+carries its own parameters. Without a measured fallback the error is raised.
+
+Deprecation signal: with NEMOTRON_MOVE_BASE_URL and NEMOTRON_MOVE_API_KEY set, the first moved call lists
+<base>/models and logs a warning for every configured model that is missing (a failed listing is retried after
+five minutes).
+"""
+import contextvars, json, logging, os, threading, time, urllib.request
+
+log = logging.getLogger("nemotron_move")
+
+# site -> {"model", "params": merged into the call, "drop": keys removed, "min_max_tokens": budget floor,
+#          "only": module prefix of the moved call shape, "base_url_env", "api_key_env",
+#          "fallback": the same fields for the measured fallback model, or None}  |  {"keep": True}
+SITES = {'llm_default_plugins_openai_models_py_1494': {'drop': [],
+                                               'fallback': {'drop': [],
+                                                            'min_max_tokens': None,
+                                                            'model': 'nvidia/Nemotron-3_5-Lightning',
+                                                            'params': {}},
+                                               'min_max_tokens': None,
+                                               'model': 'nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B',
+                                               'only': 'openai.resources.chat.completions',
+                                               'params': {'extra_body': {'chat_template_kwargs': {'enable_thinking': False}}}}}
+RETIRED_STATUSES = {404}  # Token Factory's answer to an unknown model ID: measured, evidence/platform/unknown-model.json
+
+_active = contextvars.ContextVar("nemotron_move_site", default=None)
+_checked, _next_try, _lock, _warned = False, 0.0, threading.Lock(), set()
+RETRY_LISTING_S = 300
+
+
+def enabled():
+    return os.environ.get("NEMOTRON_MOVE", "").lower() in ("1", "true", "yes")
+
+
+def _site_env(site):
+    return "NEMOTRON_MODEL_" + "".join(c if c.isalnum() else "_" for c in site).upper()
+
+
+def model_for(site, requested):
+    """The model this call site should send: the caller's choice unless the move is enabled."""
+    if not enabled() or site not in SITES or SITES[site].get("keep"):
+        return requested
+    return os.environ.get(_site_env(site)) or SITES[site]["model"]
+
+
+def _merge(base, extra):
+    out = dict(base)
+    for k, v in extra.items():
+        out[k] = _merge(out[k], v) if isinstance(v, dict) and isinstance(out.get(k), dict) else v
+    return out
+
+
+def _apply(kwargs, cfg, model):
+    kw = dict(kwargs, model=model)
+    for k, v in (cfg.get("params") or {}).items():
+        kw[k] = _merge(kw[k], v) if isinstance(v, dict) and isinstance(kw.get(k), dict) else v
+    for k in cfg.get("drop") or []:
+        kw.pop(k, None)
+        if isinstance(kw.get("extra_body"), dict) and k in kw["extra_body"]:
+            kw["extra_body"] = {x: y for x, y in kw["extra_body"].items() if x != k}
+    floor = cfg.get("min_max_tokens")
+    if floor:
+        key = "max_completion_tokens" if "max_completion_tokens" in kw and "max_tokens" not in kw else "max_tokens"
+        if kw.get(key) is None or kw[key] < floor:
+            kw[key] = floor
+    return kw
+
+
+def _plan(site, kwargs):
+    """(request for the chosen model, request for the measured fallback or None)."""
+    check_models()
+    cfg, override = SITES[site], os.environ.get(_site_env(site))
+    kw = _apply(kwargs, cfg, override or cfg["model"])
+    fb = cfg.get("fallback")
+    return kw, (_apply(kwargs, fb, fb["model"]) if fb and not override else None)
+
+
+def _target(create, cfg):
+    """(callable that sends to Token Factory, extra keyword arguments, "") or (None, {}, why the call stays)."""
+    base = os.environ.get(cfg.get("base_url_env") or "NEMOTRON_MOVE_BASE_URL")
+    key = os.environ.get(cfg.get("api_key_env") or "NEMOTRON_MOVE_API_KEY")
+    if not base or not key:
+        return None, {}, "NEMOTRON_MOVE_BASE_URL and NEMOTRON_MOVE_API_KEY are not both set"
+    res = getattr(create, "__self__", None)
+    shape = type(res).__module__ if res is not None else (getattr(create, "__module__", None) or "")
+    if not shape.startswith(cfg.get("only") or ""):
+        return None, {}, f"{shape or type(create).__name__} is not the moved call shape ({cfg.get('only')})"
+    if res is not None and shape.startswith("openai.resources.") and hasattr(getattr(res, "_client", None), "with_options"):
+        return getattr(type(res)(res._client.with_options(base_url=base, api_key=key)), create.__name__), {}, ""
+    if shape.startswith("litellm"):
+        return create, {"api_base": base, "api_key": key}, ""
+    return None, {}, f"cannot route {shape or type(create).__name__}"
+
+
+def _warn_once(site, why):
+    with _lock:
+        if (site, why) in _warned:
+            return
+        _warned.add((site, why))
+    log.warning("nemotron_move: %s not moved: %s", site, why)
+
+
+def _is_retired(exc):
+    status = getattr(exc, "status_code", None) or getattr(getattr(exc, "response", None), "status_code", None)
+    return status in RETIRED_STATUSES
+
+
+def _decide(site):
+    """(deciding site or None, context token). The outermost wrapped site decides for every wrapped call below it."""
+    outer = _active.get()
+    if outer is not None:
+        return outer, None
+    if not enabled() or site not in SITES:
+        return None, None
+    return site, _active.set(site)
+
+
+def _prepare(site, deciding, create, kwargs):
+    """(send, request, fallback request, extra kwargs) for a call to move, or None to leave the call as it is."""
+    cfg = SITES[deciding]
+    if cfg.get("keep"):
+        return None
+    send, extra, why = _target(create, cfg)
+    if send is None:  # e.g. an app-level wrapper: a routable wrapped call deeper down moves it with this site's plan
+        if deciding == site:
+            _warn_once(site, why + "; it moves only if a wrapped call below it can be routed")
+        return None
+    kw, fallback = _plan(deciding, kwargs)
+    return send, kw, fallback, extra
+
+
+def call(site, create, *args, **kwargs):
+    deciding, token = _decide(site)
+    try:
+        move = _prepare(site, deciding, create, kwargs) if deciding else None
+        if move is None:
+            return create(*args, **kwargs)
+        send, kw, fallback, extra = move
+        try:
+            return send(*args, **{**kw, **extra})
+        except Exception as e:
+            if fallback is None or not _is_retired(e):
+                raise
+            log.warning("nemotron_move: %s is unknown at %s (%s), retrying on the measured fallback %s",
+                        kw["model"], deciding, type(e).__name__, fallback["model"])
+            return send(*args, **{**fallback, **extra})
+    finally:
+        if token is not None:
+            _active.reset(token)
+
+
+async def acall(site, create, *args, **kwargs):
+    deciding, token = _decide(site)
+    try:
+        move = _prepare(site, deciding, create, kwargs) if deciding else None
+        if move is None:
+            return await create(*args, **kwargs)
+        send, kw, fallback, extra = move
+        try:
+            return await send(*args, **{**kw, **extra})
+        except Exception as e:
+            if fallback is None or not _is_retired(e):
+                raise
+            log.warning("nemotron_move: %s is unknown at %s (%s), retrying on the measured fallback %s",
+                        kw["model"], deciding, type(e).__name__, fallback["model"])
+            return await send(*args, **{**fallback, **extra})
+    finally:
+        if token is not None:
+            _active.reset(token)
+
+
+def check_models():
+    """Deprecation signal: warn once per process for configured models the platform no longer lists."""
+    global _checked, _next_try
+    with _lock:
+        if _checked or os.environ.get("NEMOTRON_MOVE_CHECK", "1") == "0" or time.time() < _next_try:
+            return
+        _next_try = time.time() + RETRY_LISTING_S
+    base, key = os.environ.get("NEMOTRON_MOVE_BASE_URL"), os.environ.get("NEMOTRON_MOVE_API_KEY")
+    if not base or not key:
+        log.warning("nemotron_move: NEMOTRON_MOVE_BASE_URL and NEMOTRON_MOVE_API_KEY are not both set; "
+                    "the deprecation check is skipped")
+        with _lock:
+            _checked = True
+        return
+    base = base.rstrip("/")
+    req = urllib.request.Request(base + "/models", headers={"Authorization": "Bearer " + key})
+    try:
+        with urllib.request.urlopen(req, timeout=10) as r:
+            listed = {m.get("id") for m in json.load(r).get("data", [])}
+    except Exception as e:
+        log.warning("nemotron_move: could not list models at %s/models (%s); will retry in %d s", base, e, RETRY_LISTING_S)
+        return
+    with _lock:
+        _checked = True
+    wanted = {m for s in SITES.values() for m in (s.get("model"), (s.get("fallback") or {}).get("model")) if m}
+    for m in sorted(wanted - listed):
+        log.warning("nemotron_move: %s is not listed by %s/models; it may be retired or renamed", m, base)
