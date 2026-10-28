@@ -1,0 +1,6 @@
+Model Moving Day: re-run of one call site, 2026-10-28 21:54 UTC (not part of the census)
+site  llm/default_plugins/openai_models.py:1494
+rules K=5 runs per cell, >=4 of 5 pass, Nano -> Lightning -> Super -> Ultra, in Token Factory Sandboxes
+
+$ python -m model_moving_day.census ladder llm
+evidence/rerun-2026-10-29/run.sh: line 12: <local path>: Is a directory

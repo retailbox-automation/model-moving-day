@@ -48,3 +48,11 @@ fix list or model changed.
 this run, `patch/` (diff, plan, result, PR text), `calls.jsonl` (every model call: test, site, model, Token Factory
 response id, status, seconds, $), and `RESULT.md` comparing the result with the census run of 2026-10-24
 (`ladder-20261024T115937Z-6e8505`).
+
+## Attempts
+
+- Attempt 1, 2026-10-28T21:54:03Z: stopped at the first command because `run.sh` did not quote the interpreter path,
+  which has a space in it. No model call and no sandbox run were made. Its terminal output is `attempt-1.txt`, with the
+  local path replaced by `<local path>`. The branch and folder keep the planned date (2026-10-29); the runs happened on
+  2026-10-28 UTC.
+- Attempt 2: the same commands, with the quoting fixed in `run.sh`. Recorded as `rerun.cast`.
