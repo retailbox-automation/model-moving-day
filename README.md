@@ -1,8 +1,34 @@
 # Model Moving Day
 
-Which NVIDIA Nemotron model on Nebius Token Factory each LLM call site needs, decided by the repository's own tests.
-First census: 4 call sites decided in 2 open-source libraries; 3 run on Lightning or Nano, 1 needed Super and costs about 3× more per call than OpenAI's replacement model, priced on the same tokens.
-The coverage gate we set beforehand (3 repositories, 5 independent decisions) was not met. Every cell, failures included: [CENSUS.md](CENSUS.md).
+OpenAI shuts down GPT-4o, GPT-4o mini, GPT-4.1 and GPT-4.1 mini on January 14, 2027 (its deprecations page, read on
+2026-10-24 and again on 2026-10-28: `evidence/platform/openai-deprecations-check-2026-10-28.md`), and the tests of the three open-source projects
+studied here still name those models. Model Moving Day is an agent that finds the LLM call sites in a repository,
+decides which NVIDIA Nemotron model on Nebius Token Factory each call site needs by running the repository's own tests
+in Token Factory Sandboxes, and writes the move as a branch that the same tests confirm.
+
+First census (test traffic, not production traffic): of 26 LLM call sites found in 3 libraries and tools, only 8 could
+be measured with the repositories' own tests. 4 got a decision, in 2 libraries: 3 run on Lightning or Nano, and 1 needed
+Super, which costs about 3× more per call than OpenAI's replacement model priced on the same tokens. The coverage gate
+we set beforehand (3 repositories, 5 independent decisions) was not met. Every cell, failures included: [CENSUS.md](CENSUS.md).
+
+- Demo, a replay of this census with no model calls: https://model-moving-day.retailbox-automation.com/
+- Video: <C1_VIDEO_URL>
+
+## Check it in two minutes
+
+| Claim | Where to check | What you will see |
+|---|---|---|
+| The model for each call site is chosen by the repository's own tests | `census/MANIFEST.json` → `targets.<repo>.flip_tests`; demo, click a row | the tests that pass with a working answer and fail with an empty or wrong one, and how many runs each model passed per test |
+| The ladder rules were pushed before the decision runs | `census/MANIFEST.json` (SHA-256 `35365b0c…`), pushed 2026-10-24T11:47:38Z; first ladder 11:49:40Z; every `evidence/census/*/ladder-*.json` records the SHA | the manifest fields `rules` and `amendments`; the coverage gate is not among them (see Limits) |
+| 3 of 4 decided call sites run on Lightning or Nano; `retry.py:523` needs Super | CENSUS.md "Which model does what"; `evidence/census/instructor/ladder-20261024T114940Z-f6c56a.json` | cells 5/5 and 0/5; at `retry.py:523` Lightning fails one nested-model test in every run |
+| Each decision has a receipt against the next bigger Nemotron | CENSUS.md "Every cell", fallback rows; demo receipt panel | `retry.py:224` Lightning $0.046 vs Super $0.157 per 1,000 calls; `retry.py:523` Super $0.170 vs Ultra $0.659; `llm_validators.py:34` Nano $0.101 vs Lightning $0.073 |
+| The `'\nYES'` fix at llm `:1494` is rule-backed, not a discovery | `evidence/census/llm/ladder-20261024T115937Z-6e8505.json` → `fixes` | diagnosis by a proxy rule, fix from the pre-registered list, `applied_calls` 15 |
+| The agent writes the move and the patched code passes the same tests | `evidence/census/{instructor,llm}/patch/patch.diff`, `PR.md`; confirm runs `…2a6fd0`, `…9d0fdb` | an opt-in helper (`NEMOTRON_MOVE=1`); confirm 5/5 per moved site; nothing pushed upstream |
+| Failures are published | CENSUS.md, paper-qa runs and "Found, not measured"; demo "What did not work" | paper-qa: 503/500 replies and lost jobs, no decision; 18 sites not measured, each with its reason |
+
+How this differs from routing each step to a model by price: here the target repository's own frozen tests choose the
+model per call site, every cell is published with its receipt, and the output is a migration branch confirmed by
+re-running those tests.
 
 Built for the Nebius × NVIDIA Global AI Hackathon (track: Coding and Agentic Engineering). Every number below comes
 from CENSUS.md, which `census/report.py` recomputes from the evidence files.
@@ -154,6 +180,28 @@ the other. Token Factory billing showed no Sandboxes charge when checked on 2026
 Usage data as of 12:11 UTC), so runs after 12:11 UTC are not covered by that check. The Sandboxes `cost` field ($5.33
 over the decision runs) is a diagnostic, not spend.
 
+## Platform findings (Nebius Token Factory and Sandboxes)
+
+Found while running the census; each with its evidence. Dates are 2026.
+
+- Nano reports no reasoning tokens: `reasoning_tokens` was reported in 0 of 83 Nano responses (75 of 75 for Lightning,
+  1,184 of 1,184 for Super), although 14 Nano responses carried reasoning text. Hidden reasoning is then billed as plain
+  output, which skews any per-token comparison (`evidence/spikes/RESULTS.md` S5).
+- `reasoning_effort: "none"` on Nano returns HTTP 200 with empty content and the answer in `message.reasoning`;
+  `chat_template_kwargs.enable_thinking=false` works on all four Nemotron sizes (PF-1). The reasoning field differs per
+  model: Nano `reasoning`, Lightning and Super both fields, Ultra `reasoning_content` (PF-2).
+- With reasoning on, answers can start with a newline; exact-match tests in real projects break on it (llm `:1494`).
+- Rate-limit headers and enforcement differ: Super ran 577 calls per minute for two minutes against
+  `x-ratelimit-limit-requests` 300, and `remaining-requests` read 0 on 564 calls with no 429 (PF-3).
+- Under load, Nano returned HTTP 503/500 often enough that paper-qa got no decision (89, 136 and 21 error replies in
+  its three decision runs; CENSUS.md).
+- Sandboxes: long operations outlived our client's status polls (8 of 11 set-aside runs in paper-qa's third run); a
+  completion webhook or long poll would help. A beta run returns a non-zero `resources.cost` that billing did not show
+  (PF-5). `contree-sdk` 0.3.6 warns "Token expires in 0 hours" for a key valid until 2031 (PF-4).
+- The console has no spend cap or budget alert; the census enforces a hard cap in its own client.
+
+`evidence/spikes/platform_findings.json` holds PF-1 to PF-5 with their raw evidence.
+
 ## How it works
 
 1. `census prepare <repo>` installs the target repository at a pinned commit into a Token Factory Sandboxes image.
@@ -176,9 +224,14 @@ Requirements: Python 3.12, `pip install -e '.[dev,sandbox]'`, a Token Factory ke
 Sandboxes project in `NEBIUS_PROJECT_ID`. Offline tests: `python -m pytest -q`. CENSUS.md:
 `python census/report.py`. To run the census yourself, use your own key and project with the commands above.
 
-Demo (replay of this census, no key, no model calls): `python -m demo.build` writes `demo/data/census.json` from the
-same data as CENSUS.md, and `python -m demo.server` serves it (`GET /`, `/api/census`, `/api/site/<site>`,
-`/api/run/<run_id>`, `/api/patch/<repo>`). The `Dockerfile` runs the same server.
+Demo (replay of this census, no key, no model calls): the page at https://model-moving-day.retailbox-automation.com/ is
+`demo/static/` (`index.html`, `app.js`, `app.css` and `data.js`). `python -m demo.static_build` writes `data.js` from
+`demo/data/census.json` (built by `python -m demo.build` from the same data as CENSUS.md) plus the flip-test names from
+the manifest and the per-test counts from the ladder files; open `demo/static/index.html` from disk or serve the folder.
+`python -m demo.server` serves the same data as JSON (`/api/census`, `/api/site/<site>`, `/api/run/<run_id>`,
+`/api/patch/<repo>`), and the `Dockerfile` runs that server. `tests/test_demo_static.py` checks that every dollar amount
+on the page is one CENSUS.md or this README states. The hosted page also loads a visit counter
+(`t.retailbox-automation.com`, no cookies) and Cloudflare's page analytics.
 
 ## Limits
 
@@ -214,7 +267,7 @@ same data as CENSUS.md, and `python -m demo.server` serves it (`GET /`, `/api/ce
   the Sandboxes file store); it is revoked after the event.
 - More in CENSUS.md, "What is not claimed".
 
-## Pre-registration
+## What was fixed before the runs
 
 - The platform spike plan (`evidence/spikes/PLAN.md`, commit d5fb0dd) and the Sandboxes spike plan
   (`evidence/sandbox/PLAN.md`, commit 8fac6be) were committed locally before their runs and pushed afterwards: the
