@@ -7,8 +7,8 @@
  },
  "census": {
   "manifest": {
-   "sha256": "273943f70ab573fbddc7be2863c2502d623322044b8774c46e640bf6567e478a",
-   "amendments": 7,
+   "sha256": "32b356fe0e83ab27dea4fcaeb8dc15f3518563f55b9fd96b49ff7b7b8c7c905e",
+   "amendments": 8,
    "baseline": {
     "method": "priced on the Nemotron cell's measured prompt tokens and visible output tokens per call (reasoning tokens excluded), i.e. as if the old app made the same calls; per passed run as well as per 1,000 calls",
     "model": "gpt-6-luna",
