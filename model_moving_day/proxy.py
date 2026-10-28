@@ -282,7 +282,8 @@ class _Handler(BaseHTTPRequestHandler):
                 srv.log(rec)
                 return self._send(e.status or 502, {"error": {"message": str(e)}})
             raw = reply.raw
-            rec.update(status=200, seconds=reply.seconds, usage=reply.usage, cost=reply.cost, finish=reply.finish_reason,
+            rec.update(status=200, upstream_id=raw.get("id"), seconds=reply.seconds, usage=reply.usage, cost=reply.cost,
+                       finish=reply.finish_reason,
                        content_empty=not reply.content, text_in_reasoning=reply.from_reasoning,
                        content_lead_ws=bool(reply.content) and reply.content[:1].isspace(),
                        reasoning_tokens=reply.reasoning_tokens, tool_calls=len(reply.tool_calls),

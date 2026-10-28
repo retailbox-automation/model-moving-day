@@ -362,7 +362,7 @@ class Ladder:
                "envelope_error": s.get("envelope_error"), "exit_codes": s.get("exit_codes"),
                "durations_s": s.get("durations_s"), "freeze_before": s.get("freeze_before"),
                "freeze_after": s.get("freeze_after"), "isolation": s.get("isolation"), "test_uid": s.get("test_uid"),
-               "untraced": untraced_calls(s),
+               "untraced": untraced_calls(s), "calls": s.get("call_ids"),
                "site_runs": {x: {k: v.get(k) for k in ("calls_by_run", "errors_by_run", "models_requested")}
                              for x, v in ((s.get("calls") or {}).get("sites") or {}).items()}}
         self.jobs.append(rec)

@@ -44,7 +44,7 @@ class Brain:
         except tf.TFError as e:  # logged, then raised: the caller decides; nothing is swallowed
             self._log({"step": step, "model": self.model, "error": str(e)[:300], "seconds": round(time.time() - t0, 3)})
             raise
-        self._log({"step": step, "model": r.model, "seconds": r.seconds, "prompt_tokens": r.usage.get("prompt_tokens"),
+        self._log({"step": step, "model": r.model, "id": r.raw.get("id"), "seconds": r.seconds, "prompt_tokens": r.usage.get("prompt_tokens"),
                    "completion_tokens": r.usage.get("completion_tokens"), "reasoning_tokens": r.reasoning_tokens,
                    "cost": r.cost, "finish": r.finish_reason, "tool_calls": [tc["function"]["name"] for tc in r.tool_calls]})
         return r

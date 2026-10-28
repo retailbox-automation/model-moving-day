@@ -339,6 +339,8 @@ def main():
     calls_path = OUT / "calls.jsonl"
     calls = [json.loads(x) for x in calls_path.read_text().splitlines()] if calls_path.exists() else []
     summary["calls"] = summarize_calls(calls)
+    summary["call_ids"] = [{k: c.get(k) for k in ("run", "test", "site", "model", "upstream_id", "status", "seconds", "cost")}
+                           for c in calls if c.get("method") != "GET"]
     led = OUT / "ledger.jsonl"
     summary["envelope_spent"] = round(sum(json.loads(x)["usd"] for x in led.read_text().splitlines() if x.strip()), 8) \
         if led.exists() else 0.0
