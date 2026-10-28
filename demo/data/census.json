@@ -1073,5 +1073,16 @@
   "cast": "evidence/rerun-2026-10-29/rerun.cast",
   "result": "evidence/rerun-2026-10-29/RESULT.md"
  },
- "scan": null
+ "scan": {
+  "date": "2026-10-28",
+  "K": 50,
+  "T": 37,
+  "S": 34,
+  "U": 44,
+  "candidates": 200,
+  "clone_errors": 1,
+  "scan_errors": 1,
+  "parse_errors": 4,
+  "dir": "evidence/scan/2026-10-28"
+ }
 }

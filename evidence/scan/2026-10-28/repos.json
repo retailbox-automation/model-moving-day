@@ -1,0 +1,1604 @@
+[
+ {
+  "repo": "NousResearch/hermes-agent",
+  "stars": 258058,
+  "pushed_at": "2026-10-28T21:58:55Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "74195d3680784111a58ce6643e16c7bd082a40a7"
+ },
+ {
+  "repo": "microsoft/markitdown",
+  "stars": 192724,
+  "pushed_at": "2026-10-28T15:33:14Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "7482c092d9c0074a89803c9fdb63a969e7fe17fc"
+ },
+ {
+  "repo": "Significant-Gravitas/AutoGPT",
+  "stars": 187805,
+  "pushed_at": "2026-10-28T18:47:36Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "07212df377c4ea0ac5ed6a7c9c8ff72203564650"
+ },
+ {
+  "repo": "langgenius/dify",
+  "stars": 159837,
+  "pushed_at": "2026-10-28T21:34:07Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "ea5e4e9e21e73a8b7406e2d678350a2dd33b8fa0"
+ },
+ {
+  "repo": "open-webui/open-webui",
+  "stars": 157074,
+  "pushed_at": "2026-10-28T21:50:16Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "33c1978d5bad52a31df75ea55143025dfad18d16"
+ },
+ {
+  "repo": "langchain-ai/langchain",
+  "stars": 148637,
+  "pushed_at": "2026-10-28T21:39:14Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "e633868f9cb417456cde1ec19b585190d84c5c17"
+ },
+ {
+  "repo": "vllm-project/vllm",
+  "stars": 95785,
+  "pushed_at": "2026-10-28T21:56:00Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "9f0893f1adab0359e91eb6ce0fd0673c53660393"
+ },
+ {
+  "repo": "unslothai/unsloth",
+  "stars": 78706,
+  "pushed_at": "2026-10-28T21:51:57Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "06314b97dd6502c84c0ee7e9d453a0dbfdf1f377"
+ },
+ {
+  "repo": "headroomlabs-ai/headroom",
+  "stars": 78148,
+  "pushed_at": "2026-10-28T21:57:39Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "09b7e8c1e41779b4c22f1a4ec941b59a61e621f1"
+ },
+ {
+  "repo": "calesthio/OpenMontage",
+  "stars": 72716,
+  "pushed_at": "2026-10-28T21:46:02Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "195eab24478dc9363326aec437aefc3701635ddf"
+ },
+ {
+  "repo": "asgeirtj/system_prompts_leaks",
+  "stars": 70367,
+  "pushed_at": "2026-10-27T20:19:00Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "1b6f936124b4eceb6e697a69da07519bea67feab"
+ },
+ {
+  "repo": "xtekky/gpt4free",
+  "stars": 66948,
+  "pushed_at": "2026-10-28T18:45:07Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "70a5252cc30d813c215ecc9070eed4f40208f232"
+ },
+ {
+  "repo": "BerriAI/litellm",
+  "stars": 62250,
+  "pushed_at": "2026-10-28T21:59:32Z",
+  "status": "dropped",
+  "reason": "scan failed",
+  "sha": "b8fb50f70e82f5eed8a8d56cdb5b6b1ca4e1e7b7",
+  "error": "KeyError: 'litellm_acompletion'"
+ },
+ {
+  "repo": "zylon-ai/private-gpt",
+  "stars": 57614,
+  "pushed_at": "2026-10-27T10:12:18Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "567ba14765a5e17f743c77ad29536559009258da"
+ },
+ {
+  "repo": "Aider-AI/aider",
+  "stars": 49795,
+  "pushed_at": "2026-05-22T14:02:20Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "5dc9490bb35f9729ef2c95d00a19ccd30c26339c"
+ },
+ {
+  "repo": "oobabooga/textgen",
+  "stars": 47724,
+  "pushed_at": "2026-08-17T17:38:16Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "c93f8871239550de2ccfe1e95d469aa82616f07e"
+ },
+ {
+  "repo": "zhayujie/CowAgent",
+  "stars": 47658,
+  "pushed_at": "2026-10-28T13:09:51Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "d209638186db3e4c2daf3b1f51b4b15ecb1e7cd0"
+ },
+ {
+  "repo": "AstrBotDevs/AstrBot",
+  "stars": 44488,
+  "pushed_at": "2026-10-28T08:34:25Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "abf683071952375ec36baa4cad6b6f3d9c9bb03f"
+ },
+ {
+  "repo": "langchain-ai/langgraph",
+  "stars": 44062,
+  "pushed_at": "2026-10-28T21:27:44Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "5c96bce8d370450c05af5ae740e5d1f936a24f53"
+ },
+ {
+  "repo": "PDFMathTranslate/PDFMathTranslate",
+  "stars": 38000,
+  "pushed_at": "2026-10-28T20:01:30Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "6e2f3166ef10c39c3600be34bd13705242e23f6c"
+ },
+ {
+  "repo": "mouredev/Hello-Python",
+  "stars": 37904,
+  "pushed_at": "2025-08-11T12:00:01Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "openai/openai-python",
+  "stars": 31988,
+  "pushed_at": "2026-10-28T21:45:00Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "45b9531d549df9b7c4af267d66ac5a5999bd9d31"
+ },
+ {
+  "repo": "openai/openai-agents-python",
+  "stars": 30355,
+  "pushed_at": "2026-10-27T19:44:03Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "cd26bbbc52847845fde73b9952b51e62e2bcbdc0"
+ },
+ {
+  "repo": "mlflow/mlflow",
+  "stars": 28575,
+  "pushed_at": "2026-10-28T17:42:42Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "53a835cd7c3febc5c8730fe52c6b3c44f19098e9"
+ },
+ {
+  "repo": "SYSTRAN/faster-whisper",
+  "stars": 26260,
+  "pushed_at": "2026-10-25T07:17:13Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "9e472ae9de8bb374552f531f752654554b76b2d6"
+ },
+ {
+  "repo": "guillaumemeyer/watermarks-remover",
+  "stars": 25332,
+  "pushed_at": "2026-10-26T20:26:14Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "5c180932a00c793261177f79aee21db8929f3fe2"
+ },
+ {
+  "repo": "karpathy/minGPT",
+  "stars": 24985,
+  "pushed_at": "2024-08-15T04:09:40Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "comet-ml/opik",
+  "stars": 22993,
+  "pushed_at": "2026-10-28T21:01:21Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "25fa8b47b62d9f97ed9171920643de4bd6c51726"
+ },
+ {
+  "repo": "chidiwilliams/buzz",
+  "stars": 22243,
+  "pushed_at": "2026-10-27T12:42:50Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "298dbf003505cf945bdfd1eb8e705348b59a5b34"
+ },
+ {
+  "repo": "openai/swarm",
+  "stars": 22085,
+  "pushed_at": "2026-04-15T17:10:28Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "modelscope/FunASR",
+  "stars": 20861,
+  "pushed_at": "2026-10-28T18:11:54Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "dd00b0e42261b628466037f3a522d713399360b6"
+ },
+ {
+  "repo": "openai/gpt-oss",
+  "stars": 20495,
+  "pushed_at": "2026-10-12T20:24:26Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "5681a6b6552635e7b29cde94a61ca6a7aee90ebd"
+ },
+ {
+  "repo": "openai/tiktoken",
+  "stars": 19541,
+  "pushed_at": "2026-08-17T05:25:57Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "4e71bbe0c078468e00fefbf94b39849389f346e5"
+ },
+ {
+  "repo": "lss233/kirara-ai",
+  "stars": 19235,
+  "pushed_at": "2026-10-22T09:34:31Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "36249e4a0aa8e3d8930acdfe4e14ec2be6484f63"
+ },
+ {
+  "repo": "langbot-app/LangBot",
+  "stars": 18561,
+  "pushed_at": "2026-10-28T20:24:15Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "117e3bb350d4a80ad17e3922f3464dcdb4cf5cad"
+ },
+ {
+  "repo": "AsyncFuncAI/deepwiki-open",
+  "stars": 18312,
+  "pushed_at": "2026-10-28T15:24:48Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "cdd19ca055aff4985eeb52e8515774471b967d26"
+ },
+ {
+  "repo": "emcie-co/parlant",
+  "stars": 18311,
+  "pushed_at": "2026-10-28T09:57:58Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "ea737442b8ae65854a842542e544fbe7e6144bad"
+ },
+ {
+  "repo": "wanshuiyin/Auto-claude-code-research-in-sleep",
+  "stars": 18243,
+  "pushed_at": "2026-10-24T15:48:19Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "18bceb3c71c638bef58096274e1c9a6d323dbc0a"
+ },
+ {
+  "repo": "TransformerOptimus/SuperAGI",
+  "stars": 17721,
+  "pushed_at": "2025-01-22T22:14:07Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "Evolink-AI/awesome-gpt-image-2-API-Prompts",
+  "stars": 17358,
+  "pushed_at": "2026-07-18T06:23:28Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "e2a269ad1a055a0b4f6c1e170341c6c1aba30faa"
+ },
+ {
+  "repo": "cft0808/edict",
+  "stars": 17026,
+  "pushed_at": "2026-09-28T02:33:22Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "14a207557719c046af0f993a7bff1cc5a5015b33"
+ },
+ {
+  "repo": "openai/baselines",
+  "stars": 16773,
+  "pushed_at": "2024-08-01T21:31:33Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "Usagi-org/ai-goofish-monitor",
+  "stars": 15281,
+  "pushed_at": "2026-10-10T07:39:16Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "77f8d75869acd65f9dba72731b95c7c49ea67bdf"
+ },
+ {
+  "repo": "livekit/agents",
+  "stars": 14982,
+  "pushed_at": "2026-10-28T21:42:57Z",
+  "status": "dropped",
+  "reason": "clone failed",
+  "sha": null,
+  "error": "CalledProcessError: Cloning into 'evidence/scan/2026-10-28/_clones/livekit__agents'...\ngit-lfs filter-process: git-lfs: command not found\nfatal: the remote end hung up unexpectedly\nwarning: Clone succeeded, but checkout failed.\nYou can inspect what was checked out with 'git status'\nand retry with 'git restore --source="
+ },
+ {
+  "repo": "e2b-dev/E2B",
+  "stars": 14596,
+  "pushed_at": "2026-10-28T21:57:52Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "3b0f0fedde75acb1e6c62f35ff93fe9b812ed2d4"
+ },
+ {
+  "repo": "567-labs/instructor",
+  "stars": 14070,
+  "pushed_at": "2026-10-26T22:01:02Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "6cd771c5254a69f6a6cf9cdf357fb2f9523f0b85"
+ },
+ {
+  "repo": "DLR-RM/stable-baselines3",
+  "stars": 13942,
+  "pushed_at": "2026-10-26T09:35:00Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "0cdcd200deef06b9ad0af72f6ddfb07c06c6df39"
+ },
+ {
+  "repo": "The-PR-Agent/pr-agent",
+  "stars": 13670,
+  "pushed_at": "2026-10-28T19:25:21Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "c1451f9ae1a00a2d8539640b1f0aa22659dc05a1"
+ },
+ {
+  "repo": "xszyou/Fay",
+  "stars": 13594,
+  "pushed_at": "2026-09-21T08:56:33Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "d49f4769d46c2b5ece1fd15f0f1260afba7d2ccf"
+ },
+ {
+  "repo": "jina-ai/clip-as-service",
+  "stars": 12831,
+  "pushed_at": "2024-01-23T10:33:43Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "FareedKhan-dev/train-llm-from-scratch",
+  "stars": 12830,
+  "pushed_at": "2026-10-02T14:45:19Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "bdd480a518094ca834e05ab32131dc126b522d3d"
+ },
+ {
+  "repo": "simonw/llm",
+  "stars": 12679,
+  "pushed_at": "2026-10-21T14:29:00Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "aebaca27f9acb6cc56ba4b33ab81e08d6dcb3bc3"
+ },
+ {
+  "repo": "bentoml/OpenLLM",
+  "stars": 12573,
+  "pushed_at": "2026-10-26T17:05:52Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "200b37fbf6f75b174e0737b937b886af460495e9"
+ },
+ {
+  "repo": "TheR1D/shell_gpt",
+  "stars": 12297,
+  "pushed_at": "2026-07-02T06:03:01Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "a082bd5327ce0c4ef5a0284d9060e833be9444a6"
+ },
+ {
+  "repo": "dataelement/bisheng",
+  "stars": 12089,
+  "pushed_at": "2026-10-28T14:21:50Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "83aa354034c14c913800f821074bad8f0c29e1e0"
+ },
+ {
+  "repo": "Arize-ai/phoenix",
+  "stars": 12048,
+  "pushed_at": "2026-10-28T21:56:45Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "9948d760e6371c18502950261a1f75f3f137500c"
+ },
+ {
+  "repo": "BeehiveInnovations/pal-mcp-server",
+  "stars": 11810,
+  "pushed_at": "2025-12-15T17:07:31Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "EmbraceAGI/awesome-chatgpt-zh",
+  "stars": 11788,
+  "pushed_at": "2026-10-15T23:15:39Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "e55150e0fa1295f6ef6aeea385b506e49abbb835"
+ },
+ {
+  "repo": "lucidrains/DALLE2-pytorch",
+  "stars": 11304,
+  "pushed_at": "2024-05-11T19:18:10Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "QuentinFuxa/WhisperLiveKit",
+  "stars": 11184,
+  "pushed_at": "2026-10-23T16:03:09Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "eb92c115ee7abc1e161b0b2159da31785b0f5566"
+ },
+ {
+  "repo": "langchain-ai/open-swe",
+  "stars": 11135,
+  "pushed_at": "2026-10-28T21:56:18Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "a6f9a6b1298a610153b2893fbee2965395d86384"
+ },
+ {
+  "repo": "aden-hive/hive",
+  "stars": 11133,
+  "pushed_at": "2026-10-26T11:58:57Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "3ee47a3384ea5b3da0bed9a8e9284c7e9ebf987a"
+ },
+ {
+  "repo": "OthersideAI/self-operating-computer",
+  "stars": 10292,
+  "pushed_at": "2026-10-19T21:08:11Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "eb8165a2efb1b34d66a28ecebf8ca97ae67cbb79"
+ },
+ {
+  "repo": "LearningCircuit/local-deep-research",
+  "stars": 9436,
+  "pushed_at": "2026-10-28T21:17:20Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "1d98e231fcb45d381202aa206dffdef6f465346d"
+ },
+ {
+  "repo": "strands-agents/harness-sdk",
+  "stars": 8986,
+  "pushed_at": "2026-10-28T21:11:25Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "409cb540d2c9318a2304b379d52a56c9bd48e29a"
+ },
+ {
+  "repo": "zilliztech/deep-searcher",
+  "stars": 8351,
+  "pushed_at": "2026-09-22T10:08:42Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "ddc36db317836bd42302b36f03166bec5324708d"
+ },
+ {
+  "repo": "zilliztech/GPTCache",
+  "stars": 8216,
+  "pushed_at": "2026-09-22T08:26:00Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "a74ac654473f7bf4109118e8576945161616e17a"
+ },
+ {
+  "repo": "RayVentura/ShortGPT",
+  "stars": 8082,
+  "pushed_at": "2025-02-10T19:33:18Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "Upsonic/Upsonic",
+  "stars": 7965,
+  "pushed_at": "2026-06-18T14:55:50Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "101f0313b0ddb96cd4078354879b2ff57005db29"
+ },
+ {
+  "repo": "2FastLabs/agent-squad",
+  "stars": 7797,
+  "pushed_at": "2026-10-08T09:03:31Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "729d5f52869c8280f599a9fa5cf27fc1df445602"
+ },
+ {
+  "repo": "Azure-Samples/azure-search-openai-demo",
+  "stars": 7794,
+  "pushed_at": "2026-10-24T00:07:06Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "558ffd397eddcfe4da5c85ebc285796b367eb9b2"
+ },
+ {
+  "repo": "guardrails-ai/guardrails",
+  "stars": 7567,
+  "pushed_at": "2026-10-27T17:24:12Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "06d0ff2c5f9bcb493d976b76f885e37e41ce845d"
+ },
+ {
+  "repo": "open-compass/opencompass",
+  "stars": 7554,
+  "pushed_at": "2026-10-28T12:12:20Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "0aa60698c0426971737d3b97989be9b808cb7896"
+ },
+ {
+  "repo": "wzpan/wukong-robot",
+  "stars": 7130,
+  "pushed_at": "2024-10-25T08:30:25Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "basketikun/chatgpt2api",
+  "stars": 6772,
+  "pushed_at": "2026-10-25T11:19:02Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "92dd80e91543157d36a4ddad60e765c5293760e9"
+ },
+ {
+  "repo": "souzatharsis/podcastfy",
+  "stars": 6749,
+  "pushed_at": "2026-05-04T14:49:10Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "053b54a0917e35edb2808049499292361ccaae7b"
+ },
+ {
+  "repo": "openai/openai-cs-agents-demo",
+  "stars": 6595,
+  "pushed_at": "2025-12-18T07:58:03Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "run-llama/rags",
+  "stars": 6546,
+  "pushed_at": "2024-04-05T05:36:59Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "Eigenwise/atomic-agents",
+  "stars": 6311,
+  "pushed_at": "2026-10-27T10:21:58Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "eccaf39cf3f96ea2f8df5ccf47943c0cf1f548f0"
+ },
+ {
+  "repo": "Anil-matcha/open-duet",
+  "stars": 6291,
+  "pushed_at": "2026-10-28T20:27:47Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "4f2b954c7ee168cf8f6bc3e6cf617bb9c223acc6"
+ },
+ {
+  "repo": "AgentOps-AI/agentops",
+  "stars": 5924,
+  "pushed_at": "2026-06-25T08:25:03Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "f8e907b92dabe47232978023fdcb01e2a7d4b752"
+ },
+ {
+  "repo": "wuyoscar/GPT-Image2-Skill",
+  "stars": 5915,
+  "pushed_at": "2026-09-30T11:54:50Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "9f8aa1a44a4a5c0f5a5d6e45eed564b3e2d5b87f"
+ },
+ {
+  "repo": "gpustack/gpustack",
+  "stars": 5915,
+  "pushed_at": "2026-10-28T12:00:15Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "399846005b2da057d208116d36387032f6ea930e"
+ },
+ {
+  "repo": "EverMind-AI/Raven",
+  "stars": 5882,
+  "pushed_at": "2026-10-28T12:44:47Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "855a412fa69355b7d38c856dedc53875f0606fe3"
+ },
+ {
+  "repo": "OpenBMB/UltraRAG",
+  "stars": 5735,
+  "pushed_at": "2026-10-28T16:23:09Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "eb219e25f4521fb5106bf53b45cf1bb28fe5c1d1"
+ },
+ {
+  "repo": "lucidrains/DALLE-pytorch",
+  "stars": 5629,
+  "pushed_at": "2024-02-17T21:42:10Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "remsky/Kokoro-FastAPI",
+  "stars": 5607,
+  "pushed_at": "2026-10-28T21:33:20Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "ffb29f068b6130b8d86b72a906986e1e0cd4bb75"
+ },
+ {
+  "repo": "father-bot/chatgpt_telegram_bot",
+  "stars": 5549,
+  "pushed_at": "2026-06-14T10:45:48Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "3631d6534f2c0d8b834d63c820b71aade52540e8"
+ },
+ {
+  "repo": "business-science/ai-data-science-team",
+  "stars": 5478,
+  "pushed_at": "2026-01-28T15:44:35Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "su-kaka/agy2api",
+  "stars": 5282,
+  "pushed_at": "2026-10-28T09:41:37Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "6cc45620f1ecbe12bda7792b2daf8940d8a4ffde"
+ },
+ {
+  "repo": "Kiln-AI/Kiln",
+  "stars": 5242,
+  "pushed_at": "2026-10-28T19:04:51Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "7c8e7a649e86a98b1f894adab55cb8eb35e41637"
+ },
+ {
+  "repo": "salesforce/CodeGen",
+  "stars": 5186,
+  "pushed_at": "2026-06-02T18:14:11Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "ec21c93bda19c087f419f552c196afa9a36ee890"
+ },
+ {
+  "repo": "gd3kr/BlenderGPT",
+  "stars": 4996,
+  "pushed_at": "2024-06-05T08:14:18Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "daveebbelaar/ai-cookbook",
+  "stars": 4679,
+  "pushed_at": "2026-09-21T15:45:18Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "84748d7a076c2ef3ab751435e80bf419b1c9ca61"
+ },
+ {
+  "repo": "promptslab/Promptify",
+  "stars": 4643,
+  "pushed_at": "2026-03-27T01:09:45Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "pydantic/logfire",
+  "stars": 4523,
+  "pushed_at": "2026-10-28T19:23:14Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "15106985a9fca511f3bed7e0f8d3d870c6da70ce"
+ },
+ {
+  "repo": "open-compass/VLMEvalKit",
+  "stars": 4468,
+  "pushed_at": "2026-10-28T11:19:31Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "e6fcedaf159a88bc504c7a6d2da947282ba0896f"
+ },
+ {
+  "repo": "gptme/gptme",
+  "stars": 4468,
+  "pushed_at": "2026-10-28T11:17:17Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "2aaa26e05260c18d2111d42d2d0b884217d2d69c"
+ },
+ {
+  "repo": "collabora/WhisperLive",
+  "stars": 4338,
+  "pushed_at": "2026-10-20T15:06:28Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "a640654941b118a189499b83c392e33aeb8d7415"
+ },
+ {
+  "repo": "algorithmicsuperintelligence/optillm",
+  "stars": 4332,
+  "pushed_at": "2026-10-11T16:03:22Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "c0dc4f011ad644ce44aea884c43fbb0de6beb0e3"
+ },
+ {
+  "repo": "lucidrains/deep-daze",
+  "stars": 4316,
+  "pushed_at": "2022-03-13T19:09:13Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "rawandahmad698/PyChatGPT",
+  "stars": 4184,
+  "pushed_at": "2026-07-19T08:13:04Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "66ece5176c47294e7673387075e677f98afc1608"
+ },
+ {
+  "repo": "raullenchai/Rapid-MLX",
+  "stars": 4049,
+  "pushed_at": "2026-10-28T21:56:11Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "c1f38d4bf1d39355825424fda62d4fd6c40abeea"
+ },
+ {
+  "repo": "yuruotong1/autoMate",
+  "stars": 3968,
+  "pushed_at": "2026-09-18T00:02:05Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "afb89b9d67a2d7c49ca09298191fbebe9ded238a"
+ },
+ {
+  "repo": "lemony-ai/cascadeflow",
+  "stars": 3932,
+  "pushed_at": "2026-09-25T07:32:08Z",
+  "status": "dropped",
+  "reason": "no LLM call site in non-test source",
+  "sha": "280ac9728aae622be0f9892b7e9239786ee4e3c0"
+ },
+ {
+  "repo": "lanqian528/chat2api",
+  "stars": 3841,
+  "pushed_at": "2025-05-17T10:06:41Z",
+  "status": "dropped",
+  "reason": "no push in the 180 days before 2026-10-28T21:59:36+00:00",
+  "sha": null
+ },
+ {
+  "repo": "1rgs/claude-code-proxy",
+  "stars": 3765,
+  "pushed_at": "2026-06-23T02:46:08Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "5e45ba683ded931c1832cfca6468a791c6855e45"
+ },
+ {
+  "repo": "PaddlePaddle/FastDeploy",
+  "stars": 3724,
+  "pushed_at": "2026-09-24T14:17:31Z",
+  "status": "kept",
+  "reason": "call sites found",
+  "sha": "d923caf15e1eb0da8e2efd75b0152e65cefeeddd"
+ },
+ {
+  "repo": "llm-workflow-engine/llm-workflow-engine",
+  "stars": 3714,
+  "pushed_at": "2026-10-27T01:02:17Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "dongyubin/Free-AppleId-Serve",
+  "stars": 3597,
+  "pushed_at": "2026-10-13T00:47:24Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "Sophomoresty/gemini-web2api",
+  "stars": 3534,
+  "pushed_at": "2026-08-14T18:29:19Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "ricklamers/gpt-code-ui",
+  "stars": 3530,
+  "pushed_at": "2024-03-20T12:34:34Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "JusticeRage/Gepetto",
+  "stars": 3489,
+  "pushed_at": "2026-08-15T17:09:38Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "n3d1117/chatgpt-telegram-bot",
+  "stars": 3460,
+  "pushed_at": "2025-06-03T19:45:13Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "argilla-io/distilabel",
+  "stars": 3440,
+  "pushed_at": "2026-10-26T22:50:44Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "Soju06/codex-lb",
+  "stars": 3404,
+  "pushed_at": "2026-10-28T16:47:34Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "minimaxir/gpt-2-simple",
+  "stars": 3403,
+  "pushed_at": "2022-12-14T11:50:45Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "ahmetoner/whisper-asr-webservice",
+  "stars": 3367,
+  "pushed_at": "2026-10-01T17:25:30Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "taishi-i/awesome-ChatGPT-repositories",
+  "stars": 3335,
+  "pushed_at": "2026-10-25T13:55:29Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "itsOwen/CyberScraper-2077",
+  "stars": 3298,
+  "pushed_at": "2026-10-12T08:03:38Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "qdrant/fastembed",
+  "stars": 3269,
+  "pushed_at": "2026-10-28T19:08:40Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "Josh-XT/AGiXT",
+  "stars": 3216,
+  "pushed_at": "2026-07-28T05:57:41Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "ardeyouxipianyi/workbuddy2api-hub",
+  "stars": 3154,
+  "pushed_at": "2026-10-28T09:04:02Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "hgmzhn/manga-translator-ui",
+  "stars": 3150,
+  "pushed_at": "2026-10-27T16:10:20Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "MiroMindAI/MiroFlow",
+  "stars": 3123,
+  "pushed_at": "2026-07-06T14:50:43Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "rll/rllab",
+  "stars": 3079,
+  "pushed_at": "2023-06-10T20:57:52Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "hegelai/prompttools",
+  "stars": 3060,
+  "pushed_at": "2026-02-11T03:24:04Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "leo-lilinxiao/codex-autoresearch",
+  "stars": 3054,
+  "pushed_at": "2026-09-12T14:07:51Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "CheshireCC/faster-whisper-GUI",
+  "stars": 3006,
+  "pushed_at": "2026-08-25T17:07:07Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "davabase/whisper_real_time",
+  "stars": 2935,
+  "pushed_at": "2025-04-15T22:25:27Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "muellerberndt/mini-agi",
+  "stars": 2931,
+  "pushed_at": "2026-10-21T01:51:06Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "yakami129/VirtualWife",
+  "stars": 2931,
+  "pushed_at": "2024-10-27T07:09:17Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "ErlichLiu/DeepClaude",
+  "stars": 2930,
+  "pushed_at": "2026-02-23T03:14:49Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "DLR-RM/rl-baselines3-zoo",
+  "stars": 2905,
+  "pushed_at": "2026-10-27T10:26:26Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "jina-ai/dalle-flow",
+  "stars": 2831,
+  "pushed_at": "2023-05-16T09:54:02Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "Doriandarko/o1-engineer",
+  "stars": 2825,
+  "pushed_at": "2024-12-16T22:38:46Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "fuergaosi233/claude-code-proxy",
+  "stars": 2799,
+  "pushed_at": "2026-03-12T06:19:07Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "openai/privacy-filter",
+  "stars": 2768,
+  "pushed_at": "2026-04-22T19:55:02Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "AmberSahdev/Open-Interface",
+  "stars": 2729,
+  "pushed_at": "2026-07-17T02:26:26Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "om-ai-lab/OmAgent",
+  "stars": 2671,
+  "pushed_at": "2026-10-16T15:37:42Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "bookfere/Ebook-Translator-Calibre-Plugin",
+  "stars": 2666,
+  "pushed_at": "2026-10-24T13:41:37Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "youssofal/MTPLX",
+  "stars": 2651,
+  "pushed_at": "2026-10-24T10:33:31Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "griptape-ai/griptape",
+  "stars": 2583,
+  "pushed_at": "2026-10-26T17:47:43Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "lucidrains/big-sleep",
+  "stars": 2575,
+  "pushed_at": "2022-02-06T18:04:34Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "QIN2DIM/hcaptcha-challenger",
+  "stars": 2563,
+  "pushed_at": "2026-08-15T02:53:15Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "hydropix/TranslateBooksWithLLMs",
+  "stars": 2552,
+  "pushed_at": "2026-10-23T16:59:37Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "alecm20/story-flicks",
+  "stars": 2536,
+  "pushed_at": "2025-03-12T15:33:35Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "IntelligenzaArtificiale/Free-Auto-GPT",
+  "stars": 2528,
+  "pushed_at": "2024-06-19T00:18:00Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "CJackHwang/AIstudioProxyAPI",
+  "stars": 2517,
+  "pushed_at": "2026-04-22T12:20:26Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "xusenlinzy/api-for-open-llm",
+  "stars": 2460,
+  "pushed_at": "2024-09-26T07:47:57Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "paulpierre/RasaGPT",
+  "stars": 2460,
+  "pushed_at": "2025-11-12T14:43:36Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "open-webui/pipelines",
+  "stars": 2445,
+  "pushed_at": "2025-08-18T23:05:01Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "ggozad/oterm",
+  "stars": 2445,
+  "pushed_at": "2026-10-27T08:14:26Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "jackmpcollins/magentic",
+  "stars": 2428,
+  "pushed_at": "2026-03-11T13:44:45Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "e2b-dev/code-interpreter",
+  "stars": 2422,
+  "pushed_at": "2026-10-28T20:54:03Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "AminHP/gym-anytrading",
+  "stars": 2388,
+  "pushed_at": "2024-03-14T04:33:05Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "heshengtao/comfyui_LLM_party",
+  "stars": 2385,
+  "pushed_at": "2026-07-29T18:05:53Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "zakirkun/deep-eye",
+  "stars": 2361,
+  "pushed_at": "2026-10-06T03:00:32Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "dot-agent/nextpy",
+  "stars": 2348,
+  "pushed_at": "2024-05-01T09:46:55Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "refuel-ai/autolabel",
+  "stars": 2331,
+  "pushed_at": "2025-03-05T01:15:43Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "jwadow/kiro-gateway",
+  "stars": 2330,
+  "pushed_at": "2026-05-18T19:35:19Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "guy-hartstein/company-research-agent",
+  "stars": 2307,
+  "pushed_at": "2026-10-26T14:22:46Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "TNT-Likely/PanWatch",
+  "stars": 2269,
+  "pushed_at": "2026-10-27T13:30:51Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "mozilla-ai/any-llm",
+  "stars": 2234,
+  "pushed_at": "2026-10-27T13:05:58Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "kaixxx/noScribe",
+  "stars": 2222,
+  "pushed_at": "2026-10-27T11:20:59Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "isair/jarvis",
+  "stars": 2146,
+  "pushed_at": "2026-10-20T23:46:25Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "travisvn/openai-edge-tts",
+  "stars": 2141,
+  "pushed_at": "2025-07-01T23:56:27Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "sfujim/TD3",
+  "stars": 2118,
+  "pushed_at": "2023-07-14T19:40:36Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "ShenSeanChen/waku-agent",
+  "stars": 2111,
+  "pushed_at": "2026-10-23T18:49:21Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "p0n1/epub_to_audiobook",
+  "stars": 2085,
+  "pushed_at": "2026-10-28T14:23:14Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "ithtelab/workbuddy-manager",
+  "stars": 2066,
+  "pushed_at": "2026-10-28T14:59:34Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "fiatrete/OpenDAN-Personal-AI-OS",
+  "stars": 2065,
+  "pushed_at": "2026-03-28T18:09:00Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "nottelabs/notte",
+  "stars": 2047,
+  "pushed_at": "2026-10-28T21:45:09Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "szczyglis-dev/py-gpt",
+  "stars": 2007,
+  "pushed_at": "2026-10-06T02:37:46Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "AgentOps-AI/tokencost",
+  "stars": 2005,
+  "pushed_at": "2025-09-05T08:10:10Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "LlmKira/Openaibot",
+  "stars": 1965,
+  "pushed_at": "2025-06-09T16:20:12Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "sandbox-quantum/switch",
+  "stars": 1963,
+  "pushed_at": "2026-10-28T20:27:24Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "AI4Finance-Foundation/FinRL-Meta",
+  "stars": 1955,
+  "pushed_at": "2026-10-12T23:36:52Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "melih-unsal/DemoGPT",
+  "stars": 1904,
+  "pushed_at": "2026-04-01T12:30:12Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "he-yufeng/CoreCoder",
+  "stars": 1879,
+  "pushed_at": "2026-10-19T03:49:19Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "sunmh207/AI-Codereview-Gitlab",
+  "stars": 1869,
+  "pushed_at": "2026-10-08T07:22:35Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "notadamking/RLTrader",
+  "stars": 1867,
+  "pushed_at": "2022-01-22T05:01:41Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "Kav-K/GPTDiscord",
+  "stars": 1850,
+  "pushed_at": "2026-10-18T18:01:03Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "Prat011/awesome-llm-skills",
+  "stars": 1829,
+  "pushed_at": "2026-07-14T09:53:56Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "wwbin2017/bailing",
+  "stars": 1787,
+  "pushed_at": "2026-04-06T04:21:13Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "tom-doerr/zsh_codex",
+  "stars": 1732,
+  "pushed_at": "2025-03-22T23:56:40Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "roboflow/awesome-openai-vision-api-experiments",
+  "stars": 1702,
+  "pushed_at": "2025-01-14T16:38:43Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "absadiki/subsai",
+  "stars": 1678,
+  "pushed_at": "2026-04-20T01:29:19Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "snwfdhmp/awesome-gpt-prompt-engineering",
+  "stars": 1643,
+  "pushed_at": "2026-02-23T12:11:18Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "waybarrios/vllm-mlx",
+  "stars": 1640,
+  "pushed_at": "2026-10-26T06:09:04Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "enoch3712/ExtractThinker",
+  "stars": 1603,
+  "pushed_at": "2026-09-16T13:54:12Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "WecoAI/aideml",
+  "stars": 1597,
+  "pushed_at": "2026-10-16T14:33:42Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "MLSysOps/MLE-agent",
+  "stars": 1576,
+  "pushed_at": "2026-07-10T19:42:42Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "video-db/Director",
+  "stars": 1566,
+  "pushed_at": "2026-01-23T15:34:16Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "RayBytes/ChatMock",
+  "stars": 1562,
+  "pushed_at": "2026-10-22T19:30:32Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "daveebbelaar/python-whatsapp-bot",
+  "stars": 1544,
+  "pushed_at": "2024-08-07T15:01:45Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "RTGS2017/NagaAgent",
+  "stars": 1544,
+  "pushed_at": "2026-08-11T07:55:16Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "aklofas/kicad-happy",
+  "stars": 1528,
+  "pushed_at": "2026-10-27T20:59:22Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "McCloudS/subgen",
+  "stars": 1506,
+  "pushed_at": "2026-08-07T10:22:49Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ },
+ {
+  "repo": "Hello-SimpleAI/chatgpt-comparison-detection",
+  "stars": 1489,
+  "pushed_at": "2023-12-01T16:03:51Z",
+  "status": "not reached",
+  "reason": "50 repositories already kept",
+  "sha": null
+ }
+]

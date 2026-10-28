@@ -2,7 +2,7 @@
 
 Every LLM call gets a receipt before January 14, 2027. That day OpenAI shuts down GPT-4o, GPT-4o mini, GPT-4.1 and
 GPT-4.1 mini ([platform.openai.com/docs/deprecations](https://platform.openai.com/docs/deprecations), read on 2026-10-24
-and again on 2026-10-28: `evidence/platform/openai-deprecations-check-2026-10-28.md`), and <SCAN_T> of <SCAN_K> popular
+and again on 2026-10-28: `evidence/platform/openai-deprecations-check-2026-10-28.md`), and 37 of 50 popular
 Python LLM repositories still name them in their tests ([static scan](evidence/scan/2026-10-28/SCAN.md), selection rule
 pushed before the scan). Model Moving Day is an agent that finds the LLM call sites in a repository and gives each one a
 receipt: the smallest NVIDIA Nemotron on Nebius Token Factory that the repository's own tests accept, run 5 times per
@@ -41,7 +41,7 @@ confirmed branch, and reached the same decision; each of its 68 model calls carr
 | The `'\nYES'` fix at llm `:1494` is rule-backed, not a discovery | `evidence/census/llm/ladder-20261024T115937Z-6e8505.json` → `fixes` | diagnosis by a proxy rule, fix from the pre-registered list, `applied_calls` 15 |
 | The agent writes the move and the patched code passes the same tests | `evidence/census/{instructor,llm}/patch/patch.diff`, `PR.md`; confirm runs `…2a6fd0`, `…9d0fdb` | an opt-in helper (`NEMOTRON_MOVE=1`); confirm 5/5 per moved site; nothing pushed upstream |
 | The agent repeats the llm decision on a fresh run, every call traceable | `evidence/rerun-2026-10-29/` (`PLAN.md` pushed before the run, `RESULT.md`, `calls.jsonl`, `rerun.cast`) | Nano 0/5, remedy "reasoning off", Nano 5/5, Lightning 5/5, branch by Super, confirm 5/5; 68 calls, each with a `chatcmpl-…` id; $0.0124 |
-| <SCAN_T> of <SCAN_K> popular Python LLM repositories name a retiring model in their tests | `evidence/scan/RULE.md` (pushed before the scan, commit ccaccc5), `evidence/scan/2026-10-28/` (`SCAN.md`, `repos.json`, `results.json`) | file and line of every hit; error counts; five repositories checked by hand |
+| 37 of 50 popular Python LLM repositories name a retiring model in their tests | `evidence/scan/RULE.md` (pushed before the scan, commit ccaccc5), `evidence/scan/2026-10-28/` (`SCAN.md`, `repos.json`, `results.json`) | file and line of every hit; error counts; five repositories checked by hand |
 | Failures are published | CENSUS.md, paper-qa runs and "Found, not measured"; demo "What did not work" | paper-qa: 503/500 replies and lost jobs, no decision; 18 sites not measured, each with its reason |
 
 How this differs from routing each step to a model by price: here the target repository's own frozen tests choose the
