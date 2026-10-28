@@ -6,6 +6,9 @@ license = "MIT"
 requires-python = ">=3.11"
 dependencies = []
 
+[project.scripts]
+mmd = "model_moving_day.cli:main"
+
 [project.optional-dependencies]
 # openai: integration test that the tracer sees requests made by the real SDK (3.x sends through httpx2)
 dev = ["pytest>=8", "openai>=2"]
