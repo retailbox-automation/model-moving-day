@@ -238,7 +238,7 @@ The commands are `python -m model_moving_day.census <command> [repo]` (`prepare`
    with the measured model and request parameters per call site, wrapped in by the brain, checked so that with the
    flag off the code is the original, and confirmed by a run of the patched code.
 
-Requirements: Python 3.12, `pip install -e '.[dev,sandbox]'`, a Token Factory key in `NEBIUS_API_KEY` and a
+Requirements: Python 3.12; install with `pip install "model-moving-day[dev,sandbox] @ git+https://github.com/retailbox-automation/model-moving-day"` or, from a clone, `pip install -e '.[dev,sandbox]'`; a Token Factory key in `NEBIUS_API_KEY` and a
 Sandboxes project in `NEBIUS_PROJECT_ID`. Offline tests: `python -m pytest -q`. CENSUS.md:
 `python census/report.py`. To run the census yourself, use your own key and project with the commands above.
 

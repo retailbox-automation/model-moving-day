@@ -1,7 +1,7 @@
 [project]
 name = "model-moving-day"
 version = "0.1.0"
-description = "Model Moving Day: an agent that moves an app's LLM calls to the smallest NVIDIA Nemotron model that still passes the app's own tests"
+description = "Model Moving Day: an agent that finds the LLM call sites in a repository and picks the NVIDIA Nemotron model each one needs, decided by the repository's own tests"
 license = "MIT"
 requires-python = ">=3.11"
 dependencies = []
