@@ -70,13 +70,28 @@ def scan(root=ROOT / "evidence" / "scan"):
             "parse_errors": sum(len(r["errors"]) for r in results), "dir": f"evidence/scan/{d.name}"}
 
 
+def brains(census, root=ROOT / "evidence" / "census"):
+    """Which model diagnosed red cells and which wrote each migration branch, read from the agent step logs of the
+    census (evidence/census/<target>/agent-steps.jsonl and patch/agent-steps.jsonl): models and step counts only."""
+    def steps(f):
+        return [json.loads(x) for x in f.read_text().splitlines() if x.strip()] if f.exists() else []
+    out = {}
+    for p in census["patches"]:
+        diag = [s for s in steps(root / p["target"] / "agent-steps.jsonl") if str(s.get("step", "")).startswith("diagnose")]
+        patch = steps(root / p["target"] / "patch" / "agent-steps.jsonl")
+        out[p["target"]] = {"diagnose_models": sorted({s["model"] for s in diag}), "diagnose_steps": len(diag),
+                            "patch_models": sorted({s["model"] for s in patch}), "patch_steps": len(patch)}
+    return out
+
+
 def build():
     census = _report().data()
     files = {}
     for p in census["patches"]:
         d = ROOT / "evidence" / "census" / p["target"] / "patch"
         files[p["target"]] = {"pr_md": (d / "PR.md").read_text(), "diff": (d / "patch.diff").read_text()}
-    return {"schema": 1, "about": ABOUT, "census": census, "patch_files": files, "rerun": rerun(), "scan": scan()}
+    return {"schema": 1, "about": ABOUT, "census": census, "patch_files": files, "rerun": rerun(), "scan": scan(),
+            "brains": brains(census)}
 
 
 def dumps(obj):

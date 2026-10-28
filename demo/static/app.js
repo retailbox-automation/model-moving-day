@@ -36,21 +36,200 @@
     return `<span class="dots${big ? " big" : ""}" title="${esc(t)}" role="img" aria-label="${esc(t)}">${out.join("")}</span>`;
   }
 
-  // ---- hook, tiles, funnel ----
-  const names = C.targets.map(t => t.target);
-  $("hookText").textContent = "OpenAI shuts down GPT-4o, GPT-4o mini, GPT-4.1 and GPT-4.1 mini on January 14, 2027. The tests of "
-    + names.slice(0, -1).join(", ") + " and " + names[names.length - 1] + " still name them.";
+  // ---- first screen: date strip, promise, three receipts, who does what, funnel, re-run tile ----
+  const REPO = "https://github.com/retailbox-automation/model-moving-day/blob/main/";
+  const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   const decided = C.sites.filter(s => s.status === "chosen");
   const costly = decided.reduce((a, s) => (s.after_over_before || 0) > (a.after_over_before || 0) ? s : a, {});
-  $("tiles").innerHTML = [
-    `<div class="tile"><div class="big">${H.decided_on_small} of ${H.decided}</div><div class="cap">decided call sites run on Lightning or Nano</div></div>`,
-    `<div class="tile"><div class="big">${costly.after_over_before.toFixed(1)}×</div><div class="cap">one site needed ${esc(costly.chosen)}: priced against OpenAI's replacement</div></div>`,
-    `<div class="tile outline"><div class="big">${H.gate_met ? "met" : "not met"}</div><div class="cap">our coverage gate: 3 repos, 5 independent decisions</div></div>`,
-  ].join("");
-  $("funnel").innerHTML =
-    `<div class="fstep"><b>${H.sites_found}</b><span>call sites found in ${H.repositories} repositories</span></div><div class="farrow">→</div>` +
-    `<div class="fstep"><b>${H.sites_in_ladder}</b><span>measurable with the repos' own tests</span></div><div class="farrow">→</div>` +
-    `<div class="fstep"><b>${H.decided}</b><span>decided (${H.repositories_decided.join(", ")})</span></div>`;
+  const words = n => ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"][n] || String(n);
+  const plural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
+  const testName = t => t.split("::").pop().replace(/\[[^\]]*\]$/, "");
+  const RESULT_DATE = id => `${id.slice(0, 4)}-${id.slice(4, 6)}-${id.slice(6, 8)} ${id.slice(9, 11)}:${id.slice(11, 13)} UTC`;
+
+  // the retirement date and the retiring models, as the pushed manifest states them (baseline.why)
+  const ret = C.manifest.baseline.why.match(/replacement for (.+?) \(retiring (\d{4})-(\d{2})-(\d{2})/);
+  if (ret) {
+    const month = MONTHS[+ret[3] - 1], day = String(+ret[4]), year = ret[2];
+    $("dsDate").textContent = `${month} ${day}, ${year}:`;
+    $("dsWhat").textContent = "OpenAI shuts down " + ret[1].replace(/gpt-/g, "GPT-").replace(/-mini/g, " mini");
+    $("calMonth").textContent = month; $("calDay").textContent = day; $("calYear").textContent = year;
+  }
+  if (M.scan) {
+    const sc = M.scan;
+    $("dsScan").innerHTML = `<a href="${REPO}${esc(sc.dir)}/SCAN.md" rel="noopener">${sc.T} of ${sc.K} popular Python LLM repositories</a> still name them in their tests (static scan, rule pushed before the scan).`;
+    $("dsScan").hidden = false;
+  }
+  $("promiseSub").textContent = `The smallest NVIDIA Nemotron on Nebius Token Factory that the repository's own tests accept, ${K} runs per model in Token Factory Sandboxes, priced against the next bigger Nemotron. Or the reason the tests can't vouch for it.`;
+
+  // three receipts: the decided sites whose receipt is compared with OpenAI's priced replacement, in census order
+  const shownSites = decided.filter(s => !s.note);
+  function ladderRow(name, c, extra) {
+    const d = c ? dots(c) : `<span class="dots">${'<span class="dot n"></span>'.repeat(K)}</span>`;
+    return `<div class="lrow"><span class="lname">${esc(name)}</span>${d}${c && c.role === "fallback" ? '<span class="tag tag-blue">fallback</span>' : ""}${extra || ""}</div>`;
+  }
+  function receiptCard(s) {
+    const cells = cellsOf(s.site), ch = chosenCell(s), fb = fallbackCell(s), run = C.runs[DET[s.site].run_id];
+    const small = ["Nano", "Lightning"].includes(s.chosen);
+    let kind, tag, rest = "", rowsHtml, beside;
+    const testsXruns = `<span class="rc-runs">${plural(s.flip_tests, "repo test")} × ${K} runs</span>`;
+    if (s.fix) {
+      kind = "remedy"; tag = "Moved with a remedy listed in advance";
+      const asked = cells.find(c => c.rung === ch.rung && !isOff(c));
+      const m = asked && asked.first_failure.match(/assert '(.*?)' == '(.*?)'/);
+      rowsHtml = ladderRow(asked.rung, asked) +
+        (m ? `<div class="lnote"><code>'${esc(m[1])}' ≠ '${esc(m[2])}'</code></div>` : "") +
+        `<div class="lfix" title="the one fix the pre-registered list allows for this diagnosis"><span class="arrow">↓</span>${esc(s.fix.replace(/_/g, " "))}</div>` +
+        ladderRow(ch.rung, ch) + (fb ? ladderRow(fb.rung, fb) : "");
+      beside = testsXruns;
+    } else {
+      rowsHtml = RUNGS.map(g => ladderRow(g, cells.find(c => c.rung === g && !isOff(c)))).join("");
+      if (small) { kind = "down"; tag = "Moved down"; beside = testsXruns; }
+      else {
+        const below = DET[s.site].cells.find(c => c.rung === RUNGS[RUNGS.indexOf(s.chosen) - 1] && c.role === "ladder" && !isOff(c));
+        const tv = Object.entries(below.per_test_passed), bad = tv.filter(([, v]) => v[0] < v[1]);
+        kind = "stayed"; tag = `Stayed on ${s.chosen}:`; rest = `${words(bad.length)} test${bad.length === 1 ? "" : "s"} said no`;
+        beside = `<span class="rc-why">${esc(below.rung)} passed ${tv.length - bad.length} of ${tv.length} tests; ` +
+          bad.map(([t, v]) => `<code>${esc(testName(t))}</code> ${v[0] === 0 ? "failed in every run" : `passed ${v[0]} of ${v[1]} runs`}`).join("; ") + `</span>`;
+      }
+    }
+    const more = s.after_over_before && s.after_over_before > 1.5;
+    return `<article class="rcard rc-${kind}" data-site="${esc(s.site)}"><div class="rc-in">` +
+      `<span class="rc-tag"><span class="up">${esc(tag)}</span>${rest ? " " + esc(rest) : ""}</span>` +
+      `<p class="rc-site">${esc(s.target)} · ${esc(short(s.site))}</p>` +
+      `<div class="rc-ladder">${rowsHtml}</div>` +
+      `<div class="rc-pick"><span class="rc-chip">${esc(ch.rung)}</span>${beside}</div>` +
+      `<p class="rc-money"><b>${usd(ch.usd_per_1000_calls)}</b> per 1,000 calls<span class="sep"> · </span>next bigger, ${esc(fb.rung)}: ${usd(fb.usd_per_1000_calls)}</p>` +
+      (more ? `<p class="rc-more">${s.after_over_before.toFixed(1)}× OpenAI's priced replacement, shown as is</p>` : "") +
+      (s.fix ? `<span class="rc-rule">rule-backed, not a discovery</span>` : "") +
+      `<a class="rc-diff" href="#site=${encodeURIComponent(s.site)}" data-site="${esc(s.site)}">see the branch diff</a>` +
+      `</div></article>`;
+  }
+  $("receipts").innerHTML = shownSites.map(receiptCard).join("");
+  $("receipts").dataset.run = shownSites.map(s => s.site).join(" ");
+
+  // who does what: the ladder rungs answer the app's calls; the brains come from the census agent step logs
+  const rungOf = m => RUNGS.find(g => m.toLowerCase().includes(g.toLowerCase()));
+  const brains = {};
+  Object.entries(M.brains || {}).forEach(([t, b]) => {
+    b.diagnose_models.forEach(m => { const r = rungOf(m); if (r) (brains[r] = brains[r] || { diag: [], patch: [] }).diag.push(t); });
+    b.patch_models.forEach(m => { const r = rungOf(m); if (r) (brains[r] = brains[r] || { diag: [], patch: [] }).patch.push(t); });
+  });
+  const roleText = b => {
+    if (b.diag.length && b.diag.join() === b.patch.join()) return `diagnoses and writes the branch (${b.patch.join(", ")})`;
+    return [b.diag.length ? `diagnoses red cells (${b.diag.join(", ")})` : "", b.patch.length ? `writes the branch (${b.patch.join(", ")})` : ""].filter(Boolean).join("; ");
+  };
+  $("roles").innerHTML = `<span class="who who-ladder">${RUNGS.map(g => `<b>${g}</b>`).join(" · ")} answer the app's calls</span>` +
+    RUNGS.filter(g => brains[g]).map((g, i) => `<span class="who who-brain${i ? " who-alt" : ""}"><b>Nemotron ${g}</b> ${esc(roleText(brains[g]))}</span>`).join("");
+
+  // funnel: the 26 sites found, minus the Responses API and embedding sites set aside before the ladders, then the
+  // sites with flip tests, then the decisions
+  const nm0 = C.not_measured;
+  const nResp = nm0.filter(x => /Responses API/i.test(x.why)).length, nEmb = nm0.filter(x => /embedding call site/i.test(x.why)).length;
+  const routable = H.sites_found - nResp - nEmb;
+  $("funnel").innerHTML = [[H.sites_found, "LLM call sites found"], [routable, "our proxy could route"],
+    [H.sites_in_ladder, "where the repo's tests notice a wrong answer"], [H.decided, `decided (${H.repositories_decided.join(", ")})`]]
+    .map(([n, t]) => `<li class="fs" data-n="${n}"><span class="fn">${n}</span><span class="ft">${esc(t)}</span></li>`).join("");
+  const noDecision = [...new Set(C.sites.filter(s => s.status === "infra").map(s => s.target))].map(t => {
+    const rs = C.targets.find(x => x.target === t).runs.map(r => C.runs[r]), tot = {};
+    rs.forEach(r => Object.entries(r.proxy_error_statuses).forEach(([k, v]) => { tot[k] = (tot[k] || 0) + v; }));
+    const codes = Object.keys(tot).sort((a, b) => tot[b] - tot[a]).join("/");
+    return `${t}: no decision (${[codes, rs.some(r => r.lost_jobs) ? "lost jobs" : ""].filter(Boolean).join(", ")})`;
+  });
+  $("fnote").textContent = [`${nResp} Responses API and ${nEmb} embedding sites set aside`, ...noDecision, `our coverage gate ${H.gate_met ? "met" : "not met"}`].join(" · ");
+
+  // the recorded re-run (not part of the census): a tile on the first screen, a panel with its own small player
+  const R = M.rerun;
+  if (R) {
+    const where = `${R.site.split("/")[0]} :${R.site.split(":").pop()}`;
+    $("rerunTile").innerHTML = `<span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8.5 6.2v11.6L18 12z" fill="currentColor"/></svg></span>` +
+      `<span class="rt-text">Watch the agent re-run <code>${esc(where)}</code> <small>(terminal recording, not part of the census)</small></span>`;
+    $("rerunTile").hidden = false;
+    $("rerunTile").addEventListener("click", () => openRerun(where));
+  }
+  let player = null;
+  function ansi(s) {
+    const parts = s.replace(/\r\n/g, "\n").replace(/\r/g, "").split(/\x1b\[([0-9;]*)m/);
+    let out = "", open = false;
+    parts.forEach((p, i) => {
+      if (i % 2 === 0) { out += esc(p); return; }
+      if (open) { out += "</span>"; open = false; }
+      const cls = p.split(";").map(Number).map(c => c === 1 ? "b" : c >= 30 && c <= 37 ? "c" + (c - 30) : "").filter(Boolean);
+      if (cls.length) { out += `<span class="${cls.join(" ")}">`; open = true; }
+    });
+    return out + (open ? "</span>" : "");
+  }
+  function castPlayer(text, pre, onTick) {
+    const lines = text.split("\n").filter(Boolean);
+    const ev = []; let t = 0;
+    lines.slice(1).forEach(l => { const e = JSON.parse(l); t += e[0]; if (e[1] === "o") ev.push([t, e[2]]); });
+    const total = t;
+    let pos = 0, speed = 4, raf = 0, last = 0, shown = -1;
+    const running = () => raf !== 0;
+    function render(force) {
+      let n = 0; while (n < ev.length && ev[n][0] <= pos) n++;
+      if (n !== shown || force) {
+        pre.innerHTML = ansi(ev.slice(0, n).map(e => e[1]).join("")) + (running() && pos < total ? '<span class="cur"></span>' : "");
+        shown = n; pre.scrollTop = pre.scrollHeight;
+      }
+      onTick(pos, total, running(), speed);
+    }
+    function frame(now) {
+      pos = Math.min(total, pos + (now - last) / 1000 * speed); last = now;
+      if (pos >= total) { raf = 0; render(true); return; }
+      render(false); raf = requestAnimationFrame(frame);
+    }
+    return {
+      total,
+      play() { if (running()) return; if (pos >= total) { pos = 0; shown = -1; } last = performance.now(); raf = requestAnimationFrame(frame); render(true); },
+      pause() { cancelAnimationFrame(raf); raf = 0; render(true); },
+      toggle() { running() ? this.pause() : this.play(); },
+      speed(x) { speed = x; render(true); },
+      end() { cancelAnimationFrame(raf); raf = 0; pos = total; render(true); },
+    };
+  }
+  const mmss = s => { s = Math.round(s); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
+  function rerunHTML(where) {
+    const cell = c => `<li>${dots(c)}<span class="rr-cl"><b>${esc(c.rung)}${isOff(c) ? " + reasoning off" : c.rung === R.chosen ? ", as requested" : ", next bigger"}</b> ${c.passed_runs}/${c.valid_runs}` +
+      ` · $${c.usd_per_1000_calls} per 1,000 calls · ${c.seconds_per_call.toFixed(2)} s per call</span></li>`;
+    const conf = R.confirm ? R.confirm.cells.map(c => `<li>${dots(Object.assign({ rung: "" }, c))}<span class="rr-cl"><b>Confirm on the patched code</b> ${c.passed_runs}/${c.valid_runs} (<code>${esc(R.confirm.run_id)}</code>)</span></li>`).join("") : "";
+    const brainNames = R.brain_models.map(m => "Nemotron " + (rungOf(m) || m)).join(", ");
+    return `<div class="rr-head"><h2 id="rerunTitle">Recorded re-run of <code>${esc(where)}</code></h2><button type="button" class="rr-x" aria-label="Close">×</button></div>` +
+      `<p class="rr-sub">${RESULT_DATE(R.run_id)} · terminal recording, no cuts · not part of the census · rules pushed ${esc((R.manifest_pushed_at || "").slice(11, 19))} UTC, before the run (manifest <code>${esc(R.manifest_sha256.slice(0, 8))}</code>)</p>` +
+      `<div class="rr-grid"><div class="term-wrap"><div class="term-bar"><button type="button" class="tb-play">Pause</button>` +
+      `<span class="tb-speed" role="group" aria-label="Playback speed">${[1, 4, 16].map(x => `<button type="button" data-x="${x}">${x}×</button>`).join("")}</span>` +
+      `<span class="tb-time"></span><button type="button" class="tb-end">Show all</button></div><pre class="term" aria-label="terminal output"></pre></div>` +
+      `<div class="rr-side"><h3>Cells, ${K} runs each</h3><ul class="rr-cells">${R.cells.map(cell).join("")}${conf}</ul>` +
+      `<p class="rr-p">Decision: <b>${esc(R.chosen)}</b> (${esc(R.reason.replace(/_/g, " "))}), the same as in the census.</p>` +
+      `<h3>Every model call</h3><p class="rr-p">${R.calls} calls, ${R.calls_with_id} with a Token Factory response id; model cost $${R.model_cost_usd}. ` +
+      `${R.brain_steps} of them are brain steps by ${esc(brainNames)} (${R.brain_seconds} s).</p>` +
+      `<p class="rr-ids">${R.first_ids.map(i => `<code>${esc(i)}</code>`).join("")}<span>first ${R.first_ids.length} of ${R.calls} ids</span></p>` +
+      `<p class="rr-links"><a href="${REPO}${esc(R.result)}" rel="noopener">RESULT.md</a> · <a href="rerun.cast" download>rerun.cast</a> · <a href="${REPO}${esc(R.cast)}" rel="noopener">recording in the repository</a></p>` +
+      `</div></div>`;
+  }
+  function openRerun(where) {
+    const d = $("rerunPanel");
+    if (!d.dataset.built) {
+      d.innerHTML = rerunHTML(where);
+      const btn = d.querySelector(".tb-play"), time = d.querySelector(".tb-time"), sp = [...d.querySelectorAll(".tb-speed button")];
+      player = M.rerun_cast ? castPlayer(M.rerun_cast, d.querySelector(".term"), (pos, total, run, x) => {
+        btn.textContent = run ? "Pause" : pos >= total ? "Replay" : "Play";
+        time.textContent = `${mmss(pos)} / ${mmss(total)} real time`;
+        sp.forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.x === x)));
+      }) : null;
+      if (player) {
+        btn.addEventListener("click", () => player.toggle());
+        sp.forEach(b => b.addEventListener("click", () => player.speed(+b.dataset.x)));
+        d.querySelector(".tb-end").addEventListener("click", () => player.end());
+      } else d.querySelector(".term-wrap").hidden = true;
+      d.querySelector(".rr-x").addEventListener("click", () => d.close());
+      d.addEventListener("click", e => { if (e.target === d) d.close(); });
+      d.addEventListener("close", () => player && player.pause());
+      d.dataset.built = "1";
+    }
+    if (d.showModal) d.showModal(); else d.setAttribute("open", "");
+    if (player) player.play();
+  }
+  window.MMD_rerun = () => R && openRerun(`${R.site.split("/")[0]} :${R.site.split(":").pop()}`);
 
   // ---- decision board ----
   const rows = decided.map(s => ({ key: s.site, s }));
@@ -204,6 +383,13 @@
   show(fromHash(), false);
   window.addEventListener("hashchange", () => show(fromHash(), true));
   window.MMD_show = show;
+  // "see the branch diff" on a receipt opens the same detail view as the board row, at its patch
+  document.querySelectorAll(".rc-diff").forEach(a => a.addEventListener("click", e => {
+    e.preventDefault();
+    history.replaceState(null, "", "#site=" + encodeURIComponent(a.dataset.site));
+    show(a.dataset.site, false);
+    (document.querySelector("#detail .diff") || $("detail")).scrollIntoView({ behavior: "smooth", block: "start" });
+  }));
 
   // ---- what did not work ----
   const pq = infraTargets.map(t => {

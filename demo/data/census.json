@@ -1084,5 +1084,25 @@
   "scan_errors": 1,
   "parse_errors": 4,
   "dir": "evidence/scan/2026-10-28"
+ },
+ "brains": {
+  "instructor": {
+   "diagnose_models": [],
+   "diagnose_steps": 0,
+   "patch_models": [
+    "nvidia/Nemotron-3-Ultra-550b-a55b"
+   ],
+   "patch_steps": 19
+  },
+  "llm": {
+   "diagnose_models": [
+    "nvidia/nemotron-3-super-120b-a12b"
+   ],
+   "diagnose_steps": 1,
+   "patch_models": [
+    "nvidia/nemotron-3-super-120b-a12b"
+   ],
+   "patch_steps": 13
+  }
  }
 }

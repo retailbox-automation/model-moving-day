@@ -20,20 +20,35 @@
 </header>
 
 <main class="wrap">
-  <div class="hook" id="hook">
-    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-    <p id="hookText"></p>
-  </div>
-
-  <section class="hero">
-    <div class="hero-text">
-      <h1>Which Nemotron does each call site need?</h1>
-      <p class="sub">Decided by each repository's own tests, run in Token Factory Sandboxes</p>
+  <section class="first" id="first" aria-label="What NVIDIA Nemotron did in each decided call site">
+    <div class="datestrip" id="dateStrip">
+      <svg class="ds-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.2" y="4.6" width="17.6" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M3.2 7.6a3 3 0 0 1 3-3h11.6a3 3 0 0 1 3 3V10H3.2z" fill="currentColor"/><path d="M8 2.6v4M16 2.6v4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      <div class="ds-text">
+        <p class="ds1"><b id="dsDate"></b> <span id="dsWhat"></span> <a class="ds-src" href="https://platform.openai.com/docs/deprecations" rel="noopener">source</a></p>
+        <p class="ds2" id="dsScan" hidden></p>
+      </div>
     </div>
-    <div class="tiles" id="tiles"></div>
+
+    <div class="promise">
+      <div class="tearoff" aria-hidden="true">
+        <span class="ring r1"></span><span class="ring r2"></span>
+        <div class="tear-top"></div>
+        <div class="tear-body"><span class="tm" id="calMonth"></span><span class="td" id="calDay"></span><span class="ty" id="calYear"></span></div>
+      </div>
+      <div class="promise-text">
+        <h1>Every LLM call gets a receipt.</h1>
+        <p class="sub" id="promiseSub"></p>
+      </div>
+    </div>
+
+    <div class="receipts" id="receipts"></div>
+    <div class="roles" id="roles"></div>
+    <ol class="funnel" id="funnel" aria-label="From call sites found to decisions"></ol>
+    <p class="fnote" id="fnote"></p>
+    <button type="button" class="rerun-tile" id="rerunTile" hidden aria-haspopup="dialog"></button>
   </section>
 
-  <section class="funnel" id="funnel" aria-label="From call sites found to decisions"></section>
+  <dialog class="rerun" id="rerunPanel" aria-labelledby="rerunTitle"></dialog>
 
   <section class="card" id="board-card">
     <div class="card-head">

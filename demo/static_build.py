@@ -1,11 +1,13 @@
-"""Static REPLAY site in demo/static/: hand-written index.html, app.css, app.js plus three generated files.
+"""Static REPLAY site in demo/static/: hand-written index.html, app.css, app.js plus four generated files.
 
-    python -m demo.static_build           write demo/static/data.js, robots.txt, _headers
+    python -m demo.static_build           write demo/static/data.js, robots.txt, _headers, rerun.cast
     python -m demo.static_build check     exit 1 if any generated file differs from a fresh build
 
 No server, no network, no keys: the page reads `window.MMD` from data.js, so it also works from file://. data.js is
 demo/data/census.json (built by `python -m demo.build` from the same census/report.py data() that writes CENSUS.md)
-unchanged, so every number on the page is a number in CENSUS.md. Output is deterministic.
+unchanged, so every number on the page is a number in CENSUS.md. The recorded re-run's terminal recording (asciicast)
+is copied next to the page and also carried in data.js as text, so its player works from file:// too. Output is
+deterministic.
 """
 import json
 import sys
@@ -16,7 +18,7 @@ sys.path.insert(0, str(ROOT))
 from demo import build as B  # noqa: E402
 
 STATIC = Path(__file__).resolve().parent / "static"
-GENERATED = ("data.js", "robots.txt", "_headers")
+GENERATED = ("data.js", "robots.txt", "_headers", "rerun.cast")
 
 
 def details(census):
@@ -45,11 +47,14 @@ def details(census):
 def files():
     data = B.build()
     data["details"] = details(data["census"])
+    cast = (ROOT / data["rerun"]["cast"]).read_text() if data.get("rerun") else ""
+    data["rerun_cast"] = cast or None
     js = "window.MMD = " + json.dumps(data, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + ";\n"
     return {
         "data.js": js,
         "robots.txt": "User-agent: *\nDisallow: /\n",
         "_headers": "/*\n  X-Robots-Tag: noindex, nofollow\n",
+        "rerun.cast": cast,
     }
 
 
