@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Model Moving Day</title>
+<meta name="description" content="Which NVIDIA Nemotron on Nebius Token Factory each LLM call site needs, decided by the repository's own tests. Replay of a recorded census; no model calls.">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <div class="brand">Model Moving Day</div>
+    <div class="pills">
+      <span class="pill pill-blue">Replay of a recorded census · no model calls</span>
+      <span class="pill pill-green">NVIDIA Nemotron on Nebius Token Factory</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hook" id="hook">
+    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    <p id="hookText"></p>
+  </div>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Which Nemotron does each call site need?</h1>
+      <p class="sub">Decided by each repository's own tests, run in Token Factory Sandboxes</p>
+    </div>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <section class="funnel" id="funnel" aria-label="From call sites found to decisions"></section>
+
+  <section class="card" id="board-card">
+    <div class="card-head">
+      <h2>Decision board</h2>
+      <p class="hint">Click a row for its runs, flip tests, receipt and patch.</p>
+    </div>
+    <div class="board" id="board"></div>
+    <p class="legend" id="legend"></p>
+  </section>
+
+  <section class="how" aria-label="How a decision is made">
+    <div class="card how-steps">
+      <h2>How a decision is made</h2>
+      <ol id="howSteps"></ol>
+    </div>
+    <div class="card how-diff">
+      <h2>What makes it different</h2>
+      <ul id="diffList"></ul>
+    </div>
+  </section>
+
+  <section class="card detail" id="detail" aria-live="polite"></section>
+
+  <section class="two">
+    <div class="card" id="failed">
+      <h2>What did not work</h2>
+      <ul class="rows" id="failedRows"></ul>
+    </div>
+    <div class="card" id="unmeasured">
+      <h2 id="unmeasuredTitle">Found, not measured</h2>
+      <ul class="rows" id="unmeasuredRows"></ul>
+      <details class="more"><summary>All call sites with their reasons</summary><ul class="small" id="unmeasuredAll"></ul></details>
+    </div>
+  </section>
+
+  <section class="card" id="realsyn">
+    <h2>Real and synthetic</h2>
+    <div class="cols">
+      <div><h3>Real</h3><ul class="checks" id="realList"></ul></div>
+      <div><h3>Synthetic or assumed</h3><ul class="synth" id="synList"></ul></div>
+    </div>
+  </section>
+
+  <footer class="foot" id="foot"></footer>
+</main>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script defer src="https://t.retailbox-automation.com/t.js" data-asset="nebius-c1"></script>
+</body>
+</html>
