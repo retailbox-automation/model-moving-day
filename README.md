@@ -1,30 +1,47 @@
 # Model Moving Day
 
-OpenAI shuts down GPT-4o, GPT-4o mini, GPT-4.1 and GPT-4.1 mini on January 14, 2027 ([platform.openai.com/docs/deprecations](https://platform.openai.com/docs/deprecations),
-read on 2026-10-24 and again on 2026-10-28: `evidence/platform/openai-deprecations-check-2026-10-28.md`), and the tests of the three open-source projects
-studied here still name those models. Model Moving Day is an agent that finds the LLM call sites in a repository,
-decides which NVIDIA Nemotron model on Nebius Token Factory each call site needs by running the repository's own tests
-in Token Factory Sandboxes, and writes the move as a branch that the same tests confirm.
+Every LLM call gets a receipt before January 14, 2027. That day OpenAI shuts down GPT-4o, GPT-4o mini, GPT-4.1 and
+GPT-4.1 mini ([platform.openai.com/docs/deprecations](https://platform.openai.com/docs/deprecations), read on 2026-10-24
+and again on 2026-10-28: `evidence/platform/openai-deprecations-check-2026-10-28.md`), and <SCAN_T> of <SCAN_K> popular
+Python LLM repositories still name them in their tests ([static scan](evidence/scan/2026-10-28/SCAN.md), selection rule
+pushed before the scan). Model Moving Day is an agent that finds the LLM call sites in a repository and gives each one a
+receipt: the smallest NVIDIA Nemotron on Nebius Token Factory that the repository's own tests accept, run 5 times per
+model in Token Factory Sandboxes and priced against the next bigger Nemotron, or the reason the tests can't vouch for
+it. It writes each move as a branch that the same tests confirm.
 
-First census (test traffic, not production traffic): of 26 LLM call sites found in 3 libraries and tools, only 8 could
-be measured with the repositories' own tests. 4 got a decision, in 2 libraries: 3 run on Lightning or Nano, and 1 needed
-Super, which costs about 3× more per call than OpenAI's replacement model priced on the same tokens. The coverage gate
-we wrote in our internal notes before the runs (3 repositories, 5 independent decisions; it is not in the pushed
-manifest) was not met. Every cell, failures included: [CENSUS.md](CENSUS.md).
+First census (test traffic, not production traffic): 26 LLM call sites found in 3 libraries and tools. Our proxy could
+route 17 of them (6 Responses API and 3 embedding sites were set aside), and at 8 the repositories' own tests notice a
+wrong answer. 4 got a decision, in 2 libraries:
+
+- instructor's sync retry funnel moved down to Lightning: $0.046 per 1,000 calls, against $0.157 on Super;
+- its async twin stayed on Super: Lightning passed 22 of 23 tests, but a nested-model test failed in every run. That
+  call costs $0.170 per 1,000 calls, about 3× OpenAI's replacement model priced on the same tokens;
+- instructor's `llm_validator` and llm's chat call moved to Nano, the llm one with a remedy from a list written before
+  the runs.
+
+The coverage gate we wrote in our internal notes before the runs (3 repositories, 5 independent decisions; it is not in
+the pushed manifest) was not met. Every cell, failures included: [CENSUS.md](CENSUS.md).
+
+Recorded re-run, 2026-10-28 (not part of the census): the agent ran llm's call site again, from the ladder to the
+confirmed branch, and reached the same decision; each of its 68 model calls carries its Token Factory response id
+([RESULT.md](evidence/rerun-2026-10-29/RESULT.md), terminal recording `evidence/rerun-2026-10-29/rerun.cast`).
 
 - Demo, a replay of this census with no model calls: https://model-moving-day.retailbox-automation.com/
 - Video: <C1_VIDEO_URL>
+- Scan a repository yourself, no key and no model: `pip install "model-moving-day @ git+https://github.com/retailbox-automation/model-moving-day"`, then `mmd scan <path or git URL>`
 
 ## Check it in two minutes
 
 | Claim | Where to check | What you will see |
 |---|---|---|
 | The model for each call site is chosen by the repository's own tests | `census/MANIFEST.json` → `targets.<repo>.flip_tests`; demo, click a row | the tests that pass with a working answer and fail with an empty or wrong one, and how many runs each model passed per test |
-| The ladder rules were pushed before the decision runs | the manifest as pushed in commit 4f78a82 at 2026-10-24T11:47:38Z: `git show 4f78a82:census/MANIFEST.json \| shasum -a 256` gives `35365b0c…`; the current file is amendment 7 (`273943f7…`), and each amendment records the previous SHA-256 | the first decision ladder started at 11:49:40Z (a declared smoke run at 11:47:54Z); each `evidence/census/*/ladder-*.json` records the manifest SHA it ran under; the coverage gate is not in the manifest (see Limits) |
+| The ladder rules were pushed before the decision runs | the manifest as pushed in commit 4f78a82 at 2026-10-24T11:47:38Z: `git show 4f78a82:census/MANIFEST.json \| shasum -a 256` gives `35365b0c…`; amendment 7 (`273943f7…`) was the last one under which census runs were made; the current file is amendment 8 (`32b356fe…`, logging only, written before the recorded re-run), and each amendment records the previous SHA-256 | the first decision ladder started at 11:49:40Z (a declared smoke run at 11:47:54Z); each `evidence/census/*/ladder-*.json` records the manifest SHA it ran under; the coverage gate is not in the manifest (see Limits) |
 | 3 of 4 decided call sites run on Lightning or Nano; `retry.py:523` needs Super | CENSUS.md "Which model does what"; `evidence/census/instructor/ladder-20261024T114940Z-f6c56a.json` | cells 5/5 and 0/5; at `retry.py:523` Lightning fails one nested-model test in every run |
 | Each decision has a receipt against the next bigger Nemotron | CENSUS.md "Every cell", fallback rows; demo receipt panel | `retry.py:224` Lightning $0.046 vs Super $0.157 per 1,000 calls; `retry.py:523` Super $0.170 vs Ultra $0.659; `llm_validators.py:34` Nano $0.101 vs Lightning $0.073 |
 | The `'\nYES'` fix at llm `:1494` is rule-backed, not a discovery | `evidence/census/llm/ladder-20261024T115937Z-6e8505.json` → `fixes` | diagnosis by a proxy rule, fix from the pre-registered list, `applied_calls` 15 |
 | The agent writes the move and the patched code passes the same tests | `evidence/census/{instructor,llm}/patch/patch.diff`, `PR.md`; confirm runs `…2a6fd0`, `…9d0fdb` | an opt-in helper (`NEMOTRON_MOVE=1`); confirm 5/5 per moved site; nothing pushed upstream |
+| The agent repeats the llm decision on a fresh run, every call traceable | `evidence/rerun-2026-10-29/` (`PLAN.md` pushed before the run, `RESULT.md`, `calls.jsonl`, `rerun.cast`) | Nano 0/5, remedy "reasoning off", Nano 5/5, Lightning 5/5, branch by Super, confirm 5/5; 68 calls, each with a `chatcmpl-…` id; $0.0124 |
+| <SCAN_T> of <SCAN_K> popular Python LLM repositories name a retiring model in their tests | `evidence/scan/RULE.md` (pushed before the scan, commit ccaccc5), `evidence/scan/2026-10-28/` (`SCAN.md`, `repos.json`, `results.json`) | file and line of every hit; error counts; five repositories checked by hand |
 | Failures are published | CENSUS.md, paper-qa runs and "Found, not measured"; demo "What did not work" | paper-qa: 503/500 replies and lost jobs, no decision; 18 sites not measured, each with its reason |
 
 How this differs from routing each step to a model by price: here the target repository's own frozen tests choose the
@@ -46,7 +63,9 @@ own sources.
 | Planner ("brain") | Super for repositories under about 200K tokens of source, Ultra above (`census/MANIFEST.json` `rules.brain`) | reads a red cell's call log, picks a fix from the pre-registered list, writes the patch | Super for llm (picked "reasoning off" at `:1494`); Ultra for instructor (wrote the migration branch, fourth attempt confirmed) |
 | Embeddings | `Qwen/Qwen3-Embedding-8B` | Token Factory's embedding model for paper-qa | the same on every rung, so not a ladder choice |
 
-The ladder records cost per 1,000 calls per cell; it does not record latency, so the census does not compare speed.
+The census ladder files record cost per 1,000 calls per cell, not latency, so the census does not compare speed. The
+recorded re-run does (amendment 8): at llm `:1494` Nano took 10.5 s per call with reasoning on, 0.68 s with reasoning
+off, and Lightning 0.47 s ([RESULT.md](evidence/rerun-2026-10-29/RESULT.md)).
 
 ## What was done
 
@@ -308,11 +327,13 @@ on the page is one CENSUS.md or this README states. The hosted page also loads a
   models, prices, the fix list, budgets, declared smoke runs) is pushed before the first ladder job. The ladder refuses
   to run when the manifest is not on the remote branch or does not match the code, the evidence or the clones, and
   every ladder file records the manifest's SHA-256 and the remote commit; decision and smoke files also record the
-  push time. The manifest has seven amendments, each recording
-  the previous version's SHA-256. The first two came before any ladder job. The five after it keep the ladder rules
+  push time. The manifest has eight amendments, each recording
+  the previous version's SHA-256. The first two came before any ladder job. Amendments 3 to 7 keep the ladder rules
   and the instructor and llm entries unchanged: amendment 4 adds paper-qa, amendment 7 changes only how paper-qa's
   runs execute (in sequence, with a $0.66 token budget; adaptive, since it came after two failed runs), the others
   change code only. Amendment 7's reason text reads "/bin/bash.66" where "$0.66" was meant (the shell expanded `$0`
-  when the text was written); the binding field `token_budget_usd` is 0.66.
+  when the text was written); the binding field `token_budget_usd` is 0.66. Amendment 8 (2026-10-28) came after the
+  census and before the recorded re-run; it changes only the hashes of four code files that now log each call's Token
+  Factory response id and the seconds per cell.
 - Not in the manifest: the coverage gate and the rule for counting independent decisions (internal notes, written
   before the runs), and the rule that a pair counts at its larger model (report script, after the runs).
