@@ -1,7 +1,7 @@
 # Model Moving Day
 
-OpenAI shuts down GPT-4o, GPT-4o mini, GPT-4.1 and GPT-4.1 mini on January 14, 2027 (its deprecations page, read on
-2026-10-24 and again on 2026-10-28: `evidence/platform/openai-deprecations-check-2026-10-28.md`), and the tests of the three open-source projects
+OpenAI shuts down GPT-4o, GPT-4o mini, GPT-4.1 and GPT-4.1 mini on January 14, 2027 ([platform.openai.com/docs/deprecations](https://platform.openai.com/docs/deprecations),
+read on 2026-10-24 and again on 2026-10-28: `evidence/platform/openai-deprecations-check-2026-10-28.md`), and the tests of the three open-source projects
 studied here still name those models. Model Moving Day is an agent that finds the LLM call sites in a repository,
 decides which NVIDIA Nemotron model on Nebius Token Factory each call site needs by running the repository's own tests
 in Token Factory Sandboxes, and writes the move as a branch that the same tests confirm.
@@ -250,6 +250,16 @@ the manifest and the per-test counts from the ladder files; open `demo/static/in
 `/api/patch/<repo>`), and the `Dockerfile` runs that server. `tests/test_demo_static.py` checks that every dollar amount
 on the page is one CENSUS.md or this README states. The hosted page also loads a visit counter
 (`t.retailbox-automation.com`, no cookies) and Cloudflare's page analytics.
+
+## Shared code and third-party code
+
+- Shared with our other entry in this hackathon (Second Ask, track Best Apps and Agents): only the Token Factory
+  client, `model_moving_day/tf_client.py`, which was added on 2026-10-23 together with that entry's client and has
+  diverged since. Everything else is separate.
+- Third-party code: the migration branches and their diffs in `evidence/census/{instructor,llm}/patch/` change
+  `567-labs/instructor` (MIT) and `simonw/llm` (Apache-2.0); those hunks stay under their projects' licenses.
+  `Future-House/paper-qa` (Apache-2.0) was installed and tested, not changed; its AGPL plugin `paper-qa-pymupdf` was
+  not installed.
 
 ## Limits
 
