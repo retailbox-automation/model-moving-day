@@ -106,7 +106,7 @@ def _census():
 
 
 def _routable(c):
-    """Call sites the proxy could route: found, minus the Responses API and embedding sites set aside before the ladders."""
+    """Call sites left after the Responses API and embedding sites were set aside before the ladders."""
     nm = c["census"]["not_measured"]
     resp = sum(1 for x in nm if "Responses API" in x["why"])
     emb = sum(1 for x in nm if "embedding call site" in x["why"])
@@ -117,7 +117,7 @@ def test_routable_sites_are_derived_from_the_not_measured_reasons():
     n, resp, emb = _routable(_census())
     assert (n, resp, emb) == (17, 6, 3)
     readme = (ROOT / "README.md").read_text()
-    assert "route 17 of them (6 Responses API and 3 embedding sites were set aside)" in readme
+    assert "At 8 of the other 17 the repositories' own tests can decide" in readme
 
 
 def test_first_screen_funnel_and_note(page):
@@ -125,12 +125,12 @@ def test_first_screen_funnel_and_note(page):
     h = c["census"]["headline"]
     f = page["first"]
     assert f["funnel"] == [[h["sites_found"], str(h["sites_found"]), "LLM call sites found"],
-                           [_routable(c)[0], str(_routable(c)[0]), "our proxy could route"],
-                           [h["sites_in_ladder"], str(h["sites_in_ladder"]), "where the repo's tests notice a wrong answer"],
+                           [_routable(c)[0], str(_routable(c)[0]), "left after 9 set aside"],
+                           [h["sites_in_ladder"], str(h["sites_in_ladder"]), "where tests notice a wrong answer, a live model can pass"],
                            [h["decided"], str(h["decided"]), f"decided ({', '.join(h['repositories_decided'])})"]]
     assert [x[0] for x in f["funnel"]] == [26, 17, 8, 4]
-    assert f["fnote"] == ("6 Responses API and 3 embedding sites set aside · paper-qa: no decision (503/500, lost jobs) · "
-                          "our coverage gate not met")
+    assert f["fnote"] == ("set aside: 6 Responses API (our proxy does not route them), 3 embedding (fixed model) · "
+                          "paper-qa: no decision (503/500, lost jobs) · our coverage gate not met")
 
 
 def test_first_screen_dollars_are_in_census_or_rerun_result(page):
@@ -186,7 +186,7 @@ def test_first_screen_roles_come_from_the_agent_step_logs(page):
     b = _census()["brains"]
     assert b["llm"]["diagnose_models"] == b["llm"]["patch_models"] == ["nvidia/nemotron-3-super-120b-a12b"]
     assert b["instructor"]["patch_models"] == ["nvidia/Nemotron-3-Ultra-550b-a55b"] and b["instructor"]["diagnose_models"] == []
-    assert page["first"]["roles"] == ["Nano · Lightning · Super · Ultra answer the app's calls",
+    assert page["first"]["roles"] == ["Nano · Lightning · Super · Ultra answer the calls of the repos' tests",
                                       "Nemotron Super diagnoses and writes the branch (llm)",
                                       "Nemotron Ultra writes the branch (instructor)"]
 

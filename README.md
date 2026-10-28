@@ -3,15 +3,18 @@
 Every LLM call gets a receipt before January 14, 2027. That day OpenAI shuts down GPT-4o, GPT-4o mini, GPT-4.1 and
 GPT-4.1 mini ([platform.openai.com/docs/deprecations](https://platform.openai.com/docs/deprecations), read on 2026-10-24
 and again on 2026-10-28: `evidence/platform/openai-deprecations-check-2026-10-28.md`), and 37 of 50 popular
-Python LLM repositories still name them in their tests ([static scan](evidence/scan/2026-10-28/SCAN.md), selection rule
-pushed before the scan). Model Moving Day is an agent that finds the LLM call sites in a repository and gives each one a
+Python LLM repositories still name them in their tests ([static scan](evidence/scan/2026-10-28/SCAN.md) of the
+most-starred active Python repositories that a GitHub search for "openai" returns; selection rule pushed before the
+scan). Model Moving Day is an agent that finds the LLM call sites in a repository and gives each one a
 receipt: the smallest NVIDIA Nemotron on Nebius Token Factory that the repository's own tests accept, run 5 times per
 model in Token Factory Sandboxes and priced against the next bigger Nemotron, or the reason the tests can't vouch for
 it. It writes each move as a branch that the same tests confirm.
 
-First census (test traffic, not production traffic): 26 LLM call sites found in 3 libraries and tools. Our proxy could
-route 17 of them (6 Responses API and 3 embedding sites were set aside), and at 8 the repositories' own tests notice a
-wrong answer. 4 got a decision, in 2 libraries:
+First census (test traffic, not production traffic): 26 LLM call sites found in 3 libraries and tools. 9 were set
+aside before the ladder: 6 Responses API sites, which our proxy does not route, and 3 embedding sites, whose model is
+fixed. At 8 of the other 17 the repositories' own tests can decide: they notice a wrong answer, and a live model can
+pass them (at one more site, llm `:1441`, the tests notice a wrong answer but expect the old model's exact sentence).
+4 got a decision, in 2 libraries:
 
 - instructor's sync retry funnel moved down to Lightning: $0.046 per 1,000 calls, against $0.157 on Super;
 - its async twin stayed on Super: Lightning passed 22 of 23 tests, but a nested-model test failed in every run. That
@@ -38,7 +41,7 @@ confirmed branch, and reached the same decision; each of its 68 model calls carr
 | The ladder rules were pushed before the decision runs | the manifest as pushed in commit 4f78a82 at 2026-10-24T11:47:38Z: `git show 4f78a82:census/MANIFEST.json \| shasum -a 256` gives `35365b0c…`; amendment 7 (`273943f7…`) was the last one under which census runs were made; the current file is amendment 8 (`32b356fe…`, logging only, written before the recorded re-run), and each amendment records the previous SHA-256 | the first decision ladder started at 11:49:40Z (a declared smoke run at 11:47:54Z); each `evidence/census/*/ladder-*.json` records the manifest SHA it ran under; the coverage gate is not in the manifest (see Limits) |
 | 3 of 4 decided call sites run on Lightning or Nano; `retry.py:523` needs Super | CENSUS.md "Which model does what"; `evidence/census/instructor/ladder-20261024T114940Z-f6c56a.json` | cells 5/5 and 0/5; at `retry.py:523` Lightning fails one nested-model test in every run |
 | Each decision has a receipt against the next bigger Nemotron | CENSUS.md "Every cell", fallback rows; demo receipt panel | `retry.py:224` Lightning $0.046 vs Super $0.157 per 1,000 calls; `retry.py:523` Super $0.170 vs Ultra $0.659; `llm_validators.py:34` Nano $0.101 vs Lightning $0.073 |
-| The `'\nYES'` fix at llm `:1494` is rule-backed, not a discovery | `evidence/census/llm/ladder-20261024T115937Z-6e8505.json` → `fixes` | diagnosis by a proxy rule, fix from the pre-registered list, `applied_calls` 15 |
+| The `'\nYES'` fix at llm `:1494` is rule-backed, not a discovery | `evidence/census/llm/ladder-20261024T115937Z-6e8505.json` → `sites.<site>.fix` | diagnosis by a proxy rule, fix from the pre-registered list, `applied_calls` 15 |
 | The agent writes the move and the patched code passes the same tests | `evidence/census/{instructor,llm}/patch/patch.diff`, `PR.md`; confirm runs `…2a6fd0`, `…9d0fdb` | an opt-in helper (`NEMOTRON_MOVE=1`); confirm 5/5 per moved site; nothing pushed upstream |
 | The agent repeats the llm decision on a fresh run, every call traceable | `evidence/rerun-2026-10-29/` (`PLAN.md` pushed before the run, `RESULT.md`, `calls.jsonl`, `rerun.cast`) | Nano 0/5, remedy "reasoning off", Nano 5/5, Lightning 5/5, branch by Super, confirm 5/5; 68 calls, each with a `chatcmpl-…` id; $0.0124 |
 | 37 of 50 popular Python LLM repositories name a retiring model in their tests | `evidence/scan/RULE.md` (pushed before the scan, commit ccaccc5), `evidence/scan/2026-10-28/` (`SCAN.md`, `repos.json`, `results.json`) | file and line of every hit; error counts; five repositories checked by hand |
@@ -81,8 +84,9 @@ application built on the library would.
 
 Results (test traffic, not production traffic):
 
-- 26 LLM call sites found. Our proxy could route 17 of them (6 Responses API and 3 embedding sites were set aside); at
-  8 of those 17 the repositories' own tests notice a wrong answer, and those 8 went into the ladder. The other 18 were
+- 26 LLM call sites found. 9 were set aside before the ladder (6 Responses API sites, which our proxy does not route,
+  and 3 embedding sites, whose model is fixed). At 8 of the other 17 the repositories' own tests can decide (they notice
+  a wrong answer and a live model can pass them), and those 8 went into the ladder. The other 18 were
   found but not measured, each with its reason in CENSUS.md.
 - 4 call sites got a decision, in 2 repositories (instructor and llm); 3 of them moved to Lightning or Nano.
 - Counted per call site that is 4 independent decisions, 3 on Lightning or Nano. If the sync and async faces of
@@ -332,9 +336,10 @@ on the page is one CENSUS.md or this README states. The hosted page also loads a
   the previous version's SHA-256. The first two came before any ladder job. Amendments 3 to 7 keep the ladder rules
   and the instructor and llm entries unchanged: amendment 4 adds paper-qa, amendment 7 changes only how paper-qa's
   runs execute (in sequence, with a $0.66 token budget; adaptive, since it came after two failed runs), the others
-  change code only. Amendment 7's reason text reads "/bin/bash.66" where "$0.66" was meant (the shell expanded `$0`
+  change code and the logged sandbox-run counter only. Amendment 7's reason text reads "/bin/bash.66" where "$0.66" was meant (the shell expanded `$0`
   when the text was written); the binding field `token_budget_usd` is 0.66. Amendment 8 (2026-10-28) came after the
-  census and before the recorded re-run; it changes only the hashes of four code files that now log each call's Token
-  Factory response id and the seconds per cell.
+  census and before the recorded re-run; it changes the hashes of four code files that now log each call's Token
+  Factory response id and the seconds per cell, plus the bookkeeping fields (sandbox runs logged so far, 53 → 56, and
+  the git head it was written at); rules, routes, fix list, models, budget limits and target entries are unchanged.
 - Not in the manifest: the coverage gate and the rule for counting independent decisions (internal notes, written
   before the runs), and the rule that a pair counts at its larger model (report script, after the runs).

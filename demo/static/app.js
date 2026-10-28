@@ -118,16 +118,16 @@
     if (b.diag.length && b.diag.join() === b.patch.join()) return `diagnoses and writes the branch (${b.patch.join(", ")})`;
     return [b.diag.length ? `diagnoses red cells (${b.diag.join(", ")})` : "", b.patch.length ? `writes the branch (${b.patch.join(", ")})` : ""].filter(Boolean).join("; ");
   };
-  $("roles").innerHTML = `<span class="who who-ladder">${RUNGS.map(g => `<b>${g}</b>`).join(" · ")} answer the app's calls</span>` +
+  $("roles").innerHTML = `<span class="who who-ladder">${RUNGS.map(g => `<b>${g}</b>`).join(" · ")} answer the calls of the repos' tests</span>` +
     RUNGS.filter(g => brains[g]).map((g, i) => `<span class="who who-brain${i ? " who-alt" : ""}"><b>Nemotron ${g}</b> ${esc(roleText(brains[g]))}</span>`).join("");
 
   // funnel: the 26 sites found, minus the Responses API and embedding sites set aside before the ladders, then the
-  // sites with flip tests, then the decisions
+  // sites whose flip tests a live model can pass (the ladder), then the decisions
   const nm0 = C.not_measured;
   const nResp = nm0.filter(x => /Responses API/i.test(x.why)).length, nEmb = nm0.filter(x => /embedding call site/i.test(x.why)).length;
   const routable = H.sites_found - nResp - nEmb;
-  $("funnel").innerHTML = [[H.sites_found, "LLM call sites found"], [routable, "our proxy could route"],
-    [H.sites_in_ladder, "where the repo's tests notice a wrong answer"], [H.decided, `decided (${H.repositories_decided.join(", ")})`]]
+  $("funnel").innerHTML = [[H.sites_found, "LLM call sites found"], [routable, `left after ${nResp + nEmb} set aside`],
+    [H.sites_in_ladder, "where tests notice a wrong answer, a live model can pass"], [H.decided, `decided (${H.repositories_decided.join(", ")})`]]
     .map(([n, t]) => `<li class="fs" data-n="${n}"><span class="fn">${n}</span><span class="ft">${esc(t)}</span></li>`).join("");
   const noDecision = [...new Set(C.sites.filter(s => s.status === "infra").map(s => s.target))].map(t => {
     const rs = C.targets.find(x => x.target === t).runs.map(r => C.runs[r]), tot = {};
@@ -135,7 +135,7 @@
     const codes = Object.keys(tot).sort((a, b) => tot[b] - tot[a]).join("/");
     return `${t}: no decision (${[codes, rs.some(r => r.lost_jobs) ? "lost jobs" : ""].filter(Boolean).join(", ")})`;
   });
-  $("fnote").textContent = [`${nResp} Responses API and ${nEmb} embedding sites set aside`, ...noDecision, `our coverage gate ${H.gate_met ? "met" : "not met"}`].join(" · ");
+  $("fnote").textContent = [`set aside: ${nResp} Responses API (our proxy does not route them), ${nEmb} embedding (fixed model)`, ...noDecision, `our coverage gate ${H.gate_met ? "met" : "not met"}`].join(" · ");
 
   // the recorded re-run (not part of the census): a tile on the first screen, a panel with its own small player
   const R = M.rerun;
