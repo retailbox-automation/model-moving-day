@@ -81,7 +81,8 @@ application built on the library would.
 
 Results (test traffic, not production traffic):
 
-- 26 LLM call sites found; 8 could be measured with the repositories' own tests and went into the ladder; 18 were
+- 26 LLM call sites found. Our proxy could route 17 of them (6 Responses API and 3 embedding sites were set aside); at
+  8 of those 17 the repositories' own tests notice a wrong answer, and those 8 went into the ladder. The other 18 were
   found but not measured, each with its reason in CENSUS.md.
 - 4 call sites got a decision, in 2 repositories (instructor and llm); 3 of them moved to Lightning or Nano.
 - Counted per call site that is 4 independent decisions, 3 on Lightning or Nano. If the sync and async faces of
