@@ -93,7 +93,7 @@
   $("howSteps").innerHTML = [
     "Install the target repository at a pinned commit into a Token Factory Sandboxes image.",
     "Run its own tests three times through a recording proxy: with a known-good answer, an empty answer and a plausible wrong answer. A test counts for a call site (a flip test) only if it passes the first run and fails the other two.",
-    `Freeze the tests by hash and push the rules before the first ladder job: manifest <code>${hr.manifest_sha256.slice(0, 8)}</code> pushed ${hr.pushed_at.slice(11, 19)} UTC, first ladder ${hr.started_utc.slice(11, 19)} UTC (2026-10-24).`,
+    `Freeze the tests by hash and push the rules before the first ladder job: manifest <code>${hr.manifest_sha256.slice(0, 8)}</code> pushed ${hr.pushed_at.slice(11, 19)} UTC (2026-10-24), first decision ladder ${hr.started_utc.slice(11, 19)} UTC${C.smoke.length ? `, after a declared smoke run at ${C.smoke[0].run_id.slice(9, 11)}:${C.smoke[0].run_id.slice(11, 13)}:${C.smoke[0].run_id.slice(13, 15)} UTC` : ""}.`,
     `Climb the ladder Nano → Lightning → Super → Ultra, ${K} runs per cell, pass on ${hr.required_passes} of ${K}; runs hit by 402/404/429/5xx are set aside and re-run. Keep the smallest model that passes and measure the next one up as the fallback.`,
     "A red cell whose call log shows a diagnosis (set by a proxy rule) goes to the planner, Nemotron Super or Ultra, which may pick one fix from a pre-registered list; the fix counts only if the request really changed.",
     "Write the move as a local branch of the target (an opt-in helper, NEMOTRON_MOVE=1; with the flag off the code is the original) and re-run the tests on the patched code.",

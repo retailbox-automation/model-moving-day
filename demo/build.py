@@ -14,8 +14,8 @@ ABOUT = {
             "the repository's own tests. This demo replays the recorded census; it makes no model calls.",
     "source": "Every number comes from the evidence files in this repository, through census/report.py (the same "
               "function writes CENSUS.md). To run the census yourself with your own Token Factory key, see README.md.",
-    "honesty": "Test traffic, not production traffic. The coverage gate set beforehand (3 repositories, 5 independent "
-               "decisions) was not met. Limits and what is not claimed: README.md and CENSUS.md.",
+    "honesty": "Test traffic, not production traffic. The coverage gate written in our internal notes before the runs "
+               "(3 repositories, 5 independent decisions; not in the pushed manifest) was not met. Limits and what is not claimed: README.md and CENSUS.md.",
 }
 
 

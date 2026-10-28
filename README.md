@@ -9,7 +9,8 @@ in Token Factory Sandboxes, and writes the move as a branch that the same tests 
 First census (test traffic, not production traffic): of 26 LLM call sites found in 3 libraries and tools, only 8 could
 be measured with the repositories' own tests. 4 got a decision, in 2 libraries: 3 run on Lightning or Nano, and 1 needed
 Super, which costs about 3× more per call than OpenAI's replacement model priced on the same tokens. The coverage gate
-we set beforehand (3 repositories, 5 independent decisions) was not met. Every cell, failures included: [CENSUS.md](CENSUS.md).
+we wrote in our internal notes before the runs (3 repositories, 5 independent decisions; it is not in the pushed
+manifest) was not met. Every cell, failures included: [CENSUS.md](CENSUS.md).
 
 - Demo, a replay of this census with no model calls: https://model-moving-day.retailbox-automation.com/
 - Video: <C1_VIDEO_URL>
@@ -19,7 +20,7 @@ we set beforehand (3 repositories, 5 independent decisions) was not met. Every c
 | Claim | Where to check | What you will see |
 |---|---|---|
 | The model for each call site is chosen by the repository's own tests | `census/MANIFEST.json` → `targets.<repo>.flip_tests`; demo, click a row | the tests that pass with a working answer and fail with an empty or wrong one, and how many runs each model passed per test |
-| The ladder rules were pushed before the decision runs | `census/MANIFEST.json` (SHA-256 `35365b0c…`), pushed 2026-10-24T11:47:38Z; first ladder 11:49:40Z; every `evidence/census/*/ladder-*.json` records the SHA | the manifest fields `rules` and `amendments`; the coverage gate is not among them (see Limits) |
+| The ladder rules were pushed before the decision runs | the manifest as pushed in commit 4f78a82 at 2026-10-24T11:47:38Z: `git show 4f78a82:census/MANIFEST.json \| shasum -a 256` gives `35365b0c…`; the current file is amendment 7 (`273943f7…`), and each amendment records the previous SHA-256 | the first decision ladder started at 11:49:40Z (a declared smoke run at 11:47:54Z); each `evidence/census/*/ladder-*.json` records the manifest SHA it ran under; the coverage gate is not in the manifest (see Limits) |
 | 3 of 4 decided call sites run on Lightning or Nano; `retry.py:523` needs Super | CENSUS.md "Which model does what"; `evidence/census/instructor/ladder-20261024T114940Z-f6c56a.json` | cells 5/5 and 0/5; at `retry.py:523` Lightning fails one nested-model test in every run |
 | Each decision has a receipt against the next bigger Nemotron | CENSUS.md "Every cell", fallback rows; demo receipt panel | `retry.py:224` Lightning $0.046 vs Super $0.157 per 1,000 calls; `retry.py:523` Super $0.170 vs Ultra $0.659; `llm_validators.py:34` Nano $0.101 vs Lightning $0.073 |
 | The `'\nYES'` fix at llm `:1494` is rule-backed, not a discovery | `evidence/census/llm/ladder-20261024T115937Z-6e8505.json` → `fixes` | diagnosis by a proxy rule, fix from the pre-registered list, `applied_calls` 15 |
@@ -30,8 +31,9 @@ How this differs from routing each step to a model by price: here the target rep
 model per call site, every cell is published with its receipt, and the output is a migration branch confirmed by
 re-running those tests.
 
-Built for the Nebius × NVIDIA Global AI Hackathon (track: Coding and Agentic Engineering). Every number below comes
-from CENSUS.md, which `census/report.py` recomputes from the evidence files.
+Built for the Nebius × NVIDIA Global AI Hackathon (track: Coding and Agentic Engineering). Census numbers below come
+from CENSUS.md, which `census/report.py` recomputes from the evidence files; spend and platform findings cite their
+own sources.
 
 ## What was done
 
@@ -115,8 +117,8 @@ gpt-6-luna was never called, and its pass rate is assumed to be 1.0.
   test, a YES/NO answer at the end of a chain of two tool calls. Its good side is llm's recorded cassette of
   gpt-4o-mini; Super failed this test live. llm is moved only partly. Only the non-streaming branch moved. The
   streaming branch (`:1441`, llm's default for prompts and the CLI) was not measured, because its tests assert the old
-  model's exact sentences. The async branches have no live tests, and our proxy does not route the Responses API
-  sites.
+  model's exact sentences. The async branches were reached by none of the kept tests, and our proxy does not route the
+  Responses API sites.
 - paper-qa. Three decision runs, each declared in the manifest before it ran; no decision. In the first two, the proxy
   logged 89 and 136 error responses (503/500) from Token Factory, almost all on Nano calls; almost every run was set
   aside, and the sites did not climb. The third run was changed after those two failures: K runs in sequence and a $0.66 token
@@ -193,12 +195,12 @@ Found while running the census; each with its evidence. Dates are 2026.
 - With reasoning on, answers can start with a newline; exact-match tests in real projects break on it (llm `:1494`).
 - Rate-limit headers and enforcement differ: Super ran 577 calls per minute for two minutes against
   `x-ratelimit-limit-requests` 300, and `remaining-requests` read 0 on 564 calls with no 429 (PF-3).
-- Under load, Nano returned HTTP 503/500 often enough that paper-qa got no decision (89, 136 and 21 error replies in
-  its three decision runs; CENSUS.md).
+- Under load, Nano returned HTTP 503/500 often: 89, 136 and 21 error replies in paper-qa's three decision runs
+  (CENSUS.md). Together with jobs our own client lost in the third run, paper-qa got no decision.
 - Sandboxes: long operations outlived our client's status polls (8 of 11 set-aside runs in paper-qa's third run); a
-  completion webhook or long poll would help. A beta run returns a non-zero `resources.cost` that billing did not show
-  (PF-5). `contree-sdk` 0.3.6 warns "Token expires in 0 hours" for a key valid until 2031 (PF-4).
-- The console has no spend cap or budget alert; the census enforces a hard cap in its own client.
+  completion webhook or long poll would help. A beta run returns a non-zero `resources.cost` (PF-5); billing showed no Sandboxes
+  charge on 2026-10-24 (Usage data up to 12:11 UTC). `contree-sdk` 0.3.6 warns "Token expires in 0 hours" for a key valid until 2031 (PF-4).
+- We found no spend cap or budget alert in the console; the census enforces a hard cap in its own client.
 
 `evidence/spikes/platform_findings.json` holds PF-1 to PF-5 with their raw evidence.
 
@@ -253,12 +255,13 @@ on the page is one CENSUS.md or this README states. The hosted page also loads a
 - llm :1494 rests on one test whose good side is a recording; only llm's non-streaming branch moved.
 - The '\nYES' fix was provided for in advance.
 - retry.py:523's Super cell passed on its re-run; its first batch was set aside for 503s, and 4 of those 5 runs had
-  failed underneath.
+  failed underneath. The Super fallback at retry.py:224 also passed only on re-run: its first 5 runs were set aside
+  for 503s and all 5 had failed underneath.
 - paper-qa has no decision: 503/500 from Token Factory on Nano, two jobs lost to our Sandboxes client, one Semantic
   Scholar 429 counted as a model failure. Its third run used a newer harness and a changed execution (sequential runs,
   $0.66 budget), introduced after two failed runs.
 - 18 of 26 found call sites were not measured; the reason is given for each.
-- The controls are synthetic, the proxy re-synthesizes streaming, and it normalizes requests during the ladder; the
+- The broken answers in the controls are synthetic, the proxy re-synthesizes streaming, and it normalizes requests during the ladder; the
   patched code is confirmed without normalization.
 - The instructor patch took four attempts. The branches are local only: upstream untouched, no forks.
 - Spend as above. Token Factory Sandboxes are in beta; their `cost` field is a diagnostic, and the billing check covers
@@ -273,11 +276,13 @@ on the page is one CENSUS.md or this README states. The hosted page also loads a
   (`evidence/sandbox/PLAN.md`, commit 8fac6be) were committed locally before their runs and pushed afterwards: the
   branch reached GitHub at 2026-10-23T16:42:37Z, after the runs. Local commit times are set by the author; the
   server-side `created` timestamps in `evidence/spikes/raw/*.jsonl` and the operation IDs in
-  `evidence/sandbox/runs.jsonl` show the runs started after those commit times.
+  `evidence/sandbox/runs.jsonl` (and, for the first run, which has none, its client timestamp 16:03:52Z) show the runs
+  started after those commit times.
 - The census manifest (`census/MANIFEST.json`: pinned commits, flip tests, frozen-file hashes, K, margin, rungs,
   models, prices, the fix list, budgets, declared smoke runs) is pushed before the first ladder job. The ladder refuses
   to run when the manifest is not on the remote branch or does not match the code, the evidence or the clones, and
-  every ladder file records the manifest's SHA-256 and the push. The manifest has seven amendments, each recording
+  every ladder file records the manifest's SHA-256 and the remote commit; decision and smoke files also record the
+  push time. The manifest has seven amendments, each recording
   the previous version's SHA-256. The first two came before any ladder job. The five after it keep the ladder rules
   and the instructor and llm entries unchanged: amendment 4 adds paper-qa, amendment 7 changes only how paper-qa's
   runs execute (in sequence, with a $0.66 token budget; adaptive, since it came after two failed runs), the others
