@@ -8,6 +8,15 @@ const URL = "file://" + path.resolve(__dirname, "static", "index.html");
 (async () => {
   const b = await pw.chromium.launch(process.env.PW_EXEC ? { executablePath: process.env.PW_EXEC } : {});
   const out = {};
+  const fit = {};
+  for (const w of [1280, 1366, 1440, 1536, 1680]) {   // laptops: the board must keep every column inside its card
+    const p = await b.newPage({ viewport: { width: w, height: 900 } });
+    await p.route("**/*", r => r.request().url().startsWith("file://") ? r.continue() : r.abort());
+    await p.goto(URL); await p.waitForTimeout(200);
+    fit[w] = await p.evaluate(() => { const d = document.querySelector(".board"); return { board: d.clientWidth, table: d.querySelector("table").scrollWidth, page: document.documentElement.scrollWidth }; });
+    await p.close();
+  }
+  out.fit = fit;
   for (const w of [1920, 390]) {
     const p = await b.newPage({ viewport: { width: w, height: 1000 } });
     const errors = [], external = [];

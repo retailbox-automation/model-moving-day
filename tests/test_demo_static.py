@@ -86,3 +86,10 @@ def test_board_rows_and_chips_match_the_census(page):
     for s in chosen:
         assert s["site"].split("/")[-1] in p["details"][s["site"]]["h2"]
     assert "infrastructure" in p["details"]["target:paper-qa"]["text"]
+
+
+@pytest.mark.parametrize("width", ["1280", "1366", "1440", "1536", "1680"])
+def test_board_fits_laptop_widths(page, width):
+    f = page["fit"][width]
+    assert f["page"] == int(width)
+    assert f["table"] <= f["board"] + 1, f"board clipped at {width}px: table {f['table']} > card {f['board']}"

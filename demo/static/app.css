@@ -196,3 +196,17 @@ ul.synth li::before { content: ""; flex: none; width: 16px; height: 16px; border
 }
 .two > *, .how > *, .dgrid > *, .hero > *, .cells > * { min-width: 0; }
 .note code, ul.rows code, .dsub code, .fine code, .diff-head span { overflow-wrap: anywhere; }
+/* laptops (about 1280-1700 px): the board keeps every column inside the card */
+.board { overflow-x: auto; }
+@media (max-width: 1700px) and (min-width: 761px) {
+  .bt th, .bt td { padding: 13px 10px; }
+  .bt td { font-size: 16.5px; }
+  .bt th { font-size: 15.5px; }
+  .bt .site { font-size: 15px; }
+  .chip { font-size: 15.5px; padding: 6px 11px; }
+  .dot { width: 11px; height: 11px; }
+  .dots { gap: 4px; }
+  .bt .money { white-space: normal; min-width: 150px; }
+  .bt .money .mv { display: inline; }
+  .tag-red { margin: 4px 0 0 8px; }
+}
