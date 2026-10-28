@@ -35,6 +35,19 @@ Built for the Nebius × NVIDIA Global AI Hackathon (track: Coding and Agentic En
 from CENSUS.md, which `census/report.py` recomputes from the evidence files; spend and platform findings cite their
 own sources.
 
+## Which model does what
+
+| Role | Model on Token Factory | Why this one | What it did in the census |
+|---|---|---|---|
+| Ladder rung 1 | `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B` ($0.06 / $0.24 per 1M) | smallest Nemotron | kept at `llm_validators.py:34` and, with reasoning off, at llm `:1494` |
+| Ladder rung 2 | `nvidia/Nemotron-3_5-Lightning` ($0.06 / $0.24) | same price per token as Nano | kept at `retry.py:224` |
+| Ladder rung 3 | `nvidia/nemotron-3-super-120b-a12b` ($0.30 / $0.90) | next size up | kept at `retry.py:523`; fallback at `retry.py:224` |
+| Ladder rung 4 | `nvidia/Nemotron-3-Ultra-550b-a55b` ($1 / $3) | largest | fallback at `retry.py:523` ($0.659 per 1,000 calls) |
+| Planner ("brain") | Super for repositories under about 200K tokens of source, Ultra above (`census/MANIFEST.json` `rules.brain`) | reads a red cell's call log, picks a fix from the pre-registered list, writes the patch | Super for llm (picked "reasoning off" at `:1494`); Ultra for instructor (wrote the migration branch, fourth attempt confirmed) |
+| Embeddings | `Qwen/Qwen3-Embedding-8B` | Token Factory's embedding model for paper-qa | the same on every rung, so not a ladder choice |
+
+The ladder records cost per 1,000 calls per cell; it does not record latency, so the census does not compare speed.
+
 ## What was done
 
 A census of three open-source LLM libraries and tools at pinned commits: `567-labs/instructor` (6cd771c, MIT),
@@ -205,6 +218,9 @@ Found while running the census; each with its evidence. Dates are 2026.
 `evidence/spikes/platform_findings.json` holds PF-1 to PF-5 with their raw evidence.
 
 ## How it works
+
+The commands are `python -m model_moving_day.census <command> [repo]` (`prepare`, `control`, `coverage`, `manifest`,
+`ladder`, `patch`).
 
 1. `census prepare <repo>` installs the target repository at a pinned commit into a Token Factory Sandboxes image.
 2. `census control <repo>` runs the repository's own tests three times through a recording proxy: with a working

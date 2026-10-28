@@ -13,7 +13,7 @@ import pytest
 from demo import build, static_build
 
 ROOT = Path(__file__).resolve().parents[1]
-PW = os.environ.get("PLAYWRIGHT_MODULE", "/Users/oskolamicheal/Projects/amazon-alexa-plus-build/spike/node_modules/playwright")
+PW = os.environ.get("PLAYWRIGHT_MODULE", "")  # path to node_modules/playwright; the page checks are skipped without it
 TRACKER = "https://t.retailbox-automation.com/t.js"
 
 
@@ -53,7 +53,7 @@ def test_noindex_and_no_keys():
 
 @pytest.fixture(scope="module")
 def page():
-    if not shutil.which("node") or not Path(PW).exists():
+    if not shutil.which("node") or not PW or not Path(PW).exists():
         pytest.skip("node or Playwright not available")
     r = subprocess.run(["node", str(ROOT / "demo" / "static_page_check.js")], capture_output=True, text=True, timeout=180,
                        env={**os.environ, "PLAYWRIGHT_MODULE": PW})
