@@ -34,6 +34,11 @@
    "previous_sha256": "41981436bbd6870906e4aac34b90c627d3dd803d5ae9425d270c394f3b8f73a5",
    "reason": "Amendment 7, before paper-qa's third and last decision run: paper-qa runs its K runs in sequence and stops before passing a /bin/bash.66 token budget; ladder rules and the instructor and llm entries unchanged",
    "utc": "2026-10-24T13:12:39Z"
+  },
+  {
+   "previous_sha256": "273943f70ab573fbddc7be2863c2502d623322044b8774c46e640bf6567e478a",
+   "reason": "Amendment 8, on branch rerun-2026-10-29 before the recorded re-run of llm :1494 (evidence/rerun-2026-10-29/PLAN.md): logging only. The proxy, the job summary, the ladder job records and the brain steps keep the Token Factory response id of each call, and ladder cells keep model seconds. Rules, routes, fix list, models, budgets and target entries unchanged; the census runs of 2026-10-24 were made under amendments 1-7.",
+   "utc": "2026-10-28T21:53:36Z"
   }
  ],
  "baseline_before": {
@@ -51,7 +56,7 @@
   "cap_usd_per_job": 1.0,
   "sandbox_runs": {
    "limit": "MMD_SANDBOX_MAX_RUNS=80 for every phase-B command (orchestrator decision 2026-10-24 11:15; default in code 40)",
-   "logged_when_written": 53,
+   "logged_when_written": 56,
    "plan": "instructor ladder <= 8, llm ladder <= 8, third repo prepare + controls + ladder <= 13, patch confirm 3, fallback cells, smoke 1-2",
    "planned_phase_b": 48
   },
@@ -60,18 +65,18 @@
  "code": {
   "files_sha256": {
    "model_moving_day/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-   "model_moving_day/agent.py": "04a2c7a0af2498d237bffc6d3a3564b3026fda1d95c3333ac0d275bb9110b259",
-   "model_moving_day/census.py": "14c0478e6af543908adc94d46806945a40021e36d58b50d73c9f7e62f020c664",
+   "model_moving_day/agent.py": "bc5cbcf2552233bfc3cfce90d4bf402ae23668579a41af0cb887b0897cf1c53a",
+   "model_moving_day/census.py": "b58a40d951fd0c92fc18ad543d5322bb428851c72fccb3adac4664ef3a14e404",
    "model_moving_day/fakes.py": "f208be4bfa5a18a6f643494f70884a725e8bcf95243b5fd1f0a7dc3f7a7de5a2",
    "model_moving_day/find.py": "0ec906cb4de772f9b0fc046ee09ecda8e20722216524e746afd6010c6ca1a568",
    "model_moving_day/freeze.py": "36546c55162515e28a086179cb15b7f801ed6d961f36192558292534fb72ceb0",
-   "model_moving_day/job.py": "21623d43a1c726bdc223bd927f4887337d45579e76b344eb3463cae251a906a3",
+   "model_moving_day/job.py": "f22d82848b458ceb95b46f862e918d447a0b88a71078f8a83c29c9e5db118889",
    "model_moving_day/ladder.py": "cd64b81af53439247ae2d54932c21ef0d6de6b706c659ff1230393ae969cc3fe",
    "model_moving_day/manifest.py": "8b76ce57051d100c4f72418a9325fd975f4a5665557fb5e3da4bf310c5086b9c",
    "model_moving_day/normalize.py": "a035f94e364f826be9c76b58e9a988f2d1adcea5425fee0a98e770dd98b289b4",
    "model_moving_day/patch.py": "08d5f307315c1b056d6ed806a0d7ac91e75c3a5406055296ee22c8fa4e36084f",
    "model_moving_day/pr.py": "250b010a58d16d1c82d59074cfa7d5ba2642f8ab345706ab351c77861e9a265b",
-   "model_moving_day/proxy.py": "4cf0d73b9acef638a0caee715148b098d24ce084f2f31e39896916122eecd69c",
+   "model_moving_day/proxy.py": "b781bbad8114e4fec74be43ef478e29940f1549c2aa83a0f00a7079a2f624aba",
    "model_moving_day/runner.py": "bfe980a61b35d3459c221f13584a8285d6d383ec10720c761464a3d6c27d3b6e",
    "model_moving_day/sandbox.py": "fca5c4187051a81f489b1ee8fa18b88472ace6fd81ff574fbed7fc2f8e683b58",
    "model_moving_day/templates/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -79,7 +84,7 @@
    "model_moving_day/tf_client.py": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b",
    "model_moving_day/tracer/sitecustomize.py": "97348cfb1f875bc7c035c201dd648efcd411738689193419f03d40246a175c0b"
   },
-  "git_head_when_written": "cc3eb1f3147beae2ef7acce123736a797948b310",
+  "git_head_when_written": "323899c48acf3ce3950e00167f43e849a19bf5ce",
   "tf_client_sha256": "f9ca78e1b484d5b51b374238332d28c6f56f0794a3cb61dda0cf7d2aa932031b"
  },
  "first_written_utc": "2026-10-24T10:47:17Z",
@@ -95,7 +100,7 @@
   "after a run the hash check catches changed or missing frozen files; new files in test directories are recorded but do not stop the ladder"
  ],
  "publication": "every cell is published, including red cells, infra cells, cells of an aborted ladder, smoke runs and the 'old model stays' outcome; every job and cell is also appended to evidence/census/<target>/ladder-log.jsonl, and each ladder run writes its own ladder-<run_id>.json (never overwritten)",
- "reason": "Amendment 7, before paper-qa's third and last decision run: paper-qa runs its K runs in sequence and stops before passing a /bin/bash.66 token budget; ladder rules and the instructor and llm entries unchanged",
+ "reason": "Amendment 8, on branch rerun-2026-10-29 before the recorded re-run of llm :1494 (evidence/rerun-2026-10-29/PLAN.md): logging only. The proxy, the job summary, the ladder job records and the brain steps keep the Token Factory response id of each call, and ladder cells keep model seconds. Rules, routes, fix list, models, budgets and target entries unchanged; the census runs of 2026-10-24 were made under amendments 1-7.",
  "rules": {
   "baseline_pass_rate": 1.0,
   "brain": {
@@ -1091,5 +1096,5 @@
    ]
   }
  },
- "written_utc": "2026-10-24T13:12:39Z"
+ "written_utc": "2026-10-28T21:53:36Z"
 }

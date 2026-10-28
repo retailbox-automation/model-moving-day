@@ -11,7 +11,9 @@ live and on screen, with every model request traceable: each call carries the To
 ## What runs
 
 Target `llm` (simonw/llm at the commit in `census/MANIFEST.json`), call site `llm/default_plugins/openai_models.py:1494`,
-under the pushed manifest (amendment 7, commit ac9c8f1, pushed 2026-10-24T13:13:02Z), unchanged rules: K=5 runs per
+under manifest amendment 8 (written on this branch before the run; the census used amendments 1-7, the last one
+commit ac9c8f1, pushed 2026-10-24T13:13:02Z). Amendment 8 changes only the hashes of four logging-only code files
+listed below; unchanged rules: K=5 runs per
 cell, at least 4 of 5 must pass, rungs Nano -> Lightning -> Super -> Ultra, runs that hit 402/404/429/5xx set aside.
 
 1. `python -m model_moving_day.census ladder llm`: the ladder for this site, the brain (Nemotron Super) on any red cell

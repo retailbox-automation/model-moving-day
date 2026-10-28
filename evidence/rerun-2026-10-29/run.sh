@@ -9,7 +9,7 @@ printf '\033[1mModel Moving Day: re-run of one call site, %s UTC (not part of th
 printf 'site  llm/default_plugins/openai_models.py:1494\nrules K=5 runs per cell, >=4 of 5 pass, Nano -> Lightning -> Super -> Ultra, in Token Factory Sandboxes\n'
 
 say "python -m model_moving_day.census ladder llm"
-$PY -m model_moving_day.census ladder llm --pushed-at 2026-10-24T13:13:02Z
+$PY -m model_moving_day.census ladder llm 
 
 RUN=$(ls -t evidence/census/llm/ladder-*.json | head -1 | sed 's/.*ladder-\(.*\)\.json/\1/')
 say "python -m model_moving_day.census patch llm --ladder-run $RUN"
