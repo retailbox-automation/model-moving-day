@@ -1,0 +1,13 @@
+Model Moving Day
+Copyright (c) 2026 RetailBox Automation, Inc. Code licensed under the MIT License (see LICENSE).
+
+Third-party code in the evidence
+--------------------------------
+evidence/census/instructor/patch/ (patch.diff, PR.md) contains changed hunks of 567-labs/instructor
+  (https://github.com/567-labs/instructor, commit 6cd771c), licensed under the MIT License.
+evidence/census/llm/patch/ (patch.diff, PR.md) contains changed hunks of simonw/llm
+  (https://github.com/simonw/llm, commit aebaca2), licensed under the Apache License 2.0.
+  Those hunks stay under their projects' licenses. The demo page (demo/static/data.js) shows the same hunks.
+Future-House/paper-qa (https://github.com/Future-House/paper-qa, commit 57e89f7, Apache License 2.0) was
+  installed and tested in Token Factory Sandboxes, not changed; its AGPL plugin paper-qa-pymupdf was not installed.
+Test names, file hashes and call-site names of these projects appear in census/MANIFEST.json and the evidence files.
