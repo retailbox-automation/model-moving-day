@@ -47,8 +47,16 @@ def notice_lines(checks):
     return lines
 
 
+NO_RECORDINGS = ("mmd notices: no TAVILY_API_KEY, and no recording of this request here; the recordings live in a clone "
+                 "of the repository (evidence/notices/recordings/). Set TAVILY_API_KEY to call Tavily live.")
+
+
 def cmd_notices(out, as_json, replay):
-    n = notices.check(notices.Tavily(notices.default_transport(replay=replay)))
+    try:
+        n = notices.check(notices.Tavily(notices.default_transport(replay=replay)))
+    except notices.ReplayMissing:
+        print(NO_RECORDINGS, file=sys.stderr)
+        return 2
     if out:
         notices.write(n, out)
     print(json.dumps(n, indent=1, ensure_ascii=False) if as_json else notices.summary(n))
@@ -68,7 +76,11 @@ def cmd_scan(target, as_json, with_notices=False):
     checks = None
     if with_notices:
         found = {x["id"] for k in ("source_ids", "test_ids", "test_data_ids") for x in r[k]}
-        n = notices.check() if found else None
+        try:
+            n = notices.check() if found else None
+        except notices.ReplayMissing:
+            print(NO_RECORDINGS, file=sys.stderr)
+            return 2
         checks = notices.for_ids(n, found) if n else []
     if as_json:
         print(json.dumps({"repo": target, "sha": sha, **r, **({"notices": checks} if with_notices else {})}, indent=1))

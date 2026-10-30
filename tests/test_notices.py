@@ -189,3 +189,11 @@ def test_cli_scan_with_notices_on_the_fixture(monkeypatch, capsys):
     assert cli.main(["scan", str(N.scan.FIXTURE), "--notices"]) == 0
     out = capsys.readouterr().out
     assert "retirement notices" in out and "confirmed on https://developers.openai.com/" in out
+
+
+def test_cli_notices_without_key_or_recordings_says_so(monkeypatch, tmp_path, capsys):
+    monkeypatch.delenv("TAVILY_API_KEY", raising=False)
+    monkeypatch.setattr(N, "RECORDINGS", tmp_path)
+    monkeypatch.setattr(N.ReplayTransport.__init__, "__defaults__", (tmp_path,))
+    assert cli.main(["notices"]) == 2
+    assert "recordings live in a clone" in capsys.readouterr().err
