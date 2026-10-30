@@ -30,7 +30,7 @@ confirmed branch, and reached the same decision; each of its 68 model calls carr
 ([RESULT.md](evidence/rerun-2026-10-29/RESULT.md), terminal recording `evidence/rerun-2026-10-29/rerun.cast`).
 
 - Demo, a replay of this census with no model calls: https://model-moving-day.retailbox-automation.com/
-- Video: <C1_VIDEO_URL>
+- Video (2:56): https://youtu.be/5K6B22zD5bs
 - Scan a repository yourself, no key and no model: `pip install "model-moving-day @ git+https://github.com/retailbox-automation/model-moving-day"`, then `mmd scan <path or git URL>`
 
 ## Check it in two minutes
