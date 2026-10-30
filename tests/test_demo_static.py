@@ -208,6 +208,15 @@ def test_first_screen_date_strip_and_scan_line(page):
     assert page["noScan"]["hidden"] and "popular Python" not in page["noScan"]["text"]
 
 
+def test_first_screen_shows_the_tavily_notice_check(page):
+    n = _census()["notices"]
+    x = page["first"]["notice"]
+    assert n["live"] and n["confirmed"] == n["families"] == 4
+    assert x["text"] == "✓ 4 of 4 confirmed with Tavily, live Oct 30, 2026"
+    assert x["href"] == f"https://github.com/retailbox-automation/model-moving-day/blob/main/{n['dir']}/NOTICES.md"
+    assert "2026-10-14: GPT-4 series model deprecations" in x["title"] and "developers.openai.com" in x["title"]
+
+
 def test_first_screen_fits_1920x1200_with_the_board_peeking(page):
     f = page["first"]
     assert f["errors"] == []

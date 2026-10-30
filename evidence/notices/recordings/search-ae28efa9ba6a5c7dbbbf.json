@@ -1,0 +1,67 @@
+{
+ "recorded_at": "2026-10-30T11:36:53+00:00",
+ "endpoint": "https://api.tavily.com/search",
+ "request": {
+  "query": "OpenAI gpt-4.1-mini model deprecation shutdown date API",
+  "search_depth": "advanced",
+  "max_results": 5,
+  "include_domains": [
+   "developers.openai.com",
+   "platform.openai.com",
+   "openai.com"
+  ]
+ },
+ "response": {
+  "query": "OpenAI gpt-4.1-mini model deprecation shutdown date API",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+   {
+    "url": "https://community.openai.com/t/january-14-2027-shutdown-of-gpt-4o-gpt-4-1-mini-without-required-notice/1410935",
+    "title": "January 14, 2027 - Shutdown of GPT-4o, GPT-4.1, mini - without required notice - Deprecations - OpenAI Developer Community",
+    "content": "# January 14, 2027 - Shutdown of GPT-4o, GPT-4.1, mini - without required notice\n\nOn October 14, 2026, we notified developers using (the title’s) models of their deprecation and removal from the API on January 14, 2027.\n\nThere was no alternate notice such as described that I had seen. The only notice was the deprecation page saying that same language.\n\nOpenAI writes:\n\nWe provide the following minimum notice periods before model retirement:\n\nIn the past before that declaration, OpenAI has even provided a year notice between deprecation and shutoff. [...] ### Related topics\n\n| Topic |  | Replies | Views | Activity |\n ---  --- \n| What is the sunset date for gpt-4o-mini?  Deprecations | 4 | 2246 | January 14, 2026 |\n| Deprecation date for gpt-4o-mini  API | 0 | 1800 | August 19, 2025 |\n| Clarification needed: Is only gpt-5-mini-2025-08-07 deprecated, or the entire gpt-5-mini family?  Deprecations | 2 | 735 | October 6, 2026 |\n| OpenAI is winding down the fine-tuning API and platform - Discussion Thread  Deprecations | 2 | 3559 | May 8, 2026 |\n| Is GPT 4.1 Mini API getting retired? GPT 5 Mini too SLOW  API | 7 | 1986 | February 10, 2026 |\n\nPowered by Discourse, best viewed with JavaScript enabled [...] These two model families, including the mini versions are extremely “generally available”, also having fine-tuning models that this also directly impacts - the end of any fine-tunings. The models certainly do not fall under “Specialized variants” for an exception.\n\nI conclude that the shutoff must be pushed back to at least April 14.\n\n### Related topics",
+    "score": 0.92731744,
+    "raw_content": null,
+    "id": "7bf60b-00"
+   },
+   {
+    "url": "https://developers.openai.com/api/docs/deprecations#model-deprecation-notice-periods",
+    "title": "Deprecations | OpenAI API",
+    "content": "| Shutdown date | Model / system | Recommended replacement |\n --- \n| January 14, 2027 | GPT-4o (`gpt-4o-2024-08-06`, `gpt-4o-2024-11-20`) | `gpt-6-luna` |\n| January 14, 2027 | GPT-4o mini (`gpt-4o-mini-2024-07-18`) | `gpt-6-luna` |\n| January 14, 2027 | GPT-4.1 (`gpt-4.1-2025-04-14`) | `gpt-6-luna` |\n| January 14, 2027 | GPT-4.1 mini (`gpt-4.1-mini-2025-04-14`) | `gpt-6-luna` |\n\nFine-tuned versions of these models follow the same shutdown schedule as their underlying base models.\n\n### 2026-10-01: GPT-5.3-Codex, GPT-5.1, GPT-5.4-Nano\n\nThe following models are deprecated and will be removed from the API on April 1, 2027, with six months’ notice. Migrate to the recommended replacements before the shutdown date. [...] | Shutdown date | Model / system | Recommended replacement |\n --- \n| 2024-10-28 | New fine-tuning training on `babbage-002` | `gpt-4o-mini` |\n| 2024-10-28 | New fine-tuning training on `davinci-002` | `gpt-4o-mini` |\n\n### 2024-06-06: GPT-4-32K and Vision Preview models\n\nOn June 6th, 2024, we notified developers using `gpt-4-32k` and `gpt-4-vision-preview` of their upcoming deprecations in one year and six months respectively. As of June 17, 2024, only existing users of these models will be able to continue using them. [...] See Migrate from Agent Builder to continue with the Agents SDK or ChatGPT Workspace Agents.\n\n### 2026-06-02: GPT Image model deprecations\n\nOn June 2, 2026, we notified developers using older GPT Image models of their deprecation and removal from the API on December 1, 2026.\n\n| Shutdown date | Model / system | Recommended replacement |\n --- \n| Dec 1, 2026 | `gpt-image-1-mini` | `gpt-image-2.5-sunburst` or `gpt-image-2.5-flare` |\n| Dec 1, 2026 | `gpt-image-1.5` | `gpt-image-1.5-2025-12-16` | `gpt-image-2.5-sunburst` or `gpt-image-2.5-flare` |\n| Dec 1, 2026 | `chatgpt-image-latest` | `gpt-image-2.5-sunburst` or `gpt-image-2.5-flare` |\n\n### Update to OpenAI’s self-serve fine-tuning",
+    "score": 0.9016528,
+    "raw_content": null,
+    "id": "2b1248-01"
+   },
+   {
+    "url": "https://developers.openai.com/api/docs/deprecations#2026-06-02-gpt-image-model-deprecations",
+    "title": "Deprecations | OpenAI API",
+    "content": "| Shutdown date | Model / system | Recommended replacement |\n --- \n| January 14, 2027 | GPT-4o (`gpt-4o-2024-08-06`, `gpt-4o-2024-11-20`) | `gpt-6-luna` |\n| January 14, 2027 | GPT-4o mini (`gpt-4o-mini-2024-07-18`) | `gpt-6-luna` |\n| January 14, 2027 | GPT-4.1 (`gpt-4.1-2025-04-14`) | `gpt-6-luna` |\n| January 14, 2027 | GPT-4.1 mini (`gpt-4.1-mini-2025-04-14`) | `gpt-6-luna` |\n\nFine-tuned versions of these models follow the same shutdown schedule as their underlying base models.\n\n### 2026-10-01: GPT-5.3-Codex, GPT-5.1, GPT-5.4-Nano\n\nThe following models are deprecated and will be removed from the API on April 1, 2027, with six months’ notice. Migrate to the recommended replacements before the shutdown date. [...] | Shutdown date | Model / system | Recommended replacement |\n --- \n| 2024-10-28 | New fine-tuning training on `babbage-002` | `gpt-4o-mini` |\n| 2024-10-28 | New fine-tuning training on `davinci-002` | `gpt-4o-mini` |\n\n### 2024-06-06: GPT-4-32K and Vision Preview models\n\nOn June 6th, 2024, we notified developers using `gpt-4-32k` and `gpt-4-vision-preview` of their upcoming deprecations in one year and six months respectively. As of June 17, 2024, only existing users of these models will be able to continue using them. [...] See Migrate from Agent Builder to continue with the Agents SDK or ChatGPT Workspace Agents.\n\n### 2026-06-02: GPT Image model deprecations\n\nOn June 2, 2026, we notified developers using older GPT Image models of their deprecation and removal from the API on December 1, 2026.\n\n| Shutdown date | Model / system | Recommended replacement |\n --- \n| Dec 1, 2026 | `gpt-image-1-mini` | `gpt-image-2.5-sunburst` or `gpt-image-2.5-flare` |\n| Dec 1, 2026 | `gpt-image-1.5` | `gpt-image-1.5-2025-12-16` | `gpt-image-2.5-sunburst` or `gpt-image-2.5-flare` |\n| Dec 1, 2026 | `chatgpt-image-latest` | `gpt-image-2.5-sunburst` or `gpt-image-2.5-flare` |\n\n### Update to OpenAI’s self-serve fine-tuning",
+    "score": 0.9016528,
+    "raw_content": null,
+    "id": "343db4-02"
+   },
+   {
+    "url": "https://developers.openai.com/api/docs/deprecations#gpt-4o-mini-tts",
+    "title": "Deprecations | OpenAI API",
+    "content": "| Shutdown date | Model / system | Recommended replacement |\n --- \n| January 14, 2027 | GPT-4o (`gpt-4o-2024-08-06`, `gpt-4o-2024-11-20`) | `gpt-6-luna` |\n| January 14, 2027 | GPT-4o mini (`gpt-4o-mini-2024-07-18`) | `gpt-6-luna` |\n| January 14, 2027 | GPT-4.1 (`gpt-4.1-2025-04-14`) | `gpt-6-luna` |\n| January 14, 2027 | GPT-4.1 mini (`gpt-4.1-mini-2025-04-14`) | `gpt-6-luna` |\n\nFine-tuned versions of these models follow the same shutdown schedule as their underlying base models.\n\n### 2026-10-01: GPT-5.3-Codex, GPT-5.1, GPT-5.4-Nano\n\nThe following models are deprecated and will be removed from the API on April 1, 2027, with six months’ notice. Migrate to the recommended replacements before the shutdown date. [...] | Shutdown date | Model / system | Recommended replacement |\n --- \n| 2024-10-28 | New fine-tuning training on `babbage-002` | `gpt-4o-mini` |\n| 2024-10-28 | New fine-tuning training on `davinci-002` | `gpt-4o-mini` |\n\n### 2024-06-06: GPT-4-32K and Vision Preview models\n\nOn June 6th, 2024, we notified developers using `gpt-4-32k` and `gpt-4-vision-preview` of their upcoming deprecations in one year and six months respectively. As of June 17, 2024, only existing users of these models will be able to continue using them.",
+    "score": 0.9016528,
+    "raw_content": null,
+    "id": "df3d08-03"
+   },
+   {
+    "url": "https://developers.openai.com/api/docs/deprecations#2026-04-22-legacy-gpt-model-snapshots",
+    "title": "Deprecations | OpenAI API",
+    "content": "| Shutdown date | Model / system | Recommended replacement |\n --- \n| January 14, 2027 | GPT-4o (`gpt-4o-2024-08-06`, `gpt-4o-2024-11-20`) | `gpt-6-luna` |\n| January 14, 2027 | GPT-4o mini (`gpt-4o-mini-2024-07-18`) | `gpt-6-luna` |\n| January 14, 2027 | GPT-4.1 (`gpt-4.1-2025-04-14`) | `gpt-6-luna` |\n| January 14, 2027 | GPT-4.1 mini (`gpt-4.1-mini-2025-04-14`) | `gpt-6-luna` |\n\nFine-tuned versions of these models follow the same shutdown schedule as their underlying base models.\n\n### 2026-10-01: GPT-5.3-Codex, GPT-5.1, GPT-5.4-Nano\n\nThe following models are deprecated and will be removed from the API on April 1, 2027, with six months’ notice. Migrate to the recommended replacements before the shutdown date. [...] | Shutdown date | Model / system | Recommended replacement |\n --- \n| 2024-10-28 | New fine-tuning training on `babbage-002` | `gpt-4o-mini` |\n| 2024-10-28 | New fine-tuning training on `davinci-002` | `gpt-4o-mini` |\n\n### 2024-06-06: GPT-4-32K and Vision Preview models\n\nOn June 6th, 2024, we notified developers using `gpt-4-32k` and `gpt-4-vision-preview` of their upcoming deprecations in one year and six months respectively. As of June 17, 2024, only existing users of these models will be able to continue using them. [...] See Migrate from Agent Builder to continue with the Agents SDK or ChatGPT Workspace Agents.\n\n### 2026-06-02: GPT Image model deprecations\n\nOn June 2, 2026, we notified developers using older GPT Image models of their deprecation and removal from the API on December 1, 2026.\n\n| Shutdown date | Model / system | Recommended replacement |\n --- \n| Dec 1, 2026 | `gpt-image-1-mini` | `gpt-image-2.5-sunburst` or `gpt-image-2.5-flare` |\n| Dec 1, 2026 | `gpt-image-1.5` | `gpt-image-1.5-2025-12-16` | `gpt-image-2.5-sunburst` or `gpt-image-2.5-flare` |\n| Dec 1, 2026 | `chatgpt-image-latest` | `gpt-image-2.5-sunburst` or `gpt-image-2.5-flare` |\n\n### Update to OpenAI’s self-serve fine-tuning",
+    "score": 0.9016528,
+    "raw_content": null,
+    "id": "799cdd-04"
+   }
+  ],
+  "response_time": 0.0,
+  "usage": {
+   "credits": 2
+  },
+  "request_id": "5d01ea90-aacc-4a5e-9ce7-4bb8353bf118"
+ }
+}

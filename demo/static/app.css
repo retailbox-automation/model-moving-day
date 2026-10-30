@@ -52,6 +52,8 @@ a { color: var(--blue-ink); }
 .ds-src { margin-left: 12px; font-size: clamp(14px, .86vw, 16.5px); color: #2B7CD3; text-underline-offset: 2px; }
 .ds2 { margin-top: 3px !important; font-size: clamp(13.5px, .83vw, 16px); color: #77777D; }
 .ds2 a { color: inherit; text-decoration-color: #CFCFD3; text-underline-offset: 3px; }
+.ds-tav { margin-left: 14px; font-size: clamp(14px, .86vw, 16.5px); color: #1E6E48; text-decoration-color: #A9D7BF; text-underline-offset: 2px; }
+.ds-ok { color: #1E8E5A; font-weight: 700; }
 
 .promise { display: grid; grid-template-columns: clamp(140px, 10.3vw, 198px) minmax(0, 1fr); gap: clamp(24px, 2.08vw, 40px); align-items: center; margin: 13px 0 25px clamp(6px, .9vw, 17px); }
 .tearoff { position: relative; width: clamp(140px, 10.3vw, 198px); padding-top: clamp(9px, .68vw, 13px); }

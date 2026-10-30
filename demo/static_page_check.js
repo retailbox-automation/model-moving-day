@@ -57,6 +57,7 @@ const URL = "file://" + path.resolve(__dirname, "static", "index.html");
         date: q("#dsDate").innerText, what: q("#dsWhat").innerText, source: q(".ds-src").href,
         calendar: [q("#calMonth").innerText, q("#calDay").innerText, q("#calYear").innerText],
         scan: q("#dsScan").hidden ? null : { text: q("#dsScan").innerText, href: q("#dsScan a").href },
+        notice: q("#dsNotice").hidden ? null : { text: q("#dsNotice").innerText, href: q("#dsNotice").href, title: q("#dsNotice").title },
         cards: qa(".rcard").map(c => ({
           site: c.dataset.site, tag: c.querySelector(".rc-tag").innerText, chip: c.querySelector(".rc-chip").innerText,
           beside: c.querySelector(".rc-pick").innerText.replace(c.querySelector(".rc-chip").innerText, "").trim(),

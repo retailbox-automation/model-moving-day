@@ -70,6 +70,22 @@ def scan(root=ROOT / "evidence" / "scan"):
             "parse_errors": sum(len(r["errors"]) for r in results), "dir": f"evidence/scan/{d.name}"}
 
 
+def notices(root=ROOT / "evidence" / "notices"):
+    """The latest recorded retirement-notice check (evidence/notices/<date>/notices.json, written by `mmd notices`):
+    per family the verdict, the quoted row and its page; the Tavily calls with their request ids."""
+    runs = sorted(root.glob("*/notices.json"))
+    if not runs:
+        return None
+    n = json.loads(runs[-1].read_text())
+    return {"date": runs[-1].parent.name, "checked_at": n["checked_at"], "live": n["live"], "provider": n["provider"],
+            "expected_shutdown": n["expected_shutdown"], "confirmed": n["confirmed"], "families": n["families"],
+            "results": [{k: r.get(k) for k in ("family", "ids", "confirmed", "shutdown", "announced", "heading", "row",
+                                               "url", "reason", "rejected_hosts")} for r in n["results"]],
+            "extracted": n["extracted"], "calls": [{k: c[k] for k in ("endpoint", "request_id", "credits")}
+                                                   for c in n["calls"]],
+            "credits": n["credits"], "dir": f"evidence/notices/{runs[-1].parent.name}"}
+
+
 def brains(census, root=ROOT / "evidence" / "census"):
     """Which model diagnosed red cells and which wrote each migration branch, read from the agent step logs of the
     census (evidence/census/<target>/agent-steps.jsonl and patch/agent-steps.jsonl): models and step counts only."""
@@ -91,7 +107,7 @@ def build():
         d = ROOT / "evidence" / "census" / p["target"] / "patch"
         files[p["target"]] = {"pr_md": (d / "PR.md").read_text(), "diff": (d / "patch.diff").read_text()}
     return {"schema": 1, "about": ABOUT, "census": census, "patch_files": files, "rerun": rerun(), "scan": scan(),
-            "brains": brains(census)}
+            "notices": notices(), "brains": brains(census)}
 
 
 def dumps(obj):

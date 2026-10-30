@@ -1085,6 +1085,142 @@
   "parse_errors": 4,
   "dir": "evidence/scan/2026-10-28"
  },
+ "notices": {
+  "date": "2026-10-30",
+  "checked_at": "2026-10-30T11:36:54+00:00",
+  "live": true,
+  "provider": "OpenAI",
+  "expected_shutdown": "2027-01-14",
+  "confirmed": 4,
+  "families": 4,
+  "results": [
+   {
+    "family": "GPT-4.1",
+    "ids": [
+     "gpt-4.1",
+     "gpt-4.1-2025-04-14"
+    ],
+    "confirmed": true,
+    "shutdown": "2027-01-14",
+    "announced": "2026-10-14",
+    "heading": "2026-10-14: GPT-4 series model deprecations",
+    "row": "| January 14, 2027 | GPT-4.1 (`gpt-4.1-2025-04-14`) | `gpt-6-luna` |",
+    "url": "https://developers.openai.com/api/docs/deprecations#2026-06-02-gpt-image-model-deprecations",
+    "reason": null,
+    "rejected_hosts": [
+     "community.openai.com"
+    ]
+   },
+   {
+    "family": "GPT-4.1 mini",
+    "ids": [
+     "gpt-4.1-mini",
+     "gpt-4.1-mini-2025-04-14"
+    ],
+    "confirmed": true,
+    "shutdown": "2027-01-14",
+    "announced": "2026-10-14",
+    "heading": "2026-10-14: GPT-4 series model deprecations",
+    "row": "| January 14, 2027 | GPT-4.1 mini (`gpt-4.1-mini-2025-04-14`) | `gpt-6-luna` |",
+    "url": "https://developers.openai.com/api/docs/deprecations#2026-06-02-gpt-image-model-deprecations",
+    "reason": null,
+    "rejected_hosts": [
+     "community.openai.com"
+    ]
+   },
+   {
+    "family": "GPT-4o",
+    "ids": [
+     "gpt-4o",
+     "gpt-4o-2024-08-06",
+     "gpt-4o-2024-11-20"
+    ],
+    "confirmed": true,
+    "shutdown": "2027-01-14",
+    "announced": "2026-10-14",
+    "heading": "2026-10-14: GPT-4 series model deprecations",
+    "row": "| January 14, 2027 | GPT-4o (`gpt-4o-2024-08-06`, `gpt-4o-2024-11-20`) | `gpt-6-luna` |",
+    "url": "https://developers.openai.com/api/docs/deprecations#2026-06-02-gpt-image-model-deprecations",
+    "reason": null,
+    "rejected_hosts": [
+     "community.openai.com"
+    ]
+   },
+   {
+    "family": "GPT-4o mini",
+    "ids": [
+     "gpt-4o-mini",
+     "gpt-4o-mini-2024-07-18"
+    ],
+    "confirmed": true,
+    "shutdown": "2027-01-14",
+    "announced": "2026-10-14",
+    "heading": "2026-10-14: GPT-4 series model deprecations",
+    "row": "| January 14, 2027 | GPT-4o mini (`gpt-4o-mini-2024-07-18`) | `gpt-6-luna` |",
+    "url": "https://developers.openai.com/api/docs/deprecations#2026-06-02-gpt-image-model-deprecations",
+    "reason": null,
+    "rejected_hosts": [
+     "community.openai.com"
+    ]
+   }
+  ],
+  "extracted": [
+   {
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "chars": 59193,
+    "newest_section": "2026-09-11"
+   },
+   {
+    "url": "https://developers.openai.com/api/docs/deprecations#2026-06-02-gpt-image-model-deprecations",
+    "chars": 63491,
+    "newest_section": "2026-10-14"
+   },
+   {
+    "url": "https://developers.openai.com/api/docs/deprecations#gpt-4o-mini-tts",
+    "chars": 62894,
+    "newest_section": "2026-10-14"
+   },
+   {
+    "url": "https://developers.openai.com/api/docs/deprecations#model-deprecation-notice-periods",
+    "chars": 63491,
+    "newest_section": "2026-10-14"
+   },
+   {
+    "url": "https://openai.com/index/retiring-gpt-4o-and-older-models",
+    "chars": 7624,
+    "newest_section": null
+   }
+  ],
+  "calls": [
+   {
+    "endpoint": "search",
+    "request_id": "55530f90-d8d3-48b2-8aac-9e63b93443b8",
+    "credits": 2
+   },
+   {
+    "endpoint": "search",
+    "request_id": "5d01ea90-aacc-4a5e-9ce7-4bb8353bf118",
+    "credits": 2
+   },
+   {
+    "endpoint": "search",
+    "request_id": "c1873b3c-17f4-4208-aba4-c502ebcd4a9d",
+    "credits": 2
+   },
+   {
+    "endpoint": "search",
+    "request_id": "ccdce595-ea01-4b07-a9ec-7b1ee81a98f8",
+    "credits": 2
+   },
+   {
+    "endpoint": "extract",
+    "request_id": "766d4f41-00d2-452d-8aa2-7e47bc6d043c",
+    "credits": 1
+   }
+  ],
+  "credits": 9,
+  "dir": "evidence/notices/2026-10-30"
+ },
  "brains": {
   "instructor": {
    "diagnose_models": [],

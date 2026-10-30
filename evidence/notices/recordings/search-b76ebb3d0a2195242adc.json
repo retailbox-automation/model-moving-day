@@ -1,0 +1,67 @@
+{
+ "recorded_at": "2026-10-30T11:36:53+00:00",
+ "endpoint": "https://api.tavily.com/search",
+ "request": {
+  "query": "OpenAI gpt-4.1 model deprecation shutdown date API",
+  "search_depth": "advanced",
+  "max_results": 5,
+  "include_domains": [
+   "developers.openai.com",
+   "platform.openai.com",
+   "openai.com"
+  ]
+ },
+ "response": {
+  "query": "OpenAI gpt-4.1 model deprecation shutdown date API",
+  "follow_up_questions": null,
+  "answer": null,
+  "images": [],
+  "results": [
+   {
+    "url": "https://community.openai.com/t/january-14-2027-shutdown-of-gpt-4o-gpt-4-1-mini-without-required-notice/1410935",
+    "title": "January 14, 2027 - Shutdown of GPT-4o, GPT-4.1, mini - without required notice - Deprecations - OpenAI Developer Community",
+    "content": "# January 14, 2027 - Shutdown of GPT-4o, GPT-4.1, mini - without required notice\n\nOn October 14, 2026, we notified developers using (the title’s) models of their deprecation and removal from the API on January 14, 2027.\n\nThere was no alternate notice such as described that I had seen. The only notice was the deprecation page saying that same language.\n\nOpenAI writes:\n\nWe provide the following minimum notice periods before model retirement:\n\nIn the past before that declaration, OpenAI has even provided a year notice between deprecation and shutoff. [...] ### Related topics\n\n| Topic |  | Replies | Views | Activity |\n ---  --- \n| What is the sunset date for gpt-4o-mini?  Deprecations | 4 | 2246 | January 14, 2026 |\n| Deprecation date for gpt-4o-mini  API | 0 | 1800 | August 19, 2025 |\n| Clarification needed: Is only gpt-5-mini-2025-08-07 deprecated, or the entire gpt-5-mini family?  Deprecations | 2 | 735 | October 6, 2026 |\n| OpenAI is winding down the fine-tuning API and platform - Discussion Thread  Deprecations | 2 | 3559 | May 8, 2026 |\n| Is GPT 4.1 Mini API getting retired? GPT 5 Mini too SLOW  API | 7 | 1986 | February 10, 2026 |\n\nPowered by Discourse, best viewed with JavaScript enabled [...] These two model families, including the mini versions are extremely “generally available”, also having fine-tuning models that this also directly impacts - the end of any fine-tunings. The models certainly do not fall under “Specialized variants” for an exception.\n\nI conclude that the shutoff must be pushed back to at least April 14.\n\n### Related topics",
+    "score": 0.9220975,
+    "raw_content": null,
+    "id": "7ed3df-00"
+   },
+   {
+    "url": "https://developers.openai.com/api/docs/deprecations",
+    "title": "Deprecations | OpenAI API",
+    "content": "| Shutdown date | Model / system | Recommended replacement |\n --- \n| 2026‑05‑12 | OpenAI-Beta: realtime=v1 | Realtime API |\n\n### 2025-09-15: `gpt-4o-realtime-preview` models\n\nIn September, 2025, we notified developers using `gpt-4o-realtime-preview` models of their deprecation and removal from the API in six months.\n\n| Shutdown date | Model / system | Recommended replacement |\n --- \n| 2026-05-07 | `gpt-4o-realtime-preview` | `gpt-realtime-1.5` |\n| 2026-05-07 | `gpt-4o-realtime-preview-2025-06-03` | `gpt-realtime-1.5` |\n| 2026-05-07 | `gpt-4o-realtime-preview-2024-12-17` | `gpt-realtime-1.5` |\n| 2026-05-07 | `gpt-4o-mini-realtime-preview` | `gpt-realtime-mini` |\n| 2026-05-07 | `gpt-4o-audio-preview` | `gpt-audio-1.5` |\n| 2026-05-07 | `gpt-4o-mini-audio-preview` | `gpt-audio-mini` | [...] We are also removing fine-tuned versions as below:\n\n| Shutdown date | Model snapshot | Recommended replacement base model |\n --- \n| October 23, 2026 | `ft-gpt-3.5-turbo` | `gpt-5.6-terra` |\n| October 23, 2026 | `ft-gpt-4` | `gpt-5.6-sol` |\n| October 23, 2026 | `ft-gpt-4.1-nano-2025-04-14` | `gpt-5.6-luna` |\n| October 23, 2026 | `ft-babbage-002` | `gpt-5.6-terra` |\n| October 23, 2026 | `ft-davinci-002` | `gpt-5.6-terra` |\n\n### 2026-04-22: Legacy GPT model snapshots (July 2026 shutdown)\n\nOn April 22, 2026, we announced the deprecation of the following older OpenAI models. Access to these models was shut down on July 23, 2026. [...] ### 2025-06-10: `gpt-4o-realtime-preview-2024-10-01`\n\nOn June 10th, 2025, we notified developers using `gpt-4o-realtime-preview-2024-10-01` of its deprecation and removal from the API in three months.\n\n| Shutdown date | Model / system | Recommended replacement |\n --- \n| 2025-10-10 | `gpt-4o-realtime-preview-2024-10-01` | `gpt-realtime-1.5` |\n\n### 2025-06-10: `gpt-4o-audio-preview-2024-10-01`\n\nOn June 10th, 2025, we notified developers using `gpt-4o-audio-preview-2024-10-01` of its deprecation and removal from the API in three months.\n\n| Shutdown date | Model / system | Recommended replacement |\n --- \n| 2025-10-10 | `gpt-4o-audio-preview-2024-10-01` | `gpt-audio-1.5` |\n\n### 2025-04-28: `text-moderation`",
+    "score": 0.88372874,
+    "raw_content": null,
+    "id": "c8c57f-01"
+   },
+   {
+    "url": "https://community.openai.com/t/deprecation-notice-upcoming-model-shutdowns-in-2026/1379553",
+    "title": "Deprecation notice: upcoming model shutdowns in 2026 - Deprecations - OpenAI Developer Community",
+    "content": "Thanks for building with OpenAI. If you have any questions about model migration, feel free to reach out on the OpenAI Developer Forum.\n\nThis is an unprecendented massive list of models going away.\n\n`gpt-4-turbo`\n`gpt-4-turbo-2024-04-09`\n\n`gpt-4-1106-preview` appears in the listing with a shutoff date of 2026-10-23, but it was already listed and shutoff 2026-03-26, along with gpt-4-0125-preview, and is no longer available on API.\n\n`gpt-4-1106-preview`\n\nIt seems that the embeddings model has been removed from the listing. If in error, the deprecations page should acknowledge the error blasted by email. Embeddings should be long-life, with a year notice. [...] # Deprecation notice: upcoming model shutdowns in 2026\n\nThis info has just been shared via email by OpenAI. It can also be accessed via the deprecations page in the docs.\n\nCorrection: text-embedding-3-small is not being deprecated\n\nOver the next three to six months, we will deprecate a set of older OpenAI models to improve reliability and simplify model selection, with recommended newer alternatives available for each model.\n\nAccess to these models will be shut down in the API on the following dates:\n\nShutdown on July 23, 2026\n\nShutdown on October 23, 2026\n\nFinetuned versions of models being deprecated:\n\nWe encourage you to explore our latest flagship models featured here, which offer improved performance and broader feature support. [...] \"gpt-4o-realtime-preview-2024-12-17\": {\"shutoff\": \"2026-05-07\"},\n\"gpt-4o-mini-realtime-preview\": {\"shutoff\": \"2026-05-07\", \"alias\": \"gpt-4o-mini-realtime-preview\"},\n\"gpt-4o-audio-preview-2025-06-03\": {\"shutoff\": \"2026-05-07\", \"alias\": \"gpt-4o-audio-preview\"},\n\"gpt-4o-mini-audio-preview\": {\"shutoff\": \"2026-05-07\", \"alias\": \"gpt-4o-mini-audio-preview\"},\n\"gpt-4-0314\": {\"shutoff\": \"2026-03-26\"},\n\"gpt-4-1106-preview\": {\"shutoff\": \"2026-03-26\", \"ft_shutoff\": \"2026-10-23\"},\n\"gpt-4-0125-preview\": {\"shutoff\": \"2026-03-26\", \"alias\": \"gpt-4-turbo-preview\"},\n\"chatgpt-4o-latest\": {\"shutoff\": \"2026-02-17\"},\n\"codex-mini-latest\": {\"shutoff\": \"2026-02-12\"},\n\"o1-mini-2024-09-12\": {\"shutoff\": \"2025-10-27\", \"alias\": \"o1-mini\"},\n\"gpt-4o-audio-preview-2024-10-01\": {\"shutoff\": \"2025-10-10\"},",
+    "score": 0.8719229,
+    "raw_content": null,
+    "id": "228735-02"
+   },
+   {
+    "url": "https://community.openai.com/t/what-is-the-sunset-date-for-gpt-4o-mini/1371206",
+    "title": "What is the sunset date for gpt-4o-mini? - Deprecations - OpenAI Developer Community",
+    "content": "# What is the sunset date for gpt-4o-mini?\n\nI am seeking clarification on the final retirement date for the GPT-4o-mini (2024-07-18) snapshot. I have seen documentation indicating a sunset date of February 27, 2026.\n\nThanks for the clarification!\n\nThe complete list of deprecations can be found here.\n\nThere are currently no announced deprecations for `gpt-4o-mini`, what you are referring is probably related to a recent announcement of deprecation for `chatgpt-4o-latest`.\n\n`gpt-4o-mini`\n`chatgpt-4o-latest`\n\nOn November 18th, 2025, we notified developers using `chatgpt-4o-latest` model snapshot of its deprecation and removal from the API on February 17, 2026.\n\n`chatgpt-4o-latest` [...] Thanks for that info. Very useful.\n\n### Related topics\n\n| Topic |  | Replies | Views | Activity |\n ---  --- \n| Deprecation date for gpt-4o-mini  API | 0 | 1744 | August 19, 2025 |\n| Clarification needed: Is only gpt-5-mini-2025-08-07 deprecated, or the entire gpt-5-mini family?  Deprecations | 1 | 472 | June 16, 2026 |\n| Any plans to deprecate the GPT-4 Turbo preview models?  API | 0 | 574 | May 8, 2024 |\n| Deprecation dates for new 4o versions  Deprecations gpt-4o | 0 | 625 | September 17, 2024 |\n| How long can i expect to be able to access a specific version of a model?  Deprecations gpt-4 | 1 | 264 | May 12, 2025 |\n\nPowered by Discourse, best viewed with JavaScript enabled [...] We could use the general model name (instead of specific dated versions). However, we’d prefer to have a more repeatable system with specific dated models.\n\nI had looked at the deprecations page but it doesn’t list specific dated model.\n\nThe moment that a model (or software feature) is given a lifespan, it would be deprecated.\n\nNot appearing there means no immediate shutoff plans.\n\nAlthough there is no formal pattern to guide your planning and maximum lifecycle, what can be observed is six months notice if there is a direct replacement, a year if there is no equivalent. Or as little as three months if it is a preview model or merely a test surface (like gpt-chat).\n\nThanks for that info. Very useful.\n\n### Related topics",
+    "score": 0.7845341,
+    "raw_content": null,
+    "id": "2cf2d1-03"
+   },
+   {
+    "url": "https://openai.com/index/retiring-gpt-4o-and-older-models",
+    "title": "Retiring GPT-4o, GPT-4.1, GPT-4.1 mini, and OpenAI o4-mini in ChatGPT",
+    "content": "Skip to main content\n\n\n\nLog inTry ChatGPT(opens in a new window)\n\n   Research\n   Products\n   Business\n   Developers\n   Company\n   Foundation(opens in a new window)\n\nTry ChatGPT(opens in a new window)Login\n\nOpenAI\n\nJanuary 29, 2026\n\nProduct\n\n# Retiring GPT‑4o, GPT‑4.1, GPT‑4.1 mini, and OpenAI o4-mini in ChatGPT\n\nShare\n\nOn February 13, 2026, alongside the previously announced retirement⁠ of GPT‑5 (Instant and Thinking), we will retire GPT‑4o, GPT‑4.1, GPT‑4.1 mini, and OpenAI o4-mini from ChatGPT. In the API, there are no changes at this time.\n\nWhile this announcement applies to several older models, GPT‑4o deserves special context. [...] Changes like this take time to adjust to, and we’ll always be clear about what’s changing and when. We know that losing access to GPT‑4o will feel frustrating for some users, and we didn’t make this decision lightly. Retiring models is never easy, but it allows us to focus on improving the models most people use today.\n\n   2026\n\n## Author\n\nOpenAI\n\n## Keep reading\n\nView all\n\nImage 1: A model guide for the GPT-6 family — Card image\n\nA practical guide to building with GPT-6 Product Oct 2, 2026\n\nImage 2: DevDay 2026 Recap — cover image (1:1)\n\nDevDay 2026 Recap Company Sep 29, 2026\n\nImage 3: GPT-6-1-Sol_Blog 1x1\n\nIntroducing GPT-6.1 Sol Product Sep 29, 2026\n\nResearch\n   Research Index\n   Research Overview\n   Economic Research [...] Developers\n   Apps SDK(opens in a new window)\n   Open Models\n   Docs(opens in a new window)\n   Resources(opens in a new window)\n   Developer Forum(opens in a new window)\n\nCompany\n   About Us\n   Our Charter\n   Careers\n   News\n\nSupport\n   Help Center(opens in a new window)\n\nMore\n   Stories\n   Academy\n   Supply Co.\n   Livestreams\n   Podcast\n   RSS\n\nTerms & Policies\n   Terms of Use\n   Privacy Policy\n   Other Policies\n\n(opens in a new window)(opens in a new window)(opens in a new window)(opens in a new window)(opens in a new window)(opens in a new window)(opens in a new window)\n\nOpenAI © 2015–2026 Your privacy choices\n\nEnglish United States",
+    "score": 0.77179235,
+    "raw_content": null,
+    "id": "1ca3d5-04"
+   }
+  ],
+  "response_time": 0.0,
+  "usage": {
+   "credits": 2
+  },
+  "request_id": "55530f90-d8d3-48b2-8aac-9e63b93443b8"
+ }
+}

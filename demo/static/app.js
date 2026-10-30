@@ -59,6 +59,21 @@
     $("dsScan").innerHTML = `<a href="${REPO}${esc(sc.dir)}/SCAN.md" rel="noopener">${sc.T} of ${sc.K} popular Python LLM repositories</a> still name them in their tests (static scan, rule pushed before the scan).`;
     $("dsScan").hidden = false;
   }
+  // retirement notices: Tavily found OpenAI's own notice at run time, the code checked each row (evidence/notices/)
+  const NT = M.notices;
+  const fmtDate = iso => { const [y, m, d] = iso.split("-"); return `${MONTHS[+m - 1].slice(0, 3)} ${+d}, ${y}`; };
+  const hostOf = u => u.replace(/^https?:\/\//, "").split(/[/#]/)[0];
+  if (NT) {
+    const ok = NT.results.filter(r => r.confirmed), first = ok[0];
+    const when = NT.checked_at.slice(0, 16).replace("T", " ") + " UTC";
+    $("dsNotice").innerHTML = `<span class="ds-ok" aria-hidden="true">${first ? "✓" : "!"}</span> ` +
+      (first ? `${ok.length} of ${NT.families} confirmed with Tavily, ${NT.live ? "live" : "replayed"} ${esc(fmtDate(NT.checked_at.slice(0, 10)))}`
+        : `not confirmed with Tavily, ${esc(fmtDate(NT.checked_at.slice(0, 10)))}`);
+    $("dsNotice").href = `${REPO}${NT.dir}/NOTICES.md`;
+    $("dsNotice").title = first ? `Tavily found OpenAI's notice on ${hostOf(first.url)} (${when}); the code checked each row: ` +
+      `section "${first.heading}", ${ok.map(r => r.family).join(", ")}: ${fmtDate(first.shutdown)}` : "";
+    $("dsNotice").hidden = false;
+  }
   $("promiseSub").textContent = `The smallest NVIDIA Nemotron on Nebius Token Factory that the repository's own tests accept, ${K} runs per model in Token Factory Sandboxes, priced against the next bigger Nemotron. Or the reason the tests can't vouch for it.`;
 
   // three receipts: the decided sites whose receipt is compared with OpenAI's priced replacement, in census order

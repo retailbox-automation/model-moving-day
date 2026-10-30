@@ -32,6 +32,9 @@ confirmed branch, and reached the same decision; each of its 68 model calls carr
 - Demo, a replay of this census with no model calls: https://model-moving-day.retailbox-automation.com/
 - Video (2:56): https://youtu.be/5K6B22zD5bs
 - Scan a repository yourself, no key and no model: `pip install "model-moving-day @ git+https://github.com/retailbox-automation/model-moving-day"`, then `mmd scan <path or git URL>`
+- Check the retirement date at run time: `mmd notices`. Tavily finds OpenAI's own deprecation notice and the code
+  checks each row (host, exact model IDs, date). Without a key, in a clone of this repository, it replays the recorded
+  calls; with `TAVILY_API_KEY` it calls Tavily live (also from a pip install). `mmd scan <repo> --notices` adds the check to a scan. Recorded run: [NOTICES.md](evidence/notices/2026-10-30/NOTICES.md)
 
 ## Check it in two minutes
 
@@ -45,6 +48,7 @@ confirmed branch, and reached the same decision; each of its 68 model calls carr
 | The agent writes the move and the patched code passes the same tests | `evidence/census/{instructor,llm}/patch/patch.diff`, `PR.md`; confirm runs `…2a6fd0`, `…9d0fdb` | an opt-in helper (`NEMOTRON_MOVE=1`); confirm 5/5 per moved site; nothing pushed upstream |
 | The agent repeats the llm decision on a fresh run, every call traceable | `evidence/rerun-2026-10-29/` (`PLAN.md` pushed before the run, `RESULT.md`, `calls.jsonl`, `rerun.cast`) | Nano 0/5, remedy "reasoning off", Nano 5/5, Lightning 5/5, branch by Super, confirm 5/5; 68 calls, each with a `chatcmpl-…` id; $0.0124 |
 | 37 of 50 popular Python LLM repositories name a retiring model in their tests | `evidence/scan/RULE.md` (pushed before the scan, commit ccaccc5), `evidence/scan/2026-10-28/` (`SCAN.md`, `repos.json`, `results.json`) | file and line of every hit; error counts; five repositories checked by hand |
+| The retirement date is OpenAI's own, checked at run time | `mmd notices` (replays `evidence/notices/recordings/` without a key); `evidence/notices/2026-10-30/notices.json` | 4 of 4 families confirmed for 2027-01-14 on developers.openai.com, section "2026-10-14: GPT-4 series model deprecations", the quoted row per family and Tavily's request ids; community.openai.com results rejected by the host check |
 | Failures are published | CENSUS.md, paper-qa runs and "Found, not measured"; demo "What did not work" | paper-qa: 503/500 replies and lost jobs, no decision; 18 sites not measured, each with its reason |
 
 How this differs from routing each step to a model by price: here the target repository's own frozen tests choose the
@@ -210,6 +214,34 @@ Synthetic or assumed:
 - The offline tests and `python -m model_moving_day.fakes` use a fake model and a fake sandbox with scripted outcomes
   and illustrative prices; nothing from that dry run appears in CENSUS.md.
 
+## Retirement notices (Tavily)
+
+The census and the scan assume one date: OpenAI removes GPT-4o, GPT-4o mini, GPT-4.1 and GPT-4.1 mini from the API on
+January 14, 2027. `mmd notices` (`model_moving_day/notices.py`) checks that date against the provider's own notice
+every time it runs, with Tavily as the search and extract layer and the decision made by code:
+
+1. For each retiring family in the scan's table, a Tavily search limited to OpenAI's domains locates the notice page
+   (advanced depth, 5 results).
+2. Tavily extract reads the official pages the searches returned (up to 5 URLs, one call).
+3. Code decides, not a model: the page's host must be one of developers.openai.com, platform.openai.com, openai.com or
+   help.openai.com (an `include_domains` of openai.com also returns community.openai.com forum threads, which are
+   rejected); a table row must name one of the family's exact snapshot IDs in its model column (an ID that appears
+   only as another model's replacement does not count); the row's date must parse. A family is confirmed only when
+   that date is 2027-01-14. A different date is reported as it is, never replaced. Rows of the same section that name
+   IDs the scan's table does not know are listed as "also on the list".
+
+Recorded live run, 2026-10-30 11:36 UTC: 5 Tavily calls, 9 credits, 4 of 4 families confirmed, each with its row,
+section heading and request id ([NOTICES.md](evidence/notices/2026-10-30/NOTICES.md), raw answers in
+`evidence/notices/recordings/`). Without a key the command replays those answers from a clone, so the check runs
+offline; a request
+with no recording is an error. With `TAVILY_API_KEY` it calls Tavily live, records every answer and stops before
+passing `TAVILY_CREDIT_CAP` (default 40, ledger `evidence/notices/credits.jsonl`).
+
+What the run showed about copies: the search index's copy of the deprecations page, and the extract of the bare URL,
+both ended at the 2026-09-11 entry, while extracts of the same URL with a `#fragment` returned the current page with
+the 2026-10-14 entry. The command checks every extracted copy and records each one's newest section, so a stale copy
+cannot confirm or deny a date on its own.
+
 ## Spend
 
 Model tokens for the decision ladders: $0.52. All C1 spend in our ledger (read 2026-10-24 14:41 UTC): $1.39
@@ -218,6 +250,11 @@ model tokens come to about $0.90. On top of that, $0.03 for one lost job (read a
 the other. Token Factory billing showed no Sandboxes charge when checked on 2026-10-24 (last check at 13:47 UTC, with
 Usage data as of 12:11 UTC), so runs after 12:11 UTC are not covered by that check. The Sandboxes `cost` field ($5.33
 over the decision runs) is a diagnostic, not spend.
+
+Tavily for the notice check: 18 credits in `evidence/notices/credits.jsonl` (two live runs of `mmd notices`; the first,
+at 11:35 UTC, ran before the model-column rule was added and confirmed 1 of 4, because it read `gpt-4o` in a
+replacement column as a notice) plus 3 in
+manual probes before the code was written, on the free monthly allowance: $0.
 
 ## Platform findings (Nebius Token Factory and Sandboxes)
 
@@ -287,6 +324,8 @@ on the page is one CENSUS.md or this README states. The hosted page also loads a
 
 ## Limits
 
+- The notice check covers OpenAI only, and only the families in the scan's table; a confirmed row says what OpenAI's
+  page says today, and the check cannot see a notice that Tavily's search does not return.
 - The gate was not met: decisions in 2 of 3 repositories, 3 or 4 independent decisions depending on how instructor's
   sync and async faces are counted. The gate and the pairing rule are in our internal notes, not in the manifest.
 - The repositories were picked by hand and the sites are few; the share on Lightning or Nano is not an estimate of how
